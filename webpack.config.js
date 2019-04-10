@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const alias = {
   'project-components': path.resolve('./components-lib'),
@@ -23,6 +24,10 @@ module.exports = {
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.styl$/,
+        use: ['style-loader', 'css-loader', 'stylus-loader']
       }
     ]
   },
@@ -37,6 +42,9 @@ module.exports = {
     port: '3000'
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      "React": "react",
+    }),
     new HtmlWebpackPlugin({
       template: './index.html'
     })

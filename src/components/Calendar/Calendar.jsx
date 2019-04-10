@@ -10,12 +10,11 @@ import '@fullcalendar/timegrid/main.css'
 import '@fullcalendar/list/main.css'
 
 export default class DemoCalendar extends Component {
-  state = {}
-
   render () {
     return (
       <FullCalendar defaultView='dayGridMonth' plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
         events={this.props.events}
+        ref={this.calendarComponentRef}
         editable
         droppable
         header={{
