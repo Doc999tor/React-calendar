@@ -1,0 +1,1 @@
+export default d => moment(d).format('ddd, DD MMM, Y')
