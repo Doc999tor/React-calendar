@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import './SingleWorker.styl'
 
 class SingleWorker extends Component {
   onError = e => {

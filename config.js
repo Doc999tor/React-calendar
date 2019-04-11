@@ -304,7 +304,7 @@ const config = {
     ],
     eventLongPressDelay: 1000,
     selectLongPressDelay: 1000,
-    defaultView: 'daily',
+    defaultView: 'timeGridDay', // dayGridMonth, timeGridWeek, timeGridDay, listWeek
     defaultDate: moment(),
     // defaultDate: moment('2018-01-01'),
     // defaultDate: moment(window.location.pathname.match(new RegExp('\\d{4}\\-\\d{1,2}\\-\\d{1,2}', 'g'))[0]).isValid() ? moment(window.location.pathname.match(new RegExp('\\d{4}\\-\\d{1,2}\\-\\d{1,2}', 'g'))[0]) : moment('2018-01-01'),

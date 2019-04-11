@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Swiper } from 'project-components'
-import SingleWorker from './components/SingleWorker/SingleWorker.jsx'
+import SingleWorker from './SingleWorker.jsx'
 import './Workers.styl'
 
 class Workers extends Component {
@@ -13,7 +13,8 @@ class Workers extends Component {
       }
     }
     return (
-      <div className='swiper-container' style={config.calendar.isRTL ? { 'direction': 'rtl' } : { 'direction': 'ltr' }}>
+      <div className='swiper-background'>
+      <div id='workers' className='swiper-container' style={config.calendar.isRTL ? { 'direction': 'rtl' } : { 'direction': 'ltr' }}>
         <div className='swiper-wrapper'>
           <Swiper {...params}>
             {config.workers.map(worker => <SingleWorker key={worker.id} id={worker.id} name={worker.name} photo={worker.photo} />)}
@@ -22,6 +23,7 @@ class Workers extends Component {
         <div className='swiper-button-next' />
         <div className='swiper-button-prev' />
       </div >
+      </div>
     )
   }
 }

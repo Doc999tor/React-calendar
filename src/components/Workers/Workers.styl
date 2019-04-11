@@ -1,32 +1,40 @@
-.swiper-container
-  padding 5px 30px
-  // .swiper-button-next, .swiper-button-prev
-  //   height 25px
-  //   width 30px
-  //   margin-top -11px
-  .swiper-wrapper
-    .fit
-      object-fit cover
-    .swiper-slide
-      display flex
-      flex-direction column
-      align-items center
-      justify-content flex-start
-      margin 0 7px
-      width 60px
-      img
-        border-radius 100%
-        box-sizing border-box
-        margin 2px
-        width 50px
-        height 50px
+.swiper-background
+  padding 5px 0 5px
+  position fixed
+  top 60px
+  left 0
+  right 0
+  background-color var(--sec-color)
+  z-index 8
+#workers
+  margin 0 2%
+  border-radius 10px
+  background-color #fff
+  .swiper-container
+    padding 5px 30px
+    .swiper-wrapper
+      .fit
+        object-fit cover
+      .swiper-slide
+        display flex
+        flex-direction column
+        align-items center
+        justify-content flex-start
+        margin 0 7px
+        width 60px
+        img
+          border-radius 100%
+          box-sizing border-box
+          margin 2px
+          width 50px
+          height 50px
+        .swiper-title
+          text-align center
+          padding 5px 0
+          color #000
+          line-height 1.1
+    .swiper-slide.active
       .swiper-title
-        text-align center
-        padding 5px 0
-        color #000
-        line-height 1.1
-  .swiper-slide.active
-    .swiper-title
-      font-weight 900
-    img
-      box-shadow 0 0 0 3px var(--main-bgcolor), 0 0 13px #333
+        font-weight 900
+      img
+        box-shadow 0 0 0 3px var(--main-bgcolor), 0 0 13px #333
