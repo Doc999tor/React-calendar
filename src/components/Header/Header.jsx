@@ -4,7 +4,7 @@ import './Header.styl'
 class Header extends Component {
   render () {
     return (
-      <div id='header'>
+      <div id='header' style={config.calendar.isRTL ? {'direction': 'rtl'} : {'direction': 'ltr'}}>
         <div className={'menu_refresh ' + (config.calendar.isRTL ? 'menu_rtl' : 'menu_ltr')}>
           <button className='more_wrap'>
             <img src={`${config.urls.staticImg}/ic_menu.svg`}/>
@@ -14,7 +14,7 @@ class Header extends Component {
           </button>
         </div>
         <div className='middle-section'>
-          <button className='prev_button_wrap common'>
+          <button className={'prev_button_wrap common ' + (config.calendar.isRTL ? 'rtlStyle' : 'ltrStyle')}>
             <img className='prev_button btn' src={`${config.urls.staticImg}/prev.svg`} />
           </button>
           <div className='current_date'>
@@ -22,7 +22,7 @@ class Header extends Component {
             <span className='current_date_field'></span>
             <span className='this_week'></span>
           </div>
-          <button className='next_button_wrap common'>
+          <button className={'next_button_wrap common ' + (config.calendar.isRTL ? 'rtlStyle' : 'ltrStyle')}>
             <img className='next_button btn' src={`${config.urls.staticImg}/next.svg`} />
           </button>
         </div>
