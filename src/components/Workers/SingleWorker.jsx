@@ -9,7 +9,7 @@ class SingleWorker extends Component {
   render () {
     const { id, name, photo } = this.props
     return (
-      <figure data-index={id} className='swiper-slide'>
+      <figure data-index={id} className={(id == config.activeWorkerId) ? 'swiper-slide active' : 'swiper-slide'} onClick={() => this.props.changeWorker(id)}>
         <img className='fit' src={config.urls.imgForWorkers.replace('{worker_id}', photo)} onError={e => { this.onError(e) }} />
         <figcaption className='swiper-title'>{name}</figcaption>
       </figure>

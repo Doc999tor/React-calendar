@@ -36,7 +36,7 @@ export default (start, end, forceFetch) => {
 // start: 2019-04-09 00:00:00
 // end: 2019-04-11 23:59:59
 // worker_id: 11
-    const url = `${config.urls.appointmentsUrl}?start=2019-04-01 00:00:00&end=2019-04-30 23:59:59&worker_id=11`
+    const url = `${config.urls.appointmentsUrl}?start=2019-04-01 00:00:00&end=2019-04-30 23:59:59&worker_id=${config.activeWorkerId}`
     // const url = `${config.urls.appointmentsUrl}?start=${start}&end=${end}&worker_id=${config.activeWorkerId}`
     // $('.preloader').removeClass('hidden')
     mainRequestService(url, options).then(r => {

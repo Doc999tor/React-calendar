@@ -15,9 +15,9 @@ const config = {
       photo: 'jennifer.jpg',
       businessHours: [
         {
-          dow: [0, 1, 2, 3, 4, 5, 6],
-          start: '12:00',
-          end: '16:00'
+          daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+          startTime: '12:00',
+          endTime: '16:00'
         }
       ],
       active: false
@@ -27,14 +27,14 @@ const config = {
       photo: 'dwayne.jpg',
       businessHours: [
         {
-          dow: [1, 2, 3, 4, 5],
-          start: '13:00',
-          end: '17:00'
+          daysOfWeek: [1, 2, 3, 4, 5],
+          startTime: '13:00',
+          endTime: '17:00'
         }
         // {
-        //   dow: [5],
-        //   start: '10:00',
-        //   end: '16:00'
+        //   daysOfWeek: [5],
+        //   startTime: '10:00',
+        //   endTime: '16:00'
         // }
       ],
       active: true
@@ -44,9 +44,9 @@ const config = {
       photo: '',
       businessHours: [
         {
-          dow: [2],
-          start: '00:00',
-          end: '20:00'
+          daysOfWeek: [2],
+          startTime: '00:00',
+          endTime: '20:00'
         }
       ],
       active: false
@@ -56,11 +56,11 @@ const config = {
       photo: '',
       businessHours: [
         {
-          dow: [
+          daysOfWeek: [
             0, 1, 2, 3, 4
           ],
-          start: '00:00',
-          end: '20:00'
+          startTime: '00:00',
+          endTime: '20:00'
         }
       ],
       active: false
@@ -70,15 +70,15 @@ const config = {
       photo: '',
       businessHours: [
         {
-          dow: [
+          daysOfWeek: [
             0, 1, 3, 4
           ],
-          start: '00:00',
-          end: '20:00'
+          startTime: '00:00',
+          endTime: '20:00'
         }, {
-          dow: [5],
-          start: '10:00',
-          end: '16:00'
+          daysOfWeek: [5],
+          startTime: '10:00',
+          endTime: '16:00'
         }
       ],
       active: false
@@ -88,15 +88,15 @@ const config = {
       photo: '',
       businessHours: [
         {
-          dow: [
+          daysOfWeek: [
             0, 1, 2, 3, 4
           ],
-          start: '00:00',
-          end: '20:00'
+          startTime: '00:00',
+          endTime: '20:00'
         }, {
-          dow: [5],
-          start: '10:00',
-          end: '16:00'
+          daysOfWeek: [5],
+          startTime: '10:00',
+          endTime: '16:00'
         }
       ],
       active: false
@@ -106,13 +106,13 @@ const config = {
       photo: '',
       businessHours: [
         {
-          dow: [0, 1, 2, 3, 4],
-          start: '00:00',
-          end: '20:00'
+          daysOfWeek: [0, 1, 2, 3, 4],
+          startTime: '00:00',
+          endTime: '20:00'
         }, {
-          dow: [5],
-          start: '10:00',
-          end: '16:00'
+          daysOfWeek: [5],
+          startTime: '10:00',
+          endTime: '16:00'
         }
       ],
       active: false
@@ -122,15 +122,15 @@ const config = {
       photo: '',
       businessHours: [
         {
-          dow: [
+          daysOfWeek: [
             0, 1, 2, 3, 4
           ],
-          start: '00:00',
-          end: '20:00'
+          startTime: '00:00',
+          endTime: '20:00'
         }, {
-          dow: [5],
-          start: '10:00',
-          end: '16:00'
+          daysOfWeek: [5],
+          startTime: '10:00',
+          endTime: '16:00'
         }
       ],
       active: ''
@@ -143,8 +143,8 @@ const config = {
   calendar: {
     // businessHours: [
     //   {
-    //     dow: [0, 1, 2, 3, 4, 5, 6],
-    //     start: '12:00',
+    //     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+    //     startTime: '12:00',
     //     end: '16:00'
     //   }
     // ],

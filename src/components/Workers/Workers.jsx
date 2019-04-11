@@ -14,15 +14,22 @@ class Workers extends Component {
     }
     return (
       <div className='swiper-background'>
-      <div id='workers' className='swiper-container' style={config.calendar.isRTL ? { 'direction': 'rtl' } : { 'direction': 'ltr' }}>
-        <div className='swiper-wrapper'>
-          <Swiper {...params}>
-            {config.workers.map(worker => <SingleWorker key={worker.id} id={worker.id} name={worker.name} photo={worker.photo} />)}
-          </Swiper>
-        </div>
-        <div className='swiper-button-next' />
-        <div className='swiper-button-prev' />
-      </div >
+        <div id='workers' className='swiper-container' style={config.calendar.isRTL ? { 'direction': 'rtl' } : { 'direction': 'ltr' }}>
+          <div className='swiper-wrapper'>
+            <Swiper {...params}>
+              {config.workers.map(worker => (
+                <SingleWorker
+                  key={worker.id}
+                  id={worker.id}
+                  name={worker.name}
+                  photo={worker.photo}
+                  changeWorker={this.props.changeWorker} />))
+              }
+            </Swiper>
+          </div>
+          <div className='swiper-button-next' />
+          <div className='swiper-button-prev' />
+        </div >
       </div>
     )
   }

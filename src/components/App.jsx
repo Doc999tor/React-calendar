@@ -9,9 +9,14 @@ import './App.styl'
 class App extends Component {
   calendarComponentRef = React.createRef()
   state = {
-    defaultView: config.calendar.defaultView
+    defaultView: config.calendar.defaultView,
+    active: false
   }
   componentDidMount() {
+    let calendarApi = this.calendarComponentRef.current.getApi()
+    let activeWorker = config.workers.find(worker => worker.id == config.activeWorkerId)
+    let businessHours = activeWorker.businessHours
+    calendarApi.setOption('businessHours', activeWorker.businessHours)
     this.props.dispatch(getEvents())
   }
   handleChangeView = () => {
@@ -29,7 +34,6 @@ class App extends Component {
   handleToday = () => {
     let calendarApi = this.calendarComponentRef.current.getApi()
     calendarApi.today()
-    // console.log()
   }
   handleNext = () => {
     let calendarApi = this.calendarComponentRef.current.getApi()
@@ -39,11 +43,18 @@ class App extends Component {
     let calendarApi = this.calendarComponentRef.current.getApi()
     calendarApi.prev()
   }
+  handleChangeWorker = id => {
+    config.activeWorkerId = id
+    let chosenWorker = config.workers.find(worker => worker.id == id)
+    let calendarApi = this.calendarComponentRef.current.getApi()
+    calendarApi.setOption('businessHours', chosenWorker.businessHours)
+    this.setState({ active: true })
+  }
   render () {
     return (
       <div className='app'>
         <Header changeView={this.handleChangeView} today={this.handleToday} next={this.handleNext} prev={this.handlePrev} />
-        <Workers />
+        <Workers changeWorker={this.handleChangeWorker} />
         <div id='swiper-calendar'>
           {/* <Swiper initialSlide={1} > */}
             {/* <div> */}
