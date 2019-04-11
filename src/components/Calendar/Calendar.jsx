@@ -12,7 +12,7 @@ import '@fullcalendar/list/main.css'
 export default class DemoCalendar extends Component {
   render () {
     return (
-      <FullCalendar defaultView={config.calendar.defaultView} plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+      <FullCalendar defaultView={this.props.defaultView} plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
         events={this.props.events}
         ref={this.props.refName}
         editable
