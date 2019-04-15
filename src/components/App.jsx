@@ -31,7 +31,7 @@ class App extends Component {
     let start = moment(calendarApi.state.dateProfile.currentRange.start).format('YYYY-MM-DD')
     let end = moment(calendarApi.state.dateProfile.currentRange.end).format('YYYY-MM-DD')
     let isBetween = moment(curDay).isBetween(moment(start), moment(end))
-    if (calendarApi.view.type === 'timeGridDay') {
+    if (calendarApi.view.type === 'daily') {
       this.setState({ view: config.translations.daily, todayBtn: currentDay ? false : true })
       return (
         <React.Fragment>
@@ -39,7 +39,7 @@ class App extends Component {
           <span className={'current_date_field' + (currentDay ? ' for_today' : '')}>{moment(title).format('ddd, MMM DD')}</span>
         </React.Fragment>
       )
-    } else if (calendarApi.view.type === 'timeGridWeek') {
+    } else if (calendarApi.view.type === 'weekly') {
       this.setState({ view: config.translations.weekly, todayBtn: isBetween ? false : true })
       return (
         <React.Fragment>
@@ -47,7 +47,7 @@ class App extends Component {
           {isBetween && <span className='this_week'>{config.translations.thisWeek}</span>}
         </React.Fragment>
       )
-    } else if (calendarApi.view.type === 'dayGridMonth') {
+    } else if (calendarApi.view.type === 'monthly') {
       this.setState({ view: config.translations.monthly, todayBtn: currentMonth ? false : true })
       return (
         <React.Fragment>
@@ -55,7 +55,7 @@ class App extends Component {
           <span className='this_week'>{moment(title).format('YYYY')}</span>
         </React.Fragment>
       )
-    } else if (calendarApi.view.type === 'listWeek') {
+    } else if (calendarApi.view.type === 'agenda') {
       this.setState({ view: config.translations.agenda, todayBtn: currentDay ? false : true })
       return (
         <React.Fragment>
@@ -74,16 +74,17 @@ class App extends Component {
       notFormattedDate: date
     })
   }
+  // dayGridMonth, timeGridWeek, timeGridDay, listWeek
   handleChangeView = () => {
     let calendarApi = this.calendarComponentRef.current.getApi()
-    if (calendarApi.view.type === 'timeGridDay') {
-      calendarApi.changeView('timeGridWeek')
-    } else if (calendarApi.view.type === 'timeGridWeek') {
-      calendarApi.changeView('dayGridMonth')
-    } else if (calendarApi.view.type === 'dayGridMonth') {
-      calendarApi.changeView('listWeek')
-    } else if (calendarApi.view.type === 'listWeek') {
-      calendarApi.changeView('timeGridDay')
+    if (calendarApi.view.type === 'daily') {
+      calendarApi.changeView('weekly')
+    } else if (calendarApi.view.type === 'weekly') {
+      calendarApi.changeView('monthly')
+    } else if (calendarApi.view.type === 'monthly') {
+      calendarApi.changeView('agenda')
+    } else if (calendarApi.view.type === 'agenda') {
+      calendarApi.changeView('daily')
     }
     this.getCalendarDate()
   }
@@ -124,7 +125,7 @@ class App extends Component {
           prev={this.handlePrev} />
         <Workers changeWorker={this.handleChangeWorker} />
         <div id='swiper-calendar'>
-          {/* <Swiper initialSlide={1} > */}
+          {/* <Swiper initialSlide={1} loop> */}
             {/* <div> */}
             <DemoCalendar defaultView={this.state.defaultView} events={this.props.events} refName={this.calendarComponentRef} />
             {/* </div> */}

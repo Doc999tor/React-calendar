@@ -14,8 +14,9 @@ export default class Switch extends React.Component {
   }
   componentWillReceiveProps = nextProps => this.setState({on: nextProps.on})
   render () {
-    const className = ['switch', this.props.className, (this.state.on ? 'on ' : ''), (this.props.enabled ? '' : 'disabled ')].join(' ')
-    return (<div className={className} onClick={this.handleClick}><div className='switch-toggle' children={this.props.children} /></div>)
+    const className = ['switch', this.props.className, (this.state.on ? 'on ' : ''),
+      (this.props.enabled ? '' : 'disabled '), (config.isRTL ? 'switch-right' : 'switch-left')].join(' ')
+    return (<div className={className} onClick={this.handleClick}><div className={'switch-toggle ' + (config.isRTL ? 'right' : 'left')} children={this.props.children} /></div>)
   }
 }
 Switch.propTypes = {

@@ -1,1 +1,4 @@
-export default d => moment(d).format('ddd, DD MMM, Y')
+export default date => {
+  moment.locale(config.locale)
+  return moment(date).format('MMM, DD ddd, YYYY')
+}

@@ -141,198 +141,38 @@ const config = {
     longSwipesMs: 110 // Minimal duration (in ms) to trigger swipe to next/previous slide during long swipes
   },
   calendar: {
-    // businessHours: [
-    //   {
-    //     daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
-    //     startTime: '12:00',
-    //     end: '16:00'
-    //   }
-    // ],
     events: [
-      // {
-      //   address: "אילת, מלון עציון, 62",
-      //   birthdate: "01-01",
-      //   client_id: null,
-      //   end: "2018-01-01 13:45",
-      //   id: 61,
-      //   durationEditable: true,
-      //   is_new_client: true,
-      //   has_debt: true,
-      //   name: "",
-      //   note: "VxorIZ HuRQC WxwSV hW Pfc  rsaZ MHudyVsrpK  PXvlISiJ ZySwTMGd CFSDVGPKO FaFPxx",
-      //   off_time: '',
-      //   phone: "05-86490187",
-      //   profile_picture: "120.jpg",
-      //   services: [
-      //     {id: 21, name: "ZYneaZI", color: "", service_count: 1},
-      //     {id: 26, name: "zlapEUBG rDKMftlJcz AgXCGUtO ZxLvGBXx dm", color: "#8441bd", service_count: 3},
-      //     {id: 2, name: "dVFEWsV mCfHfTqj kjHt TWjyFqVsmg", color: "#fa11f0", service_count: 2}
-      //   ],
-      //   start: "2018-01-01 12:30",
-      //   total_price: 400
-      // },
-      // {
-      //   address: "22 ,xorIZ HuRQC WxwSV hW Pfc  rsaZ MHudyVsrpK",
-      //   birthdate: "01-01",
-      //   client_id: 12,
-      //   end: "2018-01-01 12:30",
-      //   id: 613,
-      //   // durationEditable: true,
-      //   is_new_client: true,
-      //   has_debt: true,
-      //   name: "QwrUlf",
-      //   note: "eEAT Zpyvh eYAVxorIZ HuRQC WxwSV hW Pfc  rsaZ MHudyVsrpK  PXvlISiJ ZySwTMGd CFSDVGPKO FaFPxx",
-      //   off_time: '',
-      //   phone: "05-86490187",
-      //   profile_picture: "120.jpg",
-      //   services: [
-      //     {id: 211, name: "ZYneazi", color: "", service_count: 1},
-      //     {id: 261, name: "zlapEUBG rDKMftlJcz AgXCGUtO ZxLvGBXx dm", color: "#8441bd", service_count: 3},
-      //     {id: 21, name: "dVFEWsV mCfHfTqj kjHt TWjyFqVsmg", color: "#fa11f0", service_count: 2}
-      //   ],
-      //   start: "2018-01-01 11:30",
-      //   total_price: 900
-      // },
-      // {
-      //   address: "222 ,asdasdasd rsaZ MHudyVsrpK",
-      //   birthdate: "01-01",
-      //   client_id: 121,
-      //   end: "2018-01-01 11:30",
-      //   id: 6132,
-      //   // durationEditable: true,
-      //   is_new_client: true,
-      //   has_debt: true,
-      //   name: "QwrUlf",
-      //   note: "asdasdasd asdasdasd asdasda sdasda asdaW",
-      //   off_time: '',
-      //   phone: "05-86490187",
-      //   profile_picture: "120.jpg",
-      //   services: [
-      //     {id: 211, name: "ZYneaZI", color: "", service_count: 1},
-      //     {id: 261, name: "zlapEUBG rDKMftlJcz AgXCGUtO ZxLvGBXx dm", color: "#8441bd", service_count: 3},
-      //     {id: 21, name: "dVFEWsV mCfHfTqj kjHt TWjyFqVsmg", color: "#fa11f0", service_count: 2}
-      //   ],
-      //   start: "2018-01-01 09:30",
-      //   total_price: 900
-      // },
-      // {
-      //   address: "333 ,asdasdasd rsaZ MHudyVsrpK",
-      //   birthdate: "01-01",
-      //   client_id: 1211,
-      //   end: "2018-01-01 12:30",
-      //   id: 61321,
-      //   // durationEditable: true,
-      //   is_new_client: true,
-      //   has_debt: true,
-      //   name: "asdaRE",
-      //   note: "asdasdasd asdasdasd asdasda sdasda asdaW",
-      //   off_time: 'meeting',
-      //   phone: "05-86490187",
-      //   profile_picture: "120.jpg",
-      //   services: [
-      //     {id: 211, name: "ZYneaZI", color: "#7FFF00", service_count: 1},
-      //     {id: 261, name: "zlapEUBG rDKMftlJcz AgXCGUtO ZxLvGBXx dm", color: "#8441bd", service_count: 3},
-      //     {id: 21, name: "dVFEWsV mCfHfTqj kjHt TWjyFqVsmg", color: "#fa11f0", service_count: 2}
-      //   ],
-      //   start: "2018-01-01 09:30",
-      //   total_price: 900
-      // },
-      // {
-      //   address: "333 ,asdasdasd rsaZ MHudyVsrpK",
-      //   birthdate: "01-01",
-      //   client_id: 51211,
-      //   end: "2018-01-01 11:30",
-      //   id: 561321,
-      //   // durationEditable: true,
-      //   is_new_client: true,
-      //   has_debt: true,
-      //   name: "asdaRE",
-      //   note: "asdasdasd asdasdasd asdasda sdasda asdaW",
-      //   off_time: 'meeting',
-      //   phone: "05-86490187",
-      //   profile_picture: "120.jpg",
-      //   services: [
-      //     {id: 211, name: "ZYneaZI", color: "#8441bd", service_count: 1},
-      //     {id: 261, name: "zlapEUBG rDKMftlJcz AgXCGUtO ZxLvGBXx dm", color: "#8441bd", service_count: 3},
-      //     {id: 21, name: "dVFEWsV mCfHfTqj kjHt TWjyFqVsmg", color: "#fa11f0", service_count: 2}
-      //   ],
-      //   start: "2018-01-01 09:30",
-      //   total_price: 900
-      // },
-      // {
-      //   address: "בת ים, ויצמן, 18",
-      //   birthdate: "01-01",
-      //   client_id: 79,
-      //   end: "2018-01-01 14:00",
-      //   id: 800,
-      //   has_debt: true,
-      //   is_new_client: true,
-      //   durationEditable: true,
-      //   name: "kAWPCQiV bgUrc",
-      //   note: "eEAT Zpyvh eYAVxorIZ HuRQC WxwSV hW Pfc  rsaZ MHudyVsrpK  PXvlISiJ ZySwTMGd CFSDVGPKO FaFPxx",
-      //   off_time: 'break',
-      //   phone: "06-49686277",
-      //   profile_picture: "79.jpg",
-      //   services: [
-      //     {id: 19, name: "KY es tXCWUVvJbw", color: "#00FFFF", service_count: 3},
-      //     {id: 6, name: "VgJCY Tdjypuzqcs", color: "#6fc267", service_count: 1}
-      //   ],
-      //   start: "2018-01-01 13:00",
-      //   total_price: 300
-      // },
-      // {
-      //   address: "בת ים, ויצמן, 18",
-      //   birthdate: "01-01",
-      //   client_id: 729,
-      //   end: "2018-01-01 12:45",
-      //   id: 8200,
-      //   has_debt: true,
-      //   is_new_client: true,
-      //   durationEditable: true,
-      //   name: "kAWPCQiV bgUrc",
-      //   note: "eEAT Zpyvh eYAVxorIZ HuRQC WxwSV hW Pfc  rsaZ MHudyVsrpK  PXvlISiJ ZySwTMGd CFSDVGPKO FaFPxx",
-      //   off_time: 'break',
-      //   phone: "06-49686277",
-      //   profile_picture: "79.jpg",
-      //   services: [
-      //     {id: 19, name: "KY es tXCWUVvJbw", color: "#00FFFF", service_count: 3},
-      //     {id: 6, name: "VgJCY Tdjypuzqcs", color: "#6fc267", service_count: 1}
-      //   ],
-      //   start: "2018-01-01 12:30",
-      //   total_price: 300
-      // }
+  
     ],
     eventLongPressDelay: 1000,
     selectLongPressDelay: 1000,
-    defaultView: 'timeGridDay', // dayGridMonth, timeGridWeek, timeGridDay, listWeek
-    defaultDate: moment(),
-    // defaultDate: moment('2018-01-01'),
+    defaultView: 'daily', // agenda, daily, weekly, monthly
+    defaultDate: moment().format('YYYY-MM-DD'),
     // defaultDate: moment(window.location.pathname.match(new RegExp('\\d{4}\\-\\d{1,2}\\-\\d{1,2}', 'g'))[0]).isValid() ? moment(window.location.pathname.match(new RegExp('\\d{4}\\-\\d{1,2}\\-\\d{1,2}', 'g'))[0]) : moment('2018-01-01'),
     eventOverlap: false,
     slotEventOverlap: false,
     showNonCurrentDates: false,
     header: {
       left: false,
-      center: 'title',
+      center: false,
       right: false
     },
     views: {
-      agendaDay: {
-        displayEventEnd: false,
-        displayEventTime: true
+      agenda: {
+        type: 'dayGrid'
       },
       daily: {
-        type: 'agenda'
+        type: 'timeGrid'
       },
-      agendaFourDay: {
-        type: 'agenda',
-        columnFormat: 'ddd D',
+      weekly: {
+        type: 'timeGrid',
         duration: {
           days: 4
-        },
-        slotLabelFormat: 'HH:mm'
+        }
       },
-      month: {
+      monthly: {
+        type: 'dayGridMonth',
+        fixedWeekCount: false,
         eventLimit: 4,
         eventLimitText: 'more',
         editable: false,
@@ -345,14 +185,10 @@ const config = {
     droppable: true,
     dragScroll: true,
     allDaySlot: false,
-    timeZone: '',
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     isRTL: true,
     nowIndicator: true,
     firstDay: 0,
-    countQueue: 3,
-    slotLabelFormat: [
-      'MMMM YYYY', 'HH:mm'
-    ],
     slotDuration: '00:15:00', // The frequency for displaying time slots
     slotLabelInterval: '00:15', // The frequency that the time slots should be labelled with text
     minTime: '08:00',

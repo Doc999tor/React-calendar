@@ -1,13 +1,28 @@
 import React, { Component } from 'react'
+import { Menu } from 'project-components'
 import './Header.styl'
 
 export default class Header extends Component {
+  state = {
+    isActive: false
+  }
+  menuOnOff = () => {
+    this.setState(state => ({
+      isActive: !state.isActive
+    }))
+    document.querySelector('body').classList.toggle('no-scroll')
+  }
+
+  closeMenu = () => {
+    this.setState({ isActive: false })
+    document.querySelector('body').classList.remove('no-scroll')
+  }
   render () {
     const today = this.props.todayBtn
     return (
       <div id='header' style={config.calendar.isRTL ? {'direction': 'rtl'} : {'direction': 'ltr'}}>
         <div className={'menu_refresh ' + (config.calendar.isRTL ? 'menu_rtl' : 'menu_ltr')}>
-          <button className='more_wrap'>
+          <button onClick={this.menuOnOff} className='more_wrap'>
             <img src={config.urls.staticImg + '/ic_menu.svg'} />
           </button>
           <button id='refresh_button'>
@@ -35,6 +50,7 @@ export default class Header extends Component {
             {this.props.view}
           </button>
         </div>
+        {this.state.isActive && <Menu closeMenu={this.closeMenu} />}
       </div>
     )
   }

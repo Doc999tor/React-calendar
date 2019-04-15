@@ -12,17 +12,12 @@ import '@fullcalendar/list/main.css'
 export default class DemoCalendar extends Component {
   render () {
     return (
-      <FullCalendar defaultView={this.props.defaultView} plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+      <FullCalendar
+        {...config.calendar }
+        defaultView={this.props.defaultView}
+        plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
         events={this.props.events}
         ref={this.props.refName}
-        editable
-        droppable
-        height='parent'
-        // header={{
-        //   left: 'prev,next today',
-        //   center: 'title',
-        //   right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-        // }}
       />
     )
   }

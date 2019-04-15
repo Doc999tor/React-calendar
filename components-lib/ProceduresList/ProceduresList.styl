@@ -1,46 +1,114 @@
 #procedures_list
-  .search-wrap
-    float right
-    display inline-block
-    position relative
-    width 100%
-    padding 20px 0
-    .search-icon
-      position absolute
-      padding 8px 8%
-      img
-        width 25px
-        height 25px
-    input
-      display block
-      width 90%
-      margin 0 auto
-      height 40px
-      border-radius 20px
-      border 2px solid deepskyblue
-      padding 10px 10px 10px 10%
-      color deepskyblue
-      &:focus
-        outline none
+  width 100%
+  display flex
+  flex-direction column
+  justify-content center
+  align-items center
+  .category:first-child
+    border none
   .category
-    border-bottom 1px solid gray
-    h1
-      display inline-block
-      padding 20px 10px
+    display flex
+    height 4rem
+    border-top 1px solid #dedeff
+    align-items center
+    -webkit-padding-start 1rem  
+    -moz-padding-start 1rem
+    padding-inline-start 1rem
+    .category_name
+    .category_count
+      font-size 16px
+    .category_count
+      -webkit-margin-start 0.6rem  
+      -moz-margin-start 0.6rem
+      margin-inline-start 0.6rem
+      flex-grow 1
     .icon_wrap
-      padding 12px 0px
-      height 40px
-      float right
-      width 40px
-      img
-        width 40px
-        height 40px
+      display flex
+      align-items center
+      justify-content center
+      .ltr-arrow
+      .rtl-arrow
+        width 30px
+        height 30px
+      .rtl-arrow
         transform scale(-1, -1)
+  .procedures-title
+    margin 0
+    padding 0.8rem 1.5rem 0
+    width 100%
+    text-align end
+    font-size 16px
+    font-weight 500
+    color #ffffff
+  .search-strip
+    display flex
+    align-items center
+    justify-content center
+    padding 1rem 0
+    .search-wrap
+      display flex
+      align-items center
+      justify-content space-between
+      border-radius 1.5rem
+      height 3rem
+      width 19.5rem
+      opacity 0.85
+      background-color #ffffff
+      .search-input
+        width 82%
+        -webkit-margin-start 0.5rem  
+        -moz-margin-start 0.5rem
+        margin-inline-start 0.5rem
+        text-indent 1rem
+        border none
+        font-size 14px
+        color #bfafe0
+        &:active
+        &:focus
+          outline none
+          border none
+      .search-img
+        -webkit-margin-end 1.5rem  
+        -moz-margin-end 1.5rem
+        margin-inline-end 1.5rem
+  .edditional-info
+    display flex
+  .procedure-wrap
+    -webkit-padding-end 0.7rem  
+    -moz-padding-end 0.7rem
+    padding-inline-end 0.7rem
+    border-radius 8px
+    overflow-y auto
+    height 27rem
+    width 96%
+    background-color white
+  .wrap-service:first-child
+    border-top none
+  .wrap-service
+    border-top 1px solid #dedeff
   .service
-    border-bottom 1px solid gray
-    padding 15px 10px
-    h1
+    height 4rem
+    display flex
+    padding-top 1rem
+    padding-bottom 0.5rem
+    flex-direction column
+    align-items start
+    justify-content space-between
+    -webkit-border-start 6px solid 
+    -moz-border-start 6px solid 
+    border-inline-start 6px solid
+    -webkit-padding-start 0.7rem  
+    -moz-padding-start 0.7rem
+    padding-inline-start 0.7rem
+    h2
+      margin 0
       font-size 18px
+    .name
+      opacity 0.87
+      font-weight normal
+      font-size 16px
+      line-height 0.75
+      color #222222
     .add_wrap
       display inline-block
       width 10%
@@ -48,28 +116,19 @@
       img
         width 25px
         height 25px
-    .color
-      margin 6px
-      display inline-block
-      width 12px
-      height 12px
-      border-radius 50%
-    .name
-      position relative
-      top -2px
-      width 46%
-      display inline-block
-      height 20px
-      overflow hidden
-      text-overflow ellipsis
-      padding-bottom 2px
-    .duration
-      position relative
-      top -6px
-      width 17%
-      display inline-block
-    .price
-      position relative
-      top -6px
-      width 17%
-      display inline-block
+  .dur-wrap
+    -webkit-margin-end 0.8rem  
+    -moz-margin-end 0.8rem
+    margin-inline-end 0.8rem
+    img
+      opacity 0.5
+  .dur-wrap
+  .price-wrap
+    display flex
+    align-items baseline
+    font-size 12px
+    font-weight 300
+    img
+      -webkit-margin-end 0.3rem  
+      -moz-margin-end 0.3rem
+      margin-inline-end 0.3rem

@@ -22,10 +22,11 @@ export default class Modal extends React.Component {
     return (
       <div>
         <div id={this.props.show ? 'modal-background' : this.state.flag ? 'modal-background' : 'hidden'}
-          className={this.state.animation ? 'fade-background' : ''} onClick={this.props.onHide} />
-        <div id={this.props.show ? 'modal-wrapper' : this.state.flag ? 'modal-wrapper' : 'hidden'}>
-          <div id='modal-content' className={this.state.animation ? 'fade-content' : ''} onClick={e => e.stopPropagation()}>
-            {this.props.children}
+          className={this.state.animation ? 'fade-background' : ''} onClick={this.props.onHide} >
+          <div id={this.props.show ? 'modal-wrapper' : this.state.flag ? 'modal-wrapper' : 'hidden'}>
+            <div id='modal-content' className={this.state.animation ? 'fade-content' : ''} onClick={e => e.stopPropagation()}>
+              {this.props.children}
+            </div>
           </div>
         </div>
       </div>

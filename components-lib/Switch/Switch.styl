@@ -6,7 +6,9 @@
     display inline-block
     &.on
         background green
-        .switch-toggle
+        .right
+            right 23px
+        .left
             left 23px
     &.disabled
         cursor not-allowed
@@ -15,8 +17,9 @@
     box-shadow 1px 1px 1px #ccc
     width 25px
     height 24px
+    right 0
     left 0
     border-radius 12px
     background white
     position relative
-    transition left 0.2s ease-in-out
+    transition 0.2s ease-in-out

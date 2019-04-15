@@ -1,1 +1,1 @@
-export default (c, u) => c !== '0' && c !== 0 ? moment.utc().add(c, u).format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]') : undefined
+export default (c, u) => c !== '0' && c !== 0 ? moment().add(c, u).format('YYYY-MM-DD HH:mm:ss') : moment().format('YYYY-MM-DD HH:mm:ss')

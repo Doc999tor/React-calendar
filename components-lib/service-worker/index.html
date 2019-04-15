@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+		<!-- service-worker: need to call the manifest head tag! -->
+    	<link rel='manifest' href='manifest.webmanifest'>
+		
+		<base href='/'>
+        <meta name='viewport' content='width=device-width'>
+        <meta charset='UTF-8'>
+        <title>Calendar</title>
+        <link href='./dist/main.bundle.css' rel='stylesheet'/>
+        <link href='./dist/swiper.min.css' rel='stylesheet'/>
+        <link href='./dist/fullcalendar.min.css' rel='stylesheet'/>
+    </head>
+    <body>
+        <script src='./components-lib/lib/moment.min.js'></script>
+        <script src='./dist/jquery.min.js'></script>
+        <script src='./dist/swiper.jquery.min.js'></script>
+        <script src='./config.js' charset='utf-8'></script>
+        <script src='./dist/fullcalendar.min.js'></script>
+        <script src='./dist/hammer.min.js'></script>
+        <script>
+            (function(factory) {
+	    if (typeof define === 'function' && define.amd) {
+	        define(['jquery', 'hammerjs'], factory);
+	    } else if (typeof exports === 'object') {
+	        factory(require('jquery'), require('hammerjs'));
+	    } else {
+	        factory(jQuery, Hammer);
+	    }
+	}(function($, Hammer) {
+	    function hammerify(el, options) {
+	        var $el = $(el);
+	        if(!$el.data('hammer')) {
+	            $el.data('hammer', new Hammer($el[0], options));
+	        }
+	    }
+	    $.fn.hammer = function(options) {
+	        return this.each(function() {
+	            hammerify(this, options);
+	        });
+	    };
+
+	    // extend the emit method to also trigger jQuery events
+	    Hammer.Manager.prototype.emit = (function(originalEmit) {
+	        return function(type, data) {
+	            originalEmit.call(this, type, data);
+	            $(this.element).trigger({
+	                type: type,
+	                gesture: data
+	            });
+	        };
+	    })(Hammer.Manager.prototype.emit);
+	}));
+        </script>
+        <script src='./dist/main.bundle.js'></script>
+        <div id='calendar'>
+        </div>
+    </body>
+</html>
