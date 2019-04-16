@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import DemoCalendar from './Calendar/Calendar.jsx'
 import Queue from './Popup/Queue/Queue.jsx'
+import OffTime from './Popup/OffTime/OffTime.jsx'
 import Header from './Header/Header.jsx'
 import Workers from './Workers/Workers.jsx'
 import { connect } from 'react-redux'
@@ -84,7 +85,8 @@ class App extends Component {
   }
   closePopup = () => {
     this.setState({
-      showpopup: false
+      showpopup: false,
+      info: ''
     })
   }
   // dayGridMonth, timeGridWeek, timeGridDay, listWeek
@@ -125,7 +127,7 @@ class App extends Component {
     this.getCalendarDate()
   }
   render () {
-    // console.log(this.state.calendarDate)
+    // console.log(this.state.info && this.state.info.event)
     return (
       <div className='app'>
         <Header
@@ -150,7 +152,9 @@ class App extends Component {
             {/* </div> */}
           {/* </Swiper> */}
         </div>
-        {this.state.showpopup && <Queue info={this.state.info} close={this.closePopup} />}
+        {this.state.showpopup && (this.state.info.event?.extendedProps?.off_time
+          ? <OffTime info={this.state.info} close={this.closePopup} />
+          : <Queue info={this.state.info} close={this.closePopup} />)}
       </div>
     )
   }
