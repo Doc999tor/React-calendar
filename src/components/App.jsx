@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import DemoCalendar from './Calendar/Calendar.jsx'
+import Queue from './Popup/Queue/Queue.jsx'
 import Header from './Header/Header.jsx'
 import Workers from './Workers/Workers.jsx'
 import { connect } from 'react-redux'
@@ -22,6 +23,13 @@ class App extends Component {
     calendarApi.setOption('businessHours', businessHours)
     this.props.dispatch(getEvents())
     this.getCalendarDate()
+  }
+  handleEventClick = info => {
+    // console.log(info)
+    this.setState({
+      info,
+      showpopup: true
+    })
   }
   renderTime = title => {
     let calendarApi = this.calendarComponentRef.current.getApi()
@@ -72,6 +80,11 @@ class App extends Component {
     this.setState({
       calendarDate: this.renderTime(date),
       notFormattedDate: date
+    })
+  }
+  closePopup = () => {
+    this.setState({
+      showpopup: false
     })
   }
   // dayGridMonth, timeGridWeek, timeGridDay, listWeek
@@ -127,7 +140,7 @@ class App extends Component {
         <div id='swiper-calendar'>
           {/* <Swiper initialSlide={1} loop> */}
             {/* <div> */}
-            <DemoCalendar defaultView={this.state.defaultView} events={this.props.events} refName={this.calendarComponentRef} />
+          <DemoCalendar defaultView={this.state.defaultView} events={this.props.events} refName={this.calendarComponentRef} eventClick={this.handleEventClick}/>
             {/* </div> */}
             {/* <div> */}
               {/* <DemoCalendar defaultView={this.state.defaultView} events={this.props.events} refName={this.calendarComponentRef} /> */}
@@ -137,6 +150,7 @@ class App extends Component {
             {/* </div> */}
           {/* </Swiper> */}
         </div>
+        {this.state.showpopup && <Queue info={this.state.info} close={this.closePopup} />}
       </div>
     )
   }
