@@ -1,37 +1,27 @@
 import React, { Component } from 'react'
-import DemoCalendar from './Calendar/Calendar.jsx'
-import Queue from './Popup/Queue/Queue.jsx'
-import OffTime from './Popup/OffTime/OffTime.jsx'
+import Calendar from './Calendar/index.jsx'
 import Header from './Header/Header.jsx'
 import Workers from './Workers/Workers.jsx'
-import { connect } from 'react-redux'
-import { Swiper } from 'project-components'
-import { getEvents } from '.././store/events/actions'
 import './App.styl'
+
 class App extends Component {
   calendarComponentRef = React.createRef()
   state = {
-    defaultView: config.calendar.defaultView,
     active: false,
     calendarDate: '',
     view: '',
     todayBtn: true
   }
   componentDidMount () {
+    // TODO: Save to redux store calendar API method
     let calendarApi = this.calendarComponentRef.current.getApi()
     let activeWorker = config.workers.find(worker => worker.id == config.activeWorkerId)
     let businessHours = activeWorker.businessHours
     calendarApi.setOption('businessHours', businessHours)
-    this.props.dispatch(getEvents())
+
     this.getCalendarDate()
   }
-  handleEventClick = info => {
-    // console.log(info)
-    this.setState({
-      info,
-      showpopup: true
-    })
-  }
+
   renderTime = title => {
     let calendarApi = this.calendarComponentRef.current.getApi()
     let currentDay = moment().format('YYYY-MM-DD') === moment(title).format('YYYY-MM-DD')
@@ -83,12 +73,7 @@ class App extends Component {
       notFormattedDate: date
     })
   }
-  closePopup = () => {
-    this.setState({
-      showpopup: false,
-      info: ''
-    })
-  }
+
   // dayGridMonth, timeGridWeek, timeGridDay, listWeek
   handleChangeView = () => {
     let calendarApi = this.calendarComponentRef.current.getApi()
@@ -126,6 +111,7 @@ class App extends Component {
     this.setState({ active: true })
     this.getCalendarDate()
   }
+
   render () {
     // console.log(this.state.info && this.state.info.event)
     return (
@@ -139,29 +125,10 @@ class App extends Component {
           next={this.handleNext}
           prev={this.handlePrev} />
         <Workers changeWorker={this.handleChangeWorker} />
-        <div id='swiper-calendar'>
-          {/* <Swiper initialSlide={1} loop> */}
-            {/* <div> */}
-          <DemoCalendar defaultView={this.state.defaultView} events={this.props.events} refName={this.calendarComponentRef} eventClick={this.handleEventClick}/>
-            {/* </div> */}
-            {/* <div> */}
-              {/* <DemoCalendar defaultView={this.state.defaultView} events={this.props.events} refName={this.calendarComponentRef} /> */}
-            {/* </div> */}
-            {/* <div> */}
-              {/* <DemoCalendar defaultView={this.state.defaultView} events={this.props.events} refName={this.calendarComponentRef} /> */}
-            {/* </div> */}
-          {/* </Swiper> */}
-        </div>
-        {this.state.showpopup && (this.state.info.event?.extendedProps?.off_time
-          ? <OffTime info={this.state.info} close={this.closePopup} />
-          : <Queue info={this.state.info} close={this.closePopup} />)}
+        <Calendar calendarComponentRef={this.calendarComponentRef} />
       </div>
     )
   }
 }
 
-const mapStateToProps = state => ({
-  eventsFetching: state.events.eventsFetching,
-  events: state.events.events
-})
-export default connect(mapStateToProps)(App)
+export default App

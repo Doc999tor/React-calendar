@@ -16,9 +16,8 @@ export default class DemoCalendar extends Component {
         {...config.calendar}
         defaultView={this.props.defaultView}
         plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
-        events={this.props.events}
         ref={this.props.refName}
-        eventClick={this.props.eventClick}
+        {...this.props}
       />
     )
   }

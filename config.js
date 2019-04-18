@@ -149,7 +149,7 @@ const config = {
     defaultView: 'daily', // agenda, daily, weekly, monthly
     defaultDate: moment().format('YYYY-MM-DD'),
     // defaultDate: moment(window.location.pathname.match(new RegExp('\\d{4}\\-\\d{1,2}\\-\\d{1,2}', 'g'))[0]).isValid() ? moment(window.location.pathname.match(new RegExp('\\d{4}\\-\\d{1,2}\\-\\d{1,2}', 'g'))[0]) : moment('2018-01-01'),
-    eventOverlap: false,
+    eventOverlap: true,
     slotEventOverlap: false,
     showNonCurrentDates: false,
     header: {
