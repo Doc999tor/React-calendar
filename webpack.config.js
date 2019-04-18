@@ -51,5 +51,6 @@ module.exports = {
   ],
   resolve: {
     alias: alias
-  }
+  },
+  devtool: "source-map"
 }
