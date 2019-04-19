@@ -16,6 +16,7 @@ export default class Queue extends Component {
             </div>
             <div className='client-page'>
               <div className='client-info'>
+                <span className='hour'>{moment(event.start).format('YYYY-MM-DD')}</span>
                 <div className='client-icons'>
                   {extendedProps.client_id && <div className='wrap-icons'>
                     {/* {event.birthdate && bday(event, view.dateProfile.date)} */}

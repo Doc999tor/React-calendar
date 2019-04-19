@@ -14,12 +14,12 @@ class App extends Component {
   }
   componentDidMount () {
     // TODO: Save to redux store calendar API method
-    let calendarApi = this.calendarComponentRef.current.getApi()
-    let activeWorker = config.workers.find(worker => worker.id == config.activeWorkerId)
-    let businessHours = activeWorker.businessHours
-    calendarApi.setOption('businessHours', businessHours)
+    // let calendarApi = this.calendarComponentRef.current.getApi()
+    // let activeWorker = config.workers.find(worker => worker.id == config.activeWorkerId)
+    // let businessHours = activeWorker.businessHours
+    // calendarApi.setOption('businessHours', businessHours)
 
-    this.getCalendarDate()
+    // this.getCalendarDate()
   }
 
   renderTime = title => {
@@ -116,14 +116,14 @@ class App extends Component {
     // console.log(this.state.info && this.state.info.event)
     return (
       <div className='app'>
-        <Header
+        {/* <Header
           todayBtn={this.state.todayBtn}
           changeView={this.handleChangeView}
           title={this.state.calendarDate}
           today={this.handleToday}
           view={this.state.view}
           next={this.handleNext}
-          prev={this.handlePrev} />
+          prev={this.handlePrev} /> */}
         <Workers changeWorker={this.handleChangeWorker} />
         <Calendar calendarComponentRef={this.calendarComponentRef} />
       </div>
