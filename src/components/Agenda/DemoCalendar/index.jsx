@@ -18,6 +18,7 @@ export default class DemoCalendar extends Component {
         defaultView={this.props.defaultView}
         plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
         ref={this.props.refName}
+        columnHeaderText={date => moment(date).format('dddd YYYY-MM-DD')}
         {...this.props}
       />
     )
