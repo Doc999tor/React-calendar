@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import Calendar from './Calendar/index.jsx'
+import Agenda from './Agenda/index.jsx'
+import Weekly from './Weekly/index.jsx'
+import Monthly from './Monthly/index.jsx'
 import Header from './Header/Header.jsx'
 import Workers from './Workers/Workers.jsx'
 import './App.styl'
@@ -10,6 +13,7 @@ class App extends Component {
     active: false,
     calendarDate: '',
     view: '',
+    viewType: config.calendar.defaultView,
     todayBtn: true
   }
   componentDidMount () {
@@ -74,17 +78,16 @@ class App extends Component {
     })
   }
 
-  // dayGridMonth, timeGridWeek, timeGridDay, listWeek
   handleChangeView = () => {
     let calendarApi = this.calendarComponentRef.current.getApi()
     if (calendarApi.view.type === 'daily') {
-      calendarApi.changeView('weekly')
+      this.setState({ viewType: 'weekly' })
     } else if (calendarApi.view.type === 'weekly') {
-      calendarApi.changeView('monthly')
+      this.setState({ viewType: 'monthly' })
     } else if (calendarApi.view.type === 'monthly') {
-      calendarApi.changeView('agenda')
+      this.setState({ viewType: 'agenda' })
     } else if (calendarApi.view.type === 'agenda') {
-      calendarApi.changeView('daily')
+      this.setState({ viewType: 'daily' })
     }
     this.getCalendarDate()
   }
@@ -113,6 +116,13 @@ class App extends Component {
   }
 
   render () {
+    const objView = {
+      agenda: Agenda,
+      daily: Calendar,
+      weekly: Weekly,
+      monthly: Monthly
+    }
+    const Calendars = objView[this.state.viewType]
     // console.log(this.state.info && this.state.info.event)
     return (
       <div className='app'>
@@ -125,7 +135,7 @@ class App extends Component {
           next={this.handleNext}
           prev={this.handlePrev} /> */}
         <Workers changeWorker={this.handleChangeWorker} />
-        <Calendar calendarComponentRef={this.calendarComponentRef} />
+        <Calendars view={this.state.viewType} calendarComponentRef={this.calendarComponentRef} />
       </div>
     )
   }
