@@ -12,6 +12,7 @@ export const getEvents = () => async (dispatch, getState) => {
     dispatch({ type: types.GET_STANDART_EVENTS_ERROR })
   }
 }
+
 export const checkingView = () => async (dispatch, getState) => {
   try {
     dispatch({ type: types.GET_STANDART_EVENTS })

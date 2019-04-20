@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import DemoCalendar from './DemoCalendar/index.jsx'
-// TODO: make alias
-import { getEvents } from '../../store/events/actions'
+import { setCalendarAPIs } from 'store/calendar/actions'
+import { getEvents } from 'store/events/actions'
 import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import { Swiper } from 'project-components'
 import { connect } from 'react-redux'
@@ -17,33 +17,23 @@ class Calendar extends Component {
     this.state = {
       defaultView: config.calendar.defaultView,
       visibleDays: [
-        // this.getFormatedDate(config.calendar.defaultDate, 'subtract', 6),
-        // this.getFormatedDate(config.calendar.defaultDate, 'subtract', 5),
-        // this.getFormatedDate(config.calendar.defaultDate, 'subtract', 4),
-        // this.getFormatedDate(config.calendar.defaultDate, 'subtract', 3),
-        // this.getFormatedDate(config.calendar.defaultDate, 'subtract', 2),
         this.getFormatedDate(config.calendar.defaultDate, 'subtract'),
         config.calendar.defaultDate,
-        this.getFormatedDate(config.calendar.defaultDate, 'add'),
-        // this.getFormatedDate(config.calendar.defaultDate, 'add', 2),
-        // this.getFormatedDate(config.calendar.defaultDate, 'add', 3),
-        // this.getFormatedDate(config.calendar.defaultDate, 'add', 4),
-        // this.getFormatedDate(config.calendar.defaultDate, 'add', 5),
-        // this.getFormatedDate(config.calendar.defaultDate, 'add', 6)
+        this.getFormatedDate(config.calendar.defaultDate, 'add')
       ]
     }
-    this.defaultDate = config.calendar.defaultDate
-    this.setRefs(this.state.visibleDays)
   }
 
   componentDidMount = () => {
+    this.props.dispatch(setCalendarAPIs(this.state.visibleDays))
     // this.props.dispatch(getEvents())
   }
 
-  setRefs = arr => {
-    arr.forEach(i => {
-      this['ref' + moment(i)] = React.createRef()
-    })
+  componentDidCatch (error, info) {
+    // Display fallback UI
+    // this.setState({ hasError: true });
+    // You can also log the error to an error reporting service
+    console.log(error, info)
   }
 
   format = 'YYYY-MM-DD'
@@ -63,21 +53,20 @@ class Calendar extends Component {
   }
 
   onSlideChangeEnd = () => {
-    if (this.defaultDate !== this.state.visibleDays[1]) {
+    if (this.defaultDate && (this.defaultDate !== this.state.visibleDays[1])) {
       const visibleDays = [
         this.getFormatedDate(this.defaultDate, 'subtract'),
         this.defaultDate,
         this.getFormatedDate(this.defaultDate, 'add')
       ]
-      this.setRefs(visibleDays)
       this.setState({ visibleDays, refresh: true }, () => {
         this.setState({ refresh: false })
+        this.props.dispatch(setCalendarAPIs(visibleDays))
       })
     }
   }
 
   render () {
-    // console.log('visibleDays', this.state.visibleDays)
     if (this.state.refresh) return null
     return (
       <div id='swiper-calendar'>
@@ -91,7 +80,7 @@ class Calendar extends Component {
             <div key={i}>
               <DemoCalendar
                 eventClick={this.handleEventClick}
-                refName={this['ref' + moment(i)]}
+                refName={this.props.calendarAPIs['ref' + moment(i)]}
                 events={this.props.events}
                 defaultView='daily'
                 defaultDate={i} />
@@ -106,6 +95,8 @@ class Calendar extends Component {
 
 const mapStateToProps = state => ({
   eventsFetching: state.events.eventsFetching,
+  calendarAPIs: state.calendar.calendarAPIs,
+  calendarApi: state.calendar.calendarApi,
   events: state.events.events
 })
 export default connect(mapStateToProps)(Calendar)
