@@ -22,25 +22,27 @@ class Weekly extends Component {
     }
 
     return (
-      <div>
-        <div id='swiper-calendar-weekly'>
-          <DemoCalendar
-            defaultDate={this.props.defaultDate}
-            events={this.props.events}
-            {...defaultAttr} />
-          <DemoCalendar
-            defaultDate={getFormattedDate(this.props.defaultDate, 'add', 4)}
-            refs={node => this.props.dispatch(setCalendarAPI(node, this.props.defaultDate))}
-            events={this.props.events}
-            {...defaultAttr} />
-          <DemoCalendar
-            defaultDate={getFormattedDate(this.props.defaultDate, 'add', 8)}
-            // refs={node => this.props.dispatch(setCalendarAPI(node, this.state.defaultDate))}
-            events={this.props.events}
-            {...defaultAttr} />
+      <React.Fragment>
+        <div id='calendar-weekly'>
+          <div className='calendar-weekly'>
+            <DemoCalendar
+              defaultDate={this.props.defaultDate}
+              events={this.props.events}
+              {...defaultAttr} />
+            <DemoCalendar
+              defaultDate={getFormattedDate(this.props.defaultDate, 'add', 4)}
+              refs={node => this.props.dispatch(setCalendarAPI(node, this.props.defaultDate))}
+              events={this.props.events}
+              {...defaultAttr} />
+            <DemoCalendar
+              defaultDate={getFormattedDate(this.props.defaultDate, 'add', 8)}
+              // refs={node => this.props.dispatch(setCalendarAPI(node, this.state.defaultDate))}
+              events={this.props.events}
+              {...defaultAttr} />
+          </div>
         </div>
         <CalendarModal info={this.state.info} handleEventClick={this.handleEventClick} />
-      </div>
+      </React.Fragment>
     )
   }
 }
