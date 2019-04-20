@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import DemoCalendar from './DemoCalendar/index.jsx'
 import { setCalendarAPIs } from 'store/calendar/actions'
-// TODO: make alias
-import { getEvents } from '../../store/events/actions'
+import { getEvents } from 'store/events/actions'
+import { getFormattedDate } from 'helpers'
 import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import { Swiper } from 'project-components'
 import { connect } from 'react-redux'
@@ -14,9 +14,9 @@ class Agenda extends Component {
     this.state = {
       defaultView: config.calendar.defaultView,
       visibleDays: [
-        this.getFormatedDate(config.calendar.defaultDate, 'subtract'),
+        getFormattedDate(config.calendar.defaultDate, 'subtract'),
         config.calendar.defaultDate,
-        this.getFormatedDate(config.calendar.defaultDate, 'add')
+        getFormattedDate(config.calendar.defaultDate, 'add')
       ]
     }
   }
@@ -25,18 +25,6 @@ class Agenda extends Component {
     this.props.dispatch(setCalendarAPIs(this.state.visibleDays))
     // this.props.dispatch(getEvents())
   }
-
-
-  componentDidCatch(error, info) {
-    // Display fallback UI
-    // this.setState({ hasError: true });
-    // You can also log the error to an error reporting service
-    console.log(error, info)
-  }
-
-  format = 'YYYY-MM-DD'
-
-  getFormatedDate = (s, action, days = 1) => (action ? moment(s)[action](days, 'days') : moment(s)).format(this.format)
 
   handleEventClick = info => this.setState({ info })
 
@@ -52,11 +40,11 @@ class Agenda extends Component {
   onSlideChangeEnd = () => {
     if (this.defaultDate && (this.defaultDate !== this.state.visibleDays[1])) {
       const visibleDays = [
-        this.getFormatedDate(this.defaultDate, 'subtract'),
+        getFormattedDate(this.defaultDate, 'subtract'),
         this.defaultDate,
-        this.getFormatedDate(this.defaultDate, 'add')
+        getFormattedDate(this.defaultDate, 'add')
       ]
-      // this.setRefs(visibleDays)
+
       this.setState({ visibleDays, refresh: true }, () => {
         this.setState({ refresh: false })
         this.props.dispatch(setCalendarAPIs(visibleDays))

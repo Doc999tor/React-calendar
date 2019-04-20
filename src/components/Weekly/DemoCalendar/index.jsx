@@ -11,13 +11,12 @@ import '@fullcalendar/list/main.css'
 
 export default class DemoCalendar extends Component {
   render () {
-    // console.log(this.props)
     return (
       <FullCalendar
         {...config.calendar}
-        defaultView={this.props.defaultView}
+        defaultView='weekly'
         plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
-        ref={this.props.refName}
+        ref={this.props.refs}
         {...this.props}
       />
     )
