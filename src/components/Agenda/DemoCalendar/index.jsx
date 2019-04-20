@@ -4,22 +4,25 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
+import { connect } from 'react-redux'
+import { setCalendarAPI } from 'store/calendar/actions'
 import '@fullcalendar/core/main.css'
 import '@fullcalendar/daygrid/main.css'
 import '@fullcalendar/timegrid/main.css'
 import '@fullcalendar/list/main.css'
 
-export default class DemoCalendar extends Component {
+class DemoCalendar extends Component {
   render () {
-    // console.log(this.props)
     return (
       <FullCalendar
         {...config.calendar}
         defaultView={this.props.defaultView}
         plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
-        ref={this.props.refName}
+        ref={node => this.props.dispatch(setCalendarAPI(node, this.props.defaultDate))}
+        columnHeaderText={date => moment(date).format('dddd YYYY-MM-DD')}
         {...this.props}
       />
     )
   }
 }
+export default connect()(DemoCalendar)

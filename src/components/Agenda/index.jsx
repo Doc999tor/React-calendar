@@ -1,36 +1,42 @@
 import React, { Component } from 'react'
 import DemoCalendar from './DemoCalendar/index.jsx'
+import { setCalendarAPIs } from 'store/calendar/actions'
 // TODO: make alias
 import { getEvents } from '../../store/events/actions'
 import CalendarModal from './CalendarModal/CalendarModal.jsx'
-import ReactDOMServer from 'react-dom/server'
 import { Swiper } from 'project-components'
 import { connect } from 'react-redux'
-// import FullCalendar from '@fullcalendar/react'
-// import dayGridPlugin from '@fullcalendar/daygrid'
-// import timeGridPlugin from '@fullcalendar/timegrid'
-// import interactionPlugin from '@fullcalendar/interaction'
-// import listPlugin from '@fullcalendar/list'
+import './Agenda.styl'
 
 class Agenda extends Component {
-  state = {
-    defaultView: this.props.view,
-    defaultDate: config.calendar.defaultDate,
-    middleDay: [],
-    leftDay: [],
-    rightDay: []
+  constructor () {
+    super()
+    this.state = {
+      defaultView: config.calendar.defaultView,
+      visibleDays: [
+        this.getFormatedDate(config.calendar.defaultDate, 'subtract'),
+        config.calendar.defaultDate,
+        this.getFormatedDate(config.calendar.defaultDate, 'add')
+      ]
+    }
   }
 
-  swiper = React.createRef()
+  componentDidMount = () => {
+    this.props.dispatch(setCalendarAPIs(this.state.visibleDays))
+    // this.props.dispatch(getEvents())
+  }
+
+
+  componentDidCatch(error, info) {
+    // Display fallback UI
+    // this.setState({ hasError: true });
+    // You can also log the error to an error reporting service
+    console.log(error, info)
+  }
 
   format = 'YYYY-MM-DD'
 
-  getFormatedDate = (s, action) => (action ? moment(s)[action](1, 'days') : moment(s)).format(this.format)
-
-  componentDidMount = async () => {
-    await this.props.dispatch(getEvents())
-    this.setEvents()
-  }
+  getFormatedDate = (s, action, days = 1) => (action ? moment(s)[action](days, 'days') : moment(s)).format(this.format)
 
   handleEventClick = info => this.setState({ info })
 
@@ -38,90 +44,47 @@ class Agenda extends Component {
     const { swipeDirection } = o
     if (swipeDirection) {
       const action = swipeDirection === 'next' ? 'add' : 'subtract'
-      const defaultDate = moment(this.state.defaultDate)[action](1, 'days').format(this.format)
-      this.setState({ defaultDate }, () => { this.setEvents(swipeDirection) })
+      const defaultDate = moment(this.defaultDate)[action](1, 'days').format(this.format)
+      this.defaultDate = defaultDate
     }
   }
 
-  setEvents = swipeDirection => {
-    // WIP
-    const f = this.getFormatedDate
-    const { events } = this.props
-    let res = {}
-    if (swipeDirection === 'next') {
-      // const defaultAttr = {
-      //   defaultView: this.state.defaultView,
-      //   eventClick: this.handleEventClick
-      // }
-      // this.swiper.appendSlide(ReactDOMServer.renderToStaticMarkup(
-      //   <DemoCalendar
-      //     defaultDate={this.getFormatedDate(this.state.defaultDate, 'add')}
-      //     events={this.state.middleDay}
-      //     {...defaultAttr} />
-      // ))
-      // this.swiper.removeSlide('0')
-      res = {
-        leftDay: this.state.middleDay,
-        middleDay: this.state.rightDay,
-        rightDay: events.filter(i => f(i.start) === f(this.state.defaultDate, 'add'))
-      }
-    } else if (swipeDirection === 'prev') {
-      res = {
-        leftDay: events.filter(i => f(i.start) === f(this.state.defaultDate, 'subtract')),
-        middleDay: this.state.leftDay,
-        rightDay: this.state.middleDay
-      }
-    } else {
-      res = {
-        leftDay: events.filter(i => f(i.start) === f(this.state.defaultDate, 'subtract')),
-        middleDay: events.filter(i => f(i.start) === f(this.state.defaultDate)),
-        rightDay: events.filter(i => f(i.start) === f(this.state.defaultDate, 'add'))
-      }
+  onSlideChangeEnd = () => {
+    if (this.defaultDate && (this.defaultDate !== this.state.visibleDays[1])) {
+      const visibleDays = [
+        this.getFormatedDate(this.defaultDate, 'subtract'),
+        this.defaultDate,
+        this.getFormatedDate(this.defaultDate, 'add')
+      ]
+      // this.setRefs(visibleDays)
+      this.setState({ visibleDays, refresh: true }, () => {
+        this.setState({ refresh: false })
+        this.props.dispatch(setCalendarAPIs(visibleDays))
+      })
     }
-
-    this.setState(res)
   }
 
   render () {
-    const defaultAttr = {
-      defaultView: this.state.defaultView,
-      eventClick: this.handleEventClick
-    }
-    // console.log(this.props)
-    // slidesPerView={1} loopedSlides={0} loopAdditionalSlides={0} loop
+    if (this.state.refresh) return null
     return (
-      <div>
-        <div id='swiper-calendar'>
-          <Swiper
-            onSlideChangeStart={this.onSlideChangeStart}
-            ref={node => { if (node) this.swiper = node.swiper }}
-            initialSlide={1} >
-            <div>
+      <div id='swiper-calendar' className='agenda-view'>
+        <Swiper
+          // ref={node => { if (node) this.swiper = node.swiper }}
+          onSlideChangeStart={this.onSlideChangeStart}
+          onSlideChangeEnd={this.onSlideChangeEnd}
+          initialSlide={1}
+          loop>
+          {this.state.visibleDays.map(i => (
+            <div key={i}>
               <DemoCalendar
-                defaultView={this.props.view}
-                refName={this.props.calendarComponentRef}
-                defaultDate={this.getFormatedDate(this.state.defaultDate, 'subtract')}
-                events={this.state.leftDay}
-                {...defaultAttr} />
+                eventClick={this.handleEventClick}
+                // refName={this.props.calendarAPIs['ref' + moment(i)]}
+                events={this.props.events}
+                defaultView='agenda'
+                defaultDate={i} />
             </div>
-            <div>
-              <DemoCalendar
-                defaultView={this.props.view}
-                refName={this.props.calendarComponentRef}
-                defaultDate={this.state.defaultDate}
-                events={this.state.middleDay}
-                {...defaultAttr} />
-            </div>
-            <div>
-              <DemoCalendar
-                defaultView={this.props.view}
-                defaultDate={this.getFormatedDate(this.state.defaultDate, 'add')}
-                refName={this.props.calendarComponentRef}
-                events={this.state.rightDay}
-                {...defaultAttr} />
-            </div>
-          </Swiper>
-        </div>
+          ))}
+        </Swiper>
         <CalendarModal info={this.state.info} handleEventClick={this.handleEventClick} />
       </div>
     )
@@ -130,6 +93,8 @@ class Agenda extends Component {
 
 const mapStateToProps = state => ({
   eventsFetching: state.events.eventsFetching,
+  calendarAPIs: state.calendar.calendarAPIs,
+  calendarApi: state.calendar.calendarApi,
   events: state.events.events
 })
 export default connect(mapStateToProps)(Agenda)
