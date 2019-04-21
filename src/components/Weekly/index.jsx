@@ -30,12 +30,12 @@ class Weekly extends Component {
               events={this.props.events}
               {...defaultAttr} />
             <DemoCalendar
-              defaultDate={getFormattedDate(this.props.defaultDate, 'add', 4)}
+              defaultDate={getFormattedDate(this.props.defaultDate, 'add', 'days', 4)}
               refs={node => this.props.dispatch(setCalendarAPI(node, this.props.defaultDate))}
               events={this.props.events}
               {...defaultAttr} />
             <DemoCalendar
-              defaultDate={getFormattedDate(this.props.defaultDate, 'add', 8)}
+              defaultDate={getFormattedDate(this.props.defaultDate, 'add', 'days', 8)}
               // refs={node => this.props.dispatch(setCalendarAPI(node, this.state.defaultDate))}
               events={this.props.events}
               {...defaultAttr} />

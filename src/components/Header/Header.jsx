@@ -10,7 +10,6 @@ class Header extends Component {
     active: false,
     calendarDate: '',
     view: '',
-    viewType: this.props.currentView,
     todayBtn: true
   }
 
