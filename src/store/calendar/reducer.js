@@ -3,6 +3,7 @@ import * as types from './actionTypes'
 
 const initialState = {
   calendarAPIs: {},
+  currentView: config.calendar.defaultView,
   defaultDate: config.calendar.defaultDate
 }
 
@@ -18,6 +19,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         ...action.payload
+      }
+    },
+    [types.SWITCH_VIEW]: () => {
+      return {
+        ...state,
+        currentView: action.payload.currentView
       }
     }
   }
