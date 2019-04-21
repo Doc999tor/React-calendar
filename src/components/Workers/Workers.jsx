@@ -1,9 +1,17 @@
 import React, { Component } from 'react'
 import { Swiper } from 'project-components'
 import SingleWorker from './SingleWorker.jsx'
+import { connect } from 'react-redux'
 import './Workers.styl'
 
 class Workers extends Component {
+  handleChangeWorker = id => {
+    config.activeWorkerId = id
+    let chosenWorker = config.workers.find(worker => worker.id == id)
+    let calendarApi = this.props.calendarApi
+    calendarApi.setOption('businessHours', chosenWorker.businessHours)
+    this.forceUpdate()
+  }
   render () {
     const params = {
       slidesPerView: 'auto',
@@ -23,7 +31,7 @@ class Workers extends Component {
                   id={worker.id}
                   name={worker.name}
                   photo={worker.photo}
-                  changeWorker={this.props.changeWorker} />))
+                  changeWorker={this.handleChangeWorker} />))
               }
             </Swiper>
           </div>
@@ -34,4 +42,5 @@ class Workers extends Component {
     )
   }
 }
-export default Workers
+const mapStateToProps = state => ({ calendarApi: state.calendar.calendarApi })
+export default connect(mapStateToProps)(Workers)

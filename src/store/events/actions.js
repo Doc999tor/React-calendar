@@ -1,4 +1,4 @@
-import { workers } from 'project-services'
+import { fetchingEvents } from 'project-services'
 import * as types from './actionTypes'
 
 export const getEvents = () => async (dispatch, getState) => {
@@ -6,7 +6,7 @@ export const getEvents = () => async (dispatch, getState) => {
     dispatch({ type: types.GET_STANDART_EVENTS })
     // const test = getState()
     // debugger
-    const res = await workers()
+    const res = await fetchingEvents()
     dispatch({ type: types.GET_STANDART_EVENTS_SUCCESS, payload: { events: res.events } })
   } catch (err) {
     dispatch({ type: types.GET_STANDART_EVENTS_ERROR })

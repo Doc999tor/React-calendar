@@ -13,7 +13,6 @@ import '@fullcalendar/list/main.css'
 
 class DemoCalendar extends Component {
   render () {
-    // console.log(this.props)
     return (
       <FullCalendar
         {...config.calendar}

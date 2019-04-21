@@ -10,8 +10,8 @@ import './Weekly.styl'
 class Weekly extends Component {
   state = {}
 
-  componentDidMount = async () => {
-    // await this.props.dispatch(getEvents())
+  componentDidMount = () => {
+    this.props.dispatch(getEvents())
   }
 
   handleEventClick = info => this.setState({ info })
