@@ -6,11 +6,10 @@ import './Header.styl'
 
 class Header extends Component {
   state = {
-    isActive: false,
-    active: false,
     calendarDate: '',
-    view: '',
-    todayBtn: true
+    todayBtn: true,
+    active: false,
+    view: ''
   }
 
   componentDidMount () {
@@ -18,13 +17,14 @@ class Header extends Component {
   }
 
   updateBusinessHours = calendarApi => {
-    let activeWorker = config.workers.find(worker => worker.id == config.activeWorkerId)
+    let activeWorker = config.workers.find(worker => +worker.id == +config.activeWorkerId)
     let businessHours = activeWorker.businessHours
     calendarApi.setOption('businessHours', businessHours)
     this.getCalendarDate()
   }
 
-  renderTime = title => {
+  getCalendarDate = () => {
+    let title = moment(this.props.defaultDate).format('YYYY-MM-DD')
     let calendarApi = this.props.calendarApi
     let currentDay = moment().format('YYYY-MM-DD') === moment(title).format('YYYY-MM-DD')
     let currentMonth = moment().format('MM') === moment(title).format('MM')
@@ -32,46 +32,49 @@ class Header extends Component {
     let start = moment(calendarApi.state.dateProfile.currentRange.start).format('YYYY-MM-DD')
     let end = moment(calendarApi.state.dateProfile.currentRange.end).format('YYYY-MM-DD')
     let isBetween = moment(curDay).isBetween(moment(start), moment(end))
-    if (calendarApi.view.type === 'daily') {
-      this.setState({ view: config.translations.daily, todayBtn: !currentDay })
-      return (
-        <React.Fragment>
-          {currentDay && <span className='today'>{config.translations.today}</span>}
-          <span className={'current_date_field' + (currentDay ? ' for_today' : '')}>{moment(title).format('ddd, MMM DD')}</span>
-        </React.Fragment>
-      )
-    } else if (calendarApi.view.type === 'weekly') {
-      this.setState({ view: config.translations.weekly, todayBtn: !isBetween })
-      return (
-        <React.Fragment>
-          <span className='current_date_field' style={{ 'direction': 'ltr' }}>{moment(start).format('DD') + ' - ' + moment(end).subtract(1, 'days').format('DD') + ' ' + moment(start).format('MMM')}</span>
-          {isBetween && <span className='this_week'>{config.translations.thisWeek}</span>}
-        </React.Fragment>
-      )
-    } else if (calendarApi.view.type === 'monthly') {
-      this.setState({ view: config.translations.monthly, todayBtn: !currentMonth })
-      return (
-        <React.Fragment>
-          <span className='current_date_field'>{moment(title).format('MMMM')}</span>
-          <span className='this_week'>{moment(title).format('YYYY')}</span>
-        </React.Fragment>
-      )
-    } else if (calendarApi.view.type === 'agenda') {
-      this.setState({ view: config.translations.agenda, todayBtn: !currentDay })
-      return (
-        <React.Fragment>
-          {currentDay && <span className='today'>{config.translations.today}</span>}
-          <span className={'current_date_field' + (currentDay ? ' for_today' : '')}>{moment(title).format('ddd, MMM DD')}</span>
-        </React.Fragment>
-      )
+    const obj = {
+      daily: () => ({
+        calendarDate: (
+          <React.Fragment>
+            {currentDay && <span className='today'>{config.translations.today}</span>}
+            <span className={'current_date_field' + (currentDay ? ' for_today' : '')}>{moment(title).format('ddd, MMM DD')}</span>
+          </React.Fragment>
+        ),
+        state: { view: config.translations.daily, todayBtn: !currentDay }
+      }),
+      weekly: () => ({
+        calendarDate: (
+          <React.Fragment>
+            <span className='current_date_field' style={{ 'direction': 'ltr' }}>{moment(start).format('DD') + ' - ' + moment(end).subtract(1, 'days').format('DD') + ' ' + moment(start).format('MMM')}</span>
+            {isBetween && <span className='this_week'>{config.translations.thisWeek}</span>}
+          </React.Fragment>
+        ),
+        state: { view: config.translations.weekly, todayBtn: !isBetween }
+      }),
+      monthly: () => ({
+        calendarDate: (
+          <React.Fragment>
+            <span className='current_date_field'>{moment(title).format('MMMM')}</span>
+            <span className='this_week'>{moment(title).format('YYYY')}</span>
+          </React.Fragment>
+        ),
+        state: { view: config.translations.monthly, todayBtn: !currentMonth }
+      }),
+      agenda: () => ({
+        calendarDate: (
+          <React.Fragment>
+            {currentDay && <span className='today'>{config.translations.today}</span>}
+            <span className={'current_date_field' + (currentDay ? ' for_today' : '')}>{moment(title).format('ddd, MMM DD')}</span>
+          </React.Fragment>
+        ),
+        state: { view: config.translations.agenda, todayBtn: !currentDay }
+      })
     }
-  }
-
-  getCalendarDate = () => {
-    let date = moment(this.props.defaultDate).format('YYYY-MM-DD')
+    const { calendarDate, state } = obj[this.props.currentView || calendarApi?.view?.type]()
     this.setState({
-      calendarDate: this.renderTime(date),
-      notFormattedDate: date
+      notFormattedDate: title,
+      calendarDate,
+      ...state
     })
   }
 
@@ -105,19 +108,18 @@ class Header extends Component {
   }
 
   menuOnOff = () => {
-    this.setState(state => ({
-      isActive: !state.isActive
-    }))
+    this.setState(state => ({ active: !state.active }))
     document.querySelector('body').classList.toggle('no-scroll')
   }
 
   closeMenu = () => {
-    this.setState({ isActive: false })
+    this.setState({ active: false })
     document.querySelector('body').classList.remove('no-scroll')
   }
+
   render () {
     return (
-      <div id='header' style={config.calendar.isRTL ? {'direction': 'rtl'} : {'direction': 'ltr'}}>
+      <div id='header' style={config.calendar.isRTL ? { 'direction': 'rtl' } : { 'direction': 'ltr' }}>
         <div className={'menu_refresh ' + (config.calendar.isRTL ? 'menu_rtl' : 'menu_ltr')}>
           <button onClick={this.menuOnOff} className='more_wrap'>
             <img src={config.urls.staticImg + '/ic_menu.svg'} />
@@ -147,11 +149,12 @@ class Header extends Component {
             {this.props.currentView}
           </button>
         </div>
-        {this.state.isActive && <Menu closeMenu={this.closeMenu} />}
+        {this.state.active && <Menu closeMenu={this.closeMenu} />}
       </div>
     )
   }
 }
+
 const mapStateToProps = state => ({
   defaultDate: state.calendar.defaultDate,
   calendarApi: state.calendar.calendarApi,
