@@ -1,4 +1,4 @@
-// import { workers } from 'project-services'
+// import { fetchingEvents } from 'project-services'
 import React from 'react'
 import * as types from './actionTypes'
 

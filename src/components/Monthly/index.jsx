@@ -22,7 +22,7 @@ class Monthly extends Component {
 
   componentDidMount = () => {
     this.props.dispatch(setCalendarAPIs(this.state.visibleDays))
-    // this.props.dispatch(getEvents())
+    this.props.dispatch(getEvents())
   }
 
   handleEventClick = info => this.setState({ info })

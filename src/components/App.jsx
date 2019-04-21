@@ -10,13 +10,7 @@ import './App.styl'
 
 class App extends Component {
   state = {}
-  // handleChangeWorker = id => {
-  //   config.activeWorkerId = id
-  //   let chosenWorker = config.workers.find(worker => worker.id == id)
-  //   let calendarApi = this.props.calendarApi
-  //   calendarApi.setOption('businessHours', chosenWorker.businessHours)
-  //   // this.getCalendarDate()
-  // }
+
   render () {
     const objView = {
       agenda: Agenda,
@@ -29,7 +23,7 @@ class App extends Component {
     return (
       <div className='app'>
         {this.props.calendarApi && <Header calendarApi={this.props.calendarApi} />}
-        <Workers changeWorker={this.handleChangeWorker} />
+        <Workers />
         <Calendars />
       </div>
     )
