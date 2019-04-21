@@ -4,7 +4,7 @@ import { setCalendarAPIs } from 'store/calendar/actions'
 import { getEvents } from 'store/events/actions'
 import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import { Swiper } from 'project-components'
-import { getFormattedMonth } from 'helpers'
+import { getFormattedDate } from 'helpers'
 import { connect } from 'react-redux'
 
 class Monthly extends Component {
@@ -13,9 +13,9 @@ class Monthly extends Component {
     this.state = {
       defaultView: config.calendar.defaultView,
       visibleDays: [
-        getFormattedMonth(config.calendar.defaultDate, 'subtract'),
+        getFormattedDate(config.calendar.defaultDate, 'subtract', 'months'),
         config.calendar.defaultDate,
-        getFormattedMonth(config.calendar.defaultDate, 'add')
+        getFormattedDate(config.calendar.defaultDate, 'add', 'months')
       ]
     }
   }
@@ -39,9 +39,9 @@ class Monthly extends Component {
   onSlideChangeEnd = () => {
     if (this.defaultDate && (this.defaultDate !== this.state.visibleDays[1])) {
       const visibleDays = [
-        getFormattedMonth(this.defaultDate, 'subtract'),
+        getFormattedDate(this.defaultDate, 'subtract', 'months'),
         this.defaultDate,
-        getFormattedMonth(this.defaultDate, 'add')
+        getFormattedDate(this.defaultDate, 'add', 'months')
       ]
       this.setState({ visibleDays, refresh: true }, () => {
         this.setState({ refresh: false })

@@ -13,9 +13,9 @@ class Calendar extends Component {
     this.state = {
       defaultView: config.calendar.defaultView,
       visibleDays: [
-        getFormattedDate(config.calendar.defaultDate, 'subtract'),
+        getFormattedDate(config.calendar.defaultDate, 'subtract', 'days'),
         config.calendar.defaultDate,
-        getFormattedDate(config.calendar.defaultDate, 'add')
+        getFormattedDate(config.calendar.defaultDate, 'add', 'days')
       ]
     }
   }
@@ -39,9 +39,9 @@ class Calendar extends Component {
   onSlideChangeEnd = () => {
     if (this.defaultDate && (this.defaultDate !== this.state.visibleDays[1])) {
       const visibleDays = [
-        getFormattedDate(this.defaultDate, 'subtract'),
+        getFormattedDate(this.defaultDate, 'subtract', 'days'),
         this.defaultDate,
-        getFormattedDate(this.defaultDate, 'add')
+        getFormattedDate(this.defaultDate, 'add', 'days')
       ]
       this.setState({ visibleDays, refresh: true }, () => {
         this.setState({ refresh: false })
