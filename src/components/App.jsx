@@ -9,23 +9,14 @@ import { connect } from 'react-redux'
 import './App.styl'
 
 class App extends Component {
-  state = {
-    active: false,
-    calendarDate: '',
-    view: '',
-    viewType: config.calendar.defaultView,
-    todayBtn: true
-  }
-  
-  handleChangeWorker = id => {
-    config.activeWorkerId = id
-    let chosenWorker = config.workers.find(worker => worker.id == id)
-    let calendarApi = this.calendarComponentRef.current.getApi()
-    calendarApi.setOption('businessHours', chosenWorker.businessHours)
-    this.setState({ active: true })
-    this.getCalendarDate()
-  }
-
+  state = {}
+  // handleChangeWorker = id => {
+  //   config.activeWorkerId = id
+  //   let chosenWorker = config.workers.find(worker => worker.id == id)
+  //   let calendarApi = this.props.calendarApi
+  //   calendarApi.setOption('businessHours', chosenWorker.businessHours)
+  //   // this.getCalendarDate()
+  // }
   render () {
     const objView = {
       agenda: Agenda,
@@ -33,18 +24,20 @@ class App extends Component {
       weekly: Weekly,
       monthly: Monthly
     }
-    const Calendars = objView[this.state.viewType]
+    const Calendars = objView[this.props.currentView]
+    // console.log('object', this.props)
     return (
       <div className='app'>
         {this.props.calendarApi && <Header calendarApi={this.props.calendarApi} />}
         <Workers changeWorker={this.handleChangeWorker} />
-        <Calendars view={this.state.viewType} calendarComponentRef={this.calendarComponentRef} />
+        <Calendars />
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  calendarApi: state.calendar.calendarApi
+  calendarApi: state.calendar.calendarApi,
+  currentView: state.calendar.currentView
 })
 export default connect(mapStateToProps)(App)

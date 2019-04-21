@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { switchView } from 'store/calendar/actions'
 import { Menu } from 'project-components'
 import './Header.styl'
 
-export default class Header extends Component {
+class Header extends Component {
   state = {
     isActive: false,
     active: false,
     calendarDate: '',
     view: '',
-    viewType: config.calendar.defaultView,
+    viewType: this.props.currentView,
     todayBtn: true
   }
-  
+
   componentDidMount () {
     this.updateBusinessHours(this.props.calendarApi)
   }
@@ -20,7 +22,7 @@ export default class Header extends Component {
     let activeWorker = config.workers.find(worker => worker.id == config.activeWorkerId)
     let businessHours = activeWorker.businessHours
     calendarApi.setOption('businessHours', businessHours)
-    // this.getCalendarDate()
+    this.getCalendarDate()
   }
 
   renderTime = title => {
@@ -32,7 +34,7 @@ export default class Header extends Component {
     let end = moment(calendarApi.state.dateProfile.currentRange.end).format('YYYY-MM-DD')
     let isBetween = moment(curDay).isBetween(moment(start), moment(end))
     if (calendarApi.view.type === 'daily') {
-      this.setState({ view: config.translations.daily, todayBtn: currentDay ? false : true })
+      this.setState({ view: config.translations.daily, todayBtn: !currentDay })
       return (
         <React.Fragment>
           {currentDay && <span className='today'>{config.translations.today}</span>}
@@ -40,7 +42,7 @@ export default class Header extends Component {
         </React.Fragment>
       )
     } else if (calendarApi.view.type === 'weekly') {
-      this.setState({ view: config.translations.weekly, todayBtn: isBetween ? false : true })
+      this.setState({ view: config.translations.weekly, todayBtn: !isBetween })
       return (
         <React.Fragment>
           <span className='current_date_field' style={{ 'direction': 'ltr' }}>{moment(start).format('DD') + ' - ' + moment(end).subtract(1, 'days').format('DD') + ' ' + moment(start).format('MMM')}</span>
@@ -48,7 +50,7 @@ export default class Header extends Component {
         </React.Fragment>
       )
     } else if (calendarApi.view.type === 'monthly') {
-      this.setState({ view: config.translations.monthly, todayBtn: currentMonth ? false : true })
+      this.setState({ view: config.translations.monthly, todayBtn: !currentMonth })
       return (
         <React.Fragment>
           <span className='current_date_field'>{moment(title).format('MMMM')}</span>
@@ -56,7 +58,7 @@ export default class Header extends Component {
         </React.Fragment>
       )
     } else if (calendarApi.view.type === 'agenda') {
-      this.setState({ view: config.translations.agenda, todayBtn: currentDay ? false : true })
+      this.setState({ view: config.translations.agenda, todayBtn: !currentDay })
       return (
         <React.Fragment>
           {currentDay && <span className='today'>{config.translations.today}</span>}
@@ -67,8 +69,7 @@ export default class Header extends Component {
   }
 
   getCalendarDate = () => {
-    let calendarApi = this.props.calendarApi
-    let date = moment(calendarApi.getDate()).format('YYYY-MM-DD')
+    let date = moment(this.props.defaultDate).format('YYYY-MM-DD')
     this.setState({
       calendarDate: this.renderTime(date),
       notFormattedDate: date
@@ -76,15 +77,14 @@ export default class Header extends Component {
   }
 
   handleChangeView = () => {
-    let calendarApi = this.props.calendarApi
     const objView = {
       monthly: 'agenda',
       weekly: 'monthly',
       daily: 'weekly',
       agenda: 'daily'
     }
-    this.setState({ viewType: objView[calendarApi.view.type] })
     this.getCalendarDate()
+    this.props.dispatch(switchView(objView[this.props.currentView]))
   }
 
   handleToday = () => {
@@ -128,13 +128,13 @@ export default class Header extends Component {
           </button>
         </div>
         <div className='middle-section'>
-          <button onClick={this.prev} className={'prev_button_wrap common ' + (config.calendar.isRTL ? 'rtlStyle' : 'ltrStyle')}>
+          <button onClick={this.handlePrev} className={'prev_button_wrap common ' + (config.calendar.isRTL ? 'rtlStyle' : 'ltrStyle')}>
             <img className='prev_button btn' src={config.urls.staticImg + '/prev.svg'} />
           </button>
           <div className='current_date'>
             {this.state.calendarDate}
           </div>
-          <button onClick={this.next} className={'next_button_wrap common ' + (config.calendar.isRTL ? 'rtlStyle' : 'ltrStyle')}>
+          <button onClick={this.handleNext} className={'next_button_wrap common ' + (config.calendar.isRTL ? 'rtlStyle' : 'ltrStyle')}>
             <img className='next_button btn' src={config.urls.staticImg + '/next.svg'} />
           </button>
         </div>
@@ -143,9 +143,9 @@ export default class Header extends Component {
             <img className='img_today' src={config.urls.staticImg + '/today.svg'} />
             {config.translations.today}
           </button>}
-          <button className='daily_wrap daily_wrap_label' onClick={this.changeView}>
+          <button className='daily_wrap daily_wrap_label' onClick={this.handleChangeView}>
             <img className='img_view' src={config.urls.staticImg + '/change_view.svg'} />
-            {this.state.view}
+            {this.props.currentView}
           </button>
         </div>
         {this.state.isActive && <Menu closeMenu={this.closeMenu} />}
@@ -153,3 +153,9 @@ export default class Header extends Component {
     )
   }
 }
+const mapStateToProps = state => ({
+  defaultDate: state.calendar.defaultDate,
+  calendarApi: state.calendar.calendarApi,
+  currentView: state.calendar.currentView
+})
+export default connect(mapStateToProps)(Header)

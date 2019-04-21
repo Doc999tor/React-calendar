@@ -19,3 +19,7 @@ export const setCalendarAPI = (day, dd) => async (dispatch, getState) => {
     dispatch({ type: types.SET_CALENDAR_API, payload: { calendarApi: day?.getApi() } })
   }
 }
+
+export const switchView = currentView => async dispatch => {
+  dispatch({ type: types.SWITCH_VIEW, payload: { currentView } })
+}
