@@ -22,7 +22,7 @@ class Calendar extends Component {
 
   componentDidMount = () => {
     this.props.dispatch(setCalendarAPIs(this.state.visibleDays))
-    this.props.dispatch(getEvents())
+    // this.props.dispatch(getEvents())
   }
 
   handleEventClick = info => this.setState({ info })
@@ -64,7 +64,7 @@ class Calendar extends Component {
             <div key={i}>
               <DemoCalendar
                 eventClick={this.handleEventClick}
-                refName={this.props.calendarAPIs['ref' + moment(i)]}
+                // refName={this.props.calendarAPIs['ref' + moment(i)]}
                 events={this.props.events}
                 defaultView='daily'
                 defaultDate={i} />

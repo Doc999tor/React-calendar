@@ -11,7 +11,7 @@ class Weekly extends Component {
   state = {}
 
   componentDidMount = () => {
-    this.props.dispatch(getEvents())
+    // this.props.dispatch(getEvents())
   }
 
   handleEventClick = info => this.setState({ info })

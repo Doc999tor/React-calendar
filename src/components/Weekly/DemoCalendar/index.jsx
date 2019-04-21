@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { setCalendarAPI } from 'store/calendar/actions'
+import { connect } from 'react-redux'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -9,16 +11,18 @@ import '@fullcalendar/daygrid/main.css'
 import '@fullcalendar/timegrid/main.css'
 import '@fullcalendar/list/main.css'
 
-export default class DemoCalendar extends Component {
+class DemoCalendar extends Component {
   render () {
     return (
       <FullCalendar
         {...config.calendar}
-        defaultView='weekly'
+        ref={node => this.props.dispatch(setCalendarAPI(node, this.props.defaultDate))}
         plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
-        ref={this.props.refs}
+        defaultView='weekly'
         {...this.props}
       />
     )
   }
 }
+
+export default connect()(DemoCalendar)
