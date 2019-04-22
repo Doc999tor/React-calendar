@@ -2,6 +2,10 @@
 import React from 'react'
 import * as types from './actionTypes'
 
+export const setDefaultDay = defaultDate => dispatch => {
+  dispatch({ type: types.SET_DEFAULT_DAY, payload: { defaultDate } })
+}
+
 export const setCalendarAPIs = (days = []) => async dispatch => {
   const calendarAPIs = {}
   days.forEach(i => {

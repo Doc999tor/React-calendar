@@ -6,7 +6,6 @@ const initialState = {
   currentView: config.calendar.defaultView,
   defaultDate: config.calendar.defaultDate
 }
-
 export default (state = initialState, action = {}) => {
   const obj = {
     [types.SET_CALENDAR_APIS]: () => {
@@ -25,6 +24,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         currentView: action.payload.currentView
+      }
+    },
+    [types.SET_DEFAULT_DAY]: () => {
+      return {
+        ...state,
+        defaultDate: action.payload.defaultDate
       }
     }
   }

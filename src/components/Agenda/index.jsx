@@ -9,18 +9,28 @@ import { connect } from 'react-redux'
 import './Agenda.styl'
 
 class Agenda extends Component {
-  constructor () {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      defaultView: config.calendar.defaultView,
       visibleDays: [
-        getFormattedDate(config.calendar.defaultDate, 'subtract', 'days'),
-        config.calendar.defaultDate,
-        getFormattedDate(config.calendar.defaultDate, 'add', 'days')
+        getFormattedDate(this.props.defaultDate, 'subtract', 'days'),
+        this.props.defaultDate,
+        getFormattedDate(this.props.defaultDate, 'add', 'days')
       ]
     }
   }
-
+  static getDerivedStateFromProps(props, state) {
+    const curPropsDate = moment(props.defaultDate).format('YYYY-MM-DD')
+    const midlStateDate = moment(state.visibleDays[1]).format('YYYY-MM-DD')
+    const visibleDays = [
+      getFormattedDate(curPropsDate, 'subtract', 'days'),
+      curPropsDate,
+      getFormattedDate(curPropsDate, 'add', 'days')
+    ]
+    if (curPropsDate === midlStateDate) return null
+    else if (curPropsDate !== midlStateDate && !state.refresh) return { visibleDays }
+    else return null
+  }
   componentDidMount = () => {
     this.props.dispatch(setCalendarAPIs(this.state.visibleDays))
     this.props.dispatch(getEvents())

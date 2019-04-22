@@ -1,26 +1,21 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { switchView } from 'store/calendar/actions'
-import { Menu } from 'project-components'
+import { switchView, setDefaultDay } from 'store/calendar/actions'
+import HeaderMenu from './HeaderMenu/index.jsx'
 import './Header.styl'
 
+// TODO: Handle 'defaultDay'
 class Header extends Component {
-  state = {
-    calendarDate: '',
-    todayBtn: true,
-    active: false,
-    view: ''
-  }
-
   componentDidMount () {
     this.updateBusinessHours(this.props.calendarApi)
   }
 
   updateBusinessHours = calendarApi => {
-    let activeWorker = config.workers.find(worker => +worker.id == +config.activeWorkerId)
-    let businessHours = activeWorker.businessHours
-    calendarApi.setOption('businessHours', businessHours)
-    this.getCalendarDate()
+    let activeWorker = config.workers.find(worker => +worker.id === +config.activeWorkerId)
+    if (activeWorker) {
+      let businessHours = activeWorker.businessHours
+      calendarApi.setOption('businessHours', businessHours)
+    }
   }
 
   getCalendarDate = () => {
@@ -71,11 +66,10 @@ class Header extends Component {
       })
     }
     const { calendarDate, state } = obj[this.props.currentView || calendarApi?.view?.type]()
-    this.setState({
-      notFormattedDate: title,
+    return {
       calendarDate,
       ...state
-    })
+    }
   }
 
   handleChangeView = () => {
@@ -85,45 +79,30 @@ class Header extends Component {
       daily: 'weekly',
       agenda: 'daily'
     }
-    this.getCalendarDate()
     this.props.dispatch(switchView(objView[this.props.currentView]))
   }
 
   handleToday = () => {
-    let calendarApi = this.props.calendarApi
-    calendarApi.today()
-    this.getCalendarDate()
+    let currentDay = moment().format('YYYY-MM-DD')
+    this.props.dispatch(setDefaultDay(currentDay))
   }
-
+  
   handleNext = () => {
     let calendarApi = this.props.calendarApi
     calendarApi.next()
-    this.getCalendarDate()
   }
-
+  
   handlePrev = () => {
     let calendarApi = this.props.calendarApi
     calendarApi.prev()
-    this.getCalendarDate()
   }
-
-  menuOnOff = () => {
-    this.setState(state => ({ active: !state.active }))
-    document.querySelector('body').classList.toggle('no-scroll')
-  }
-
-  closeMenu = () => {
-    this.setState({ active: false })
-    document.querySelector('body').classList.remove('no-scroll')
-  }
-
+  
   render () {
+    const { calendarDate, view, todayBtn } = this.getCalendarDate()
     return (
-      <div id='header' style={config.calendar.isRTL ? { 'direction': 'rtl' } : { 'direction': 'ltr' }}>
+      <div id='header' style={{ 'direction': config.calendar.isRTL ? 'rtl' : 'ltr' }}>
         <div className={'menu_refresh ' + (config.calendar.isRTL ? 'menu_rtl' : 'menu_ltr')}>
-          <button onClick={this.menuOnOff} className='more_wrap'>
-            <img src={config.urls.staticImg + '/ic_menu.svg'} />
-          </button>
+          <HeaderMenu />
           <button id='refresh_button'>
             <img className='refresh_button_img' src={config.urls.staticImg + '/refresh.svg'} />
           </button>
@@ -133,23 +112,22 @@ class Header extends Component {
             <img className='prev_button btn' src={config.urls.staticImg + '/prev.svg'} />
           </button>
           <div className='current_date'>
-            {this.state.calendarDate}
+            {calendarDate}
           </div>
           <button onClick={this.handleNext} className={'next_button_wrap common ' + (config.calendar.isRTL ? 'rtlStyle' : 'ltrStyle')}>
             <img className='next_button btn' src={config.urls.staticImg + '/next.svg'} />
           </button>
         </div>
         <div className={'header_right ' + (config.calendar.isRTL ? 'view_buttons_rtl' : 'view_buttons_ltr')}>
-          {this.state.todayBtn && <button className='today_wrap' onClick={this.handleToday}>
+          {todayBtn && <button className='today_wrap' onClick={this.handleToday}>
             <img className='img_today' src={config.urls.staticImg + '/today.svg'} />
             {config.translations.today}
           </button>}
           <button className='daily_wrap daily_wrap_label' onClick={this.handleChangeView}>
             <img className='img_view' src={config.urls.staticImg + '/change_view.svg'} />
-            {this.props.currentView}
+            {view}
           </button>
         </div>
-        {this.state.active && <Menu closeMenu={this.closeMenu} />}
       </div>
     )
   }
