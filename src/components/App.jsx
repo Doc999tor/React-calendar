@@ -19,7 +19,6 @@ class App extends Component {
       monthly: Monthly
     }
     const Calendars = objView[this.props.currentView]
-    // console.log('object', this.props)
     return (
       <div className='app'>
         {this.props.calendarApi && <Header calendarApi={this.props.calendarApi} />}

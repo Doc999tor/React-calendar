@@ -29,40 +29,30 @@ export const getEvents = () => async (dispatch, getState) => {
   try {
     dispatch({ type: types.GET_STANDART_EVENTS })
     const obj = {
-      agenda: async () => {
+      agenda: () => {
         let start = moment(defaultDate).subtract(1, 'days')
         let end = moment(defaultDate).add(1, 'days')
-        const formatDays = formatStartEndDay(start, end)
-        const { dayStart, dayEnd } = formatDays
-        const res = await fetchingEvents(dayStart, dayEnd)
-        dispatch({ type: types.GET_STANDART_EVENTS_SUCCESS, payload: { events: res.events } })
+        return formatStartEndDay(start, end)
       },
-      daily: async () => {
+      daily: () => {
         let start = moment(defaultDate).subtract(1, 'days')
         let end = moment(defaultDate).add(1, 'days')
-        const formatDays = formatStartEndDay(start, end)
-        const { dayStart, dayEnd } = formatDays
-        const res = await fetchingEvents(dayStart, dayEnd)
-        dispatch({ type: types.GET_STANDART_EVENTS_SUCCESS, payload: { events: res.events } })
+        return formatStartEndDay(start, end)
       },
-      weekly: async () => {
+      weekly: () => {
         let start = moment(defaultDate).subtract(10, 'days')
         let end = moment(defaultDate).add(10, 'days')
-        const formatDays = formatStartEndDay(start, end)
-        const { dayStart, dayEnd } = formatDays
-        const res = await fetchingEvents(dayStart, dayEnd)
-        dispatch({ type: types.GET_STANDART_EVENTS_SUCCESS, payload: { events: res.events } })
+        return formatStartEndDay(start, end)
       },
-      monthly: async () => {
+      monthly: () => {
         let start = moment(moment(defaultDate).startOf('month')).subtract(1, 'months').startOf('month')
         let end = moment(moment(defaultDate).endOf('month')).add(1, 'months').endOf('month')
-        const formatDays = formatStartEndDay(start, end)
-        const { dayStart, dayEnd } = formatDays
-        const res = await fetchingEvents(dayStart, dayEnd)
-        dispatch({ type: types.GET_STANDART_EVENTS_SUCCESS, payload: { events: res.events } })
+        return formatStartEndDay(start, end)
       }
     }
-    obj[currentView]()
+    const { dayStart, dayEnd } = obj[currentView]()
+    const res = await fetchingEvents(dayStart, dayEnd)
+    dispatch({ type: types.GET_STANDART_EVENTS_SUCCESS, payload: { events: res.events } })
   } catch (err) {
     dispatch({ type: types.GET_STANDART_EVENTS_ERROR })
   }
