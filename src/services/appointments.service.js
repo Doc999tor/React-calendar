@@ -33,12 +33,8 @@ export default (start, end, forceFetch) => {
         end = worker.start
       }
     }
-// start: 2019-04-09 00:00:00
-// end: 2019-04-11 23:59:59
-// worker_id: 11
-    const url = `${config.urls.appointmentsUrl}?start=2019-04-01 00:00:00&end=2019-04-30 23:59:59&worker_id=${config.activeWorkerId}`
-    // const url = `${config.urls.appointmentsUrl}?start=${start}&end=${end}&worker_id=${config.activeWorkerId}`
-    // $('.preloader').removeClass('hidden')
+    // const url = `${config.urls.appointmentsUrl}?start=2019-04-01 00:00:00&end=2019-04-30 23:59:59&worker_id=${config.activeWorkerId}`
+    const url = `${config.urls.appointmentsUrl}?start=${start}&end=${end}&worker_id=${config.activeWorkerId}`
     mainRequestService(url, options).then(r => {
       if (r.status !== 200) return reject([])
       r.json().then(r => {
@@ -56,7 +52,6 @@ export default (start, end, forceFetch) => {
           events
         }
         window.isActive = false
-        // $('.preloader').addClass('hidden')
         resolve({ events: lastEvents || events, refresh })
       })
     })
