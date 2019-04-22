@@ -36,7 +36,7 @@ class Agenda extends Component {
       this.defaultDate = defaultDate
     }
   }
-
+  
   onSlideChangeEnd = () => {
     if (this.defaultDate && (this.defaultDate !== this.state.visibleDays[1])) {
       const visibleDays = [
@@ -48,6 +48,7 @@ class Agenda extends Component {
       this.setState({ visibleDays, refresh: true }, () => {
         this.setState({ refresh: false })
         this.props.dispatch(setCalendarAPIs(visibleDays))
+        // this.props.dispatch(getEvents())
       })
     }
   }
@@ -57,7 +58,6 @@ class Agenda extends Component {
     return (
       <div id='swiper-calendar' className='agenda-view'>
         <Swiper
-          // ref={node => { if (node) this.swiper = node.swiper }}
           onSlideChangeStart={this.onSlideChangeStart}
           onSlideChangeEnd={this.onSlideChangeEnd}
           initialSlide={1}
@@ -66,7 +66,6 @@ class Agenda extends Component {
             <div key={i}>
               <DemoCalendar
                 eventClick={this.handleEventClick}
-                // refName={this.props.calendarAPIs['ref' + moment(i)]}
                 events={this.props.events}
                 defaultView='agenda'
                 defaultDate={i} />
@@ -83,6 +82,7 @@ const mapStateToProps = state => ({
   eventsFetching: state.events.eventsFetching,
   calendarAPIs: state.calendar.calendarAPIs,
   calendarApi: state.calendar.calendarApi,
+  defaultDate: state.calendar.defaultDate,
   events: state.events.events
 })
 export default connect(mapStateToProps)(Agenda)
