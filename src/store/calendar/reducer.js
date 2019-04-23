@@ -13,10 +13,22 @@ export default (state = initialState, action = {}) => {
         ...action.payload
       }
     },
+    [types.SET_SWIPER_API]: () => {
+      return {
+        ...state,
+        swiperApi: action.payload.swiperApi
+      }
+    },
     [types.SWITCH_VIEW]: () => {
       return {
         ...state,
         currentView: action.payload.currentView
+      }
+    },
+    [types.SET_SWIPER_DIRECTION]: () => {
+      return {
+        ...state,
+        swipeDirection: action.payload.swipeDirection
       }
     },
     [types.SET_DEFAULT_DAY]: () => {

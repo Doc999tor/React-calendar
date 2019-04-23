@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import DemoCalendar from 'components/DemoCalendar/index.jsx'
 // import { getEvents } from 'store/events/actions'
+import { setDefaultDay } from 'store/calendar/actions'
 import { getFormattedDate } from 'helpers'
 import { connect } from 'react-redux'
 import './Weekly.styl'
@@ -32,29 +33,38 @@ class Weekly extends Component {
 
   updateCalendars = () => {
     const weeklyClientRect = document.querySelector('.calendar-weekly').getBoundingClientRect()
+    let visibleDays
     if (weeklyClientRect.right < (this.baseCalendarWidth * 2)) {
+      this.view.scrollLeft = this.view.scrollLeft - this.baseCalendarWidth
       const { visibleDays: vd } = this.state
       const defaultDate = vd[vd.length - 1]
-      const visibleDays = [ ...vd, ...this.getVisibleDays(getFormattedDate(defaultDate, 'add', 'days', 12)) ].splice(1, 11)
-      this.view.scrollLeft = this.view.scrollLeft - this.baseCalendarWidth
-      this.setState({ visibleDays })
+      visibleDays = [ ...vd, ...this.getVisibleDays(getFormattedDate(defaultDate, 'add', 'days', 12)) ].splice(1, 11)
     } else if (weeklyClientRect.left >= -this.baseCalendarWidth * 2) {
       this.view.scrollLeft = this.view.scrollLeft + (this.baseCalendarWidth * 5)
       const defaultDate = getFormattedDate(this.state.visibleDays[0], 'subtract', 'days', 12)
       const leftDates = this.getVisibleDays(defaultDate)
-      const visibleDays = [ ...leftDates, ...this.state.visibleDays ].splice(0, 9)
+      visibleDays = [ ...leftDates, ...this.state.visibleDays ].splice(0, 9)
+    }
+    if (visibleDays) {
       this.setState({ visibleDays })
+      const newIndex = Math.floor(weeklyClientRect.left / -this.baseCalendarWidth)
+      if (this.currentIndex !== newIndex) {
+        this.currentIndex = newIndex
+        // console.log(newIndex)
+        this.props.dispatch(setDefaultDay(visibleDays[newIndex]))
+      }
     }
   }
 
   render () {
+    // console.log('this.state.visibleDays', this.state.visibleDays)
     return (
       <React.Fragment>
         <div id='calendar-weekly'>
           <div className='calendar-weekly'
             style={{ width: this.state.visibleDays.length * 100 + '%' }}>
             {this.state.visibleDays.map(i => (
-              <DemoCalendar key={i} defaultDate={i} eventClick={this.handleEventClick} events={this.props.events} />
+              <DemoCalendar eventClick={this.handleEventClick} events={this.props.events} defaultDate={i} defaultView='weekly' key={i} />
             ))}
           </div>
         </div>

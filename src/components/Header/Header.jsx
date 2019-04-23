@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { switchView, setDefaultDay } from 'store/calendar/actions'
+// setSwiperDirection
 import { getFormattedDate, getStandardFormat, currentDay } from 'helpers'
 import HeaderMenu from './HeaderMenu/index.jsx'
 import './Header.styl'
@@ -83,20 +84,21 @@ class Header extends Component {
     this.props.dispatch(switchView(objView[this.props.currentView]))
   }
 
-  handleToday = () => {
-    this.props.dispatch(setDefaultDay(currentDay, true))
-  }
+  handleToday = () => this.props.dispatch(setDefaultDay(currentDay, true))
 
-  handleNext = () => {
-    let calendarApi = this.props.calendarApi
-    calendarApi.next()
+  handleNext = async () => {
+    this.props.calendarApi.next()
     this.props.dispatch(setDefaultDay(getFormattedDate(this.props.defaultDate, 'add')), true)
+    // await this.props.dispatch(setSwiperDirection('next'))
+    // this.props.swiperApi.slideNext()
   }
 
-  handlePrev = () => {
-    let calendarApi = this.props.calendarApi
-    calendarApi.prev()
+  handlePrev = async () => {
+    this.props.calendarApi.prev()
     this.props.dispatch(setDefaultDay(getFormattedDate(this.props.defaultDate, 'subtract')), true)
+    // await this.props.dispatch(setSwiperDirection('prev'))
+    // this.props.swiperApi.slidePrev()
+    
   }
 
   render () {
@@ -138,6 +140,7 @@ class Header extends Component {
 const mapStateToProps = state => ({
   defaultDate: state.calendar.defaultDate,
   calendarApi: state.calendar.calendarApi,
-  currentView: state.calendar.currentView
+  currentView: state.calendar.currentView,
+  swiperApi: state.calendar.swiperApi
 })
 export default connect(mapStateToProps)(Header)

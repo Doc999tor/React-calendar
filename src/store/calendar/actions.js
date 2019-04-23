@@ -5,7 +5,7 @@ import * as types from './actionTypes'
 export const setDefaultDay = (defaultDate, defaultDayRefresh = false) => dispatch => {
   dispatch({ type: types.SET_DEFAULT_DAY, payload: { defaultDate, defaultDayRefresh } })
   if (defaultDayRefresh) {
-    setTimeout(() => { dispatch({ type: types.SET_DEFAULT_DAY, payload: { defaultDayRefresh: false } }) }, 0)
+    setTimeout(() => { dispatch({ type: types.SET_DEFAULT_DAY, payload: { defaultDate, defaultDayRefresh: false } }) }, 0)
   }
 }
 
@@ -14,6 +14,16 @@ export const setCalendarAPI = (day, dd) => async (dispatch, getState) => {
   if (defaultDate === dd) {
     dispatch({ type: types.SET_CALENDAR_API, payload: { calendarApi: day?.getApi() } })
   }
+}
+
+export const setSwiperApi = node => async dispatch => {
+  if (node && node.swiper) {
+    dispatch({ type: types.SET_SWIPER_API, payload: { swiperApi: node.swiper } })
+  }
+}
+
+export const setSwiperDirection = swipeDirection => async dispatch => {
+  dispatch({ type: types.SET_SWIPER_DIRECTION, payload: { swipeDirection } })
 }
 
 export const switchView = currentView => async dispatch => {
