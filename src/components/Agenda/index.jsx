@@ -35,24 +35,17 @@ class Agenda extends Component {
     this.props.dispatch(getEvents())
   }
 
-  onSlideChangeEnd = o => {
-    const { swipeDirection } = o
+  onSlideChangeEnd = ({ swipeDirection }) => {
+    let dd
     if (swipeDirection) {
       const action = swipeDirection === 'next' ? 'add' : 'subtract'
-      const defaultDate = moment(this.defaultDate)[action](1, 'days').format(this.format)
-      this.defaultDate = defaultDate
-      this.props.dispatch(setDefaultDay(defaultDate))
+      dd = moment(this.props.defaultDate)[action](1, 'days').format(this.format)
+      this.props.dispatch(setDefaultDay(dd))
     }
-    if (this.defaultDate && (this.defaultDate !== this.state.visibleDays[1])) {
-      const visibleDays = [
-        getFormattedDate(this.defaultDate, 'subtract', 'days'),
-        this.defaultDate,
-        getFormattedDate(this.defaultDate, 'add', 'days')
-      ]
-
+    if (dd && (dd !== this.state.visibleDays[1])) {
+      const visibleDays = [ getFormattedDate(dd, 'subtract', 'days'), dd, getFormattedDate(dd, 'add', 'days') ]
       this.setState({ visibleDays, refresh: true }, () => {
         this.setState({ refresh: false })
-        // this.props.dispatch(getEvents())
       })
     }
   }
