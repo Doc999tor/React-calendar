@@ -1,20 +1,9 @@
 // import { fetchingEvents } from 'project-services'
-import React from 'react'
+// import React from 'react'
 import * as types from './actionTypes'
 
 export const setDefaultDay = defaultDate => dispatch => {
   dispatch({ type: types.SET_DEFAULT_DAY, payload: { defaultDate } })
-}
-
-export const setCalendarAPIs = (days = []) => async dispatch => {
-  const calendarAPIs = {}
-  days.forEach(i => {
-    calendarAPIs['ref' + moment(i)] = React.createRef()
-  })
-  dispatch({
-    type: types.SET_CALENDAR_APIS,
-    payload: { calendarAPIs, defaultDate: days[1] }
-  })
 }
 
 export const setCalendarAPI = (day, dd) => async (dispatch, getState) => {

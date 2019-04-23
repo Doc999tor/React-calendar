@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import DemoCalendar from './DemoCalendar/index.jsx'
+import DemoCalendar from 'components/DemoCalendar/index.jsx'
 // import { getEvents } from 'store/events/actions'
 import CalendarModal from './CalendarModal/CalendarModal.jsx'
-import { setCalendarAPI } from 'store/calendar/actions'
 import { getFormattedDate } from 'helpers'
 import { connect } from 'react-redux'
 import './Weekly.styl'
@@ -52,18 +51,14 @@ class Weekly extends Component {
   handleEventClick = info => this.setState({ info })
 
   render () {
-    const defaultAttr = {
-      eventClick: this.handleEventClick,
-      refs: node => this.props.dispatch(setCalendarAPI(node, this.props.defaultDate)),
-      events: this.props.events
-    }
-    console.log('this.state.visibleDays', this.state.visibleDays)
     return (
       <React.Fragment>
         <div id='calendar-weekly'>
-          <div className='calendar-weekly' 
+          <div className='calendar-weekly'
             style={{ width: this.state.visibleDays.length * 100 + '%' }}>
-            {this.state.visibleDays.map(i => <DemoCalendar key={i} defaultDate={i} {...defaultAttr} />)}
+            {this.state.visibleDays.map(i => (
+              <DemoCalendar key={i} defaultDate={i} eventClick={this.handleEventClick} events={this.props.events} />
+            ))}
           </div>
         </div>
         <CalendarModal info={this.state.info} handleEventClick={this.handleEventClick} />

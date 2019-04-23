@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import DemoCalendar from './DemoCalendar/index.jsx'
+import DemoCalendar from 'components/DemoCalendar/index.jsx'
 import { getEvents } from 'store/events/actions'
 import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import { Swiper } from 'project-components'

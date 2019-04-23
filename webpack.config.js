@@ -4,9 +4,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const alias = {
   'project-components': path.resolve('./components-lib'),
   'project-services': path.resolve('./src/services'),
-  'helpers': path.resolve('./src/helpers'),
-  'store': path.resolve('./src/store'),
-  'lib': path.resolve('./components-lib/lib')
+  components: path.resolve('./src/components'),
+  lib: path.resolve('./components-lib/lib'),
+  helpers: path.resolve('./src/helpers'),
+  store: path.resolve('./src/store')
 }
 
 module.exports = {

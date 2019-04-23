@@ -1,22 +1,20 @@
 import React, { Component } from 'react'
-import Calendar from './Calendar/index.jsx'
-import Agenda from './Agenda/index.jsx'
-import Weekly from './Weekly/index.jsx'
+import Workers from './Workers/Workers.jsx'
 import Monthly from './Monthly/index.jsx'
 import Header from './Header/Header.jsx'
-import Workers from './Workers/Workers.jsx'
+import Agenda from './Agenda/index.jsx'
+import Weekly from './Weekly/index.jsx'
+import Daily from './Daily/index.jsx'
 import { connect } from 'react-redux'
 import './App.styl'
 
 class App extends Component {
-  state = {}
-
   render () {
     const objView = {
+      monthly: Monthly,
       agenda: Agenda,
-      daily: Calendar,
       weekly: Weekly,
-      monthly: Monthly
+      daily: Daily
     }
     const Calendars = objView[this.props.currentView]
     return (

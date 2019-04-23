@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import DemoCalendar from './DemoCalendar/index.jsx'
+// import DemoCalendar from './DemoCalendar/index.jsx'
 import { getEvents } from 'store/events/actions'
 import { getFormattedDate, getStandardFormat } from 'helpers'
+import DemoCalendar from 'components/DemoCalendar/index.jsx'
 import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import { Swiper } from 'project-components'
 import { connect } from 'react-redux'
@@ -19,16 +20,16 @@ class Agenda extends Component {
     }
   }
 
-  static getDerivedStateFromProps (props, state) {
-    const curPropsDate = getStandardFormat(props.defaultDate)
-    const midlStateDate = getStandardFormat(state.visibleDays[1])
-    const visibleDays = [
-      getFormattedDate(curPropsDate, 'subtract', 'days'),
-      curPropsDate,
-      getFormattedDate(curPropsDate, 'add', 'days')
-    ]
-    return curPropsDate !== midlStateDate && !state.refresh ? { visibleDays } : null
-  }
+  // static getDerivedStateFromProps (props, state) {
+  //   const curPropsDate = getStandardFormat(props.defaultDate)
+  //   const midlStateDate = getStandardFormat(state.visibleDays[1])
+  //   const visibleDays = [
+  //     getFormattedDate(curPropsDate, 'subtract', 'days'),
+  //     curPropsDate,
+  //     getFormattedDate(curPropsDate, 'add', 'days')
+  //   ]
+  //   return curPropsDate !== midlStateDate && !state.refresh ? { visibleDays } : null
+  // }
 
   componentDidMount = () => {
     this.props.dispatch(getEvents())
@@ -38,12 +39,10 @@ class Agenda extends Component {
 
   onSlideChangeStart = o => {
     const { swipeDirection } = o
-    console.log(this.defaultDate)
     if (swipeDirection) {
       const action = swipeDirection === 'next' ? 'add' : 'subtract'
       const defaultDate = moment(this.defaultDate)[action](1, 'days').format(this.format)
       this.defaultDate = defaultDate
-      console.log('after', this.defaultDate)
     }
   }
 
@@ -71,6 +70,7 @@ class Agenda extends Component {
           onSlideChangeEnd={this.onSlideChangeEnd}
           initialSlide={1}
           loop>
+          {/*         columnHeaderText={date => moment(date).format('dddd YYYY-MM-DD')} */}
           {this.state.visibleDays.map(i => (
             <div key={i}>
               <DemoCalendar

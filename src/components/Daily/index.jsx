@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import DemoCalendar from './DemoCalendar/index.jsx'
-import { getEvents } from 'store/events/actions'
 import CalendarModal from './CalendarModal/CalendarModal.jsx'
+import DemoCalendar from 'components/DemoCalendar/index.jsx'
+import { getEvents } from 'store/events/actions'
+// import { getFormattedDate, getStandardFormat } from 'helpers'
 import { Swiper } from 'project-components'
 import { getFormattedDate } from 'helpers'
 import { connect } from 'react-redux'
@@ -18,6 +19,15 @@ class Calendar extends Component {
       ]
     }
   }
+
+  // static getDerivedStateFromProps (props, state) {
+  //   const visibleDays = [
+  //     getFormattedDate(props.defaultDate, 'subtract', 'days'),
+  //     props.defaultDate,
+  //     getFormattedDate(props.defaultDate, 'add', 'days')
+  //   ]
+  //   return props.defaultDate !== state.visibleDays[1] && !state.refresh ? { visibleDays } : null
+  // }
 
   componentDidMount = () => {
     this.props.dispatch(getEvents())
@@ -52,7 +62,6 @@ class Calendar extends Component {
     return (
       <div id='swiper-calendar'>
         <Swiper
-          // ref={node => { if (node) this.swiper = node.swiper }}
           onSlideChangeStart={this.onSlideChangeStart}
           onSlideChangeEnd={this.onSlideChangeEnd}
           initialSlide={1}
@@ -76,6 +85,7 @@ class Calendar extends Component {
 const mapStateToProps = state => ({
   eventsFetching: state.events.eventsFetching,
   calendarApi: state.calendar.calendarApi,
+  defaultDate: state.calendar.defaultDate,
   events: state.events.events
 })
 export default connect(mapStateToProps)(Calendar)
