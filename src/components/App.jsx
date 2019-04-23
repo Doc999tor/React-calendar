@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import CalendarModal from './CalendarModal/CalendarModal.jsx'
+import { deleteEventInfo } from 'store/calendar/actions'
 import Workers from './Workers/Workers.jsx'
 import Monthly from './Monthly/index.jsx'
 import Header from './Header/Header.jsx'
@@ -22,6 +24,7 @@ class App extends Component {
         {this.props.calendarApi && <Header calendarApi={this.props.calendarApi} />}
         <Workers />
         <Calendars />
+        {this.props.eventInfo && <CalendarModal info={this.props.eventInfo} close={() => this.props.dispatch(deleteEventInfo())} />}
       </div>
     )
   }
@@ -29,6 +32,7 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   calendarApi: state.calendar.calendarApi,
-  currentView: state.calendar.currentView
+  currentView: state.calendar.currentView,
+  eventInfo: state.calendar.eventInfo
 })
 export default connect(mapStateToProps)(App)

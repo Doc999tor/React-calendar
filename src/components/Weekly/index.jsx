@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import DemoCalendar from 'components/DemoCalendar/index.jsx'
 // import { getEvents } from 'store/events/actions'
-import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import { getFormattedDate } from 'helpers'
 import { connect } from 'react-redux'
 import './Weekly.styl'
@@ -48,8 +47,6 @@ class Weekly extends Component {
     }
   }
 
-  handleEventClick = info => this.setState({ info })
-
   render () {
     return (
       <React.Fragment>
@@ -61,7 +58,6 @@ class Weekly extends Component {
             ))}
           </div>
         </div>
-        <CalendarModal info={this.state.info} handleEventClick={this.handleEventClick} />
       </React.Fragment>
     )
   }

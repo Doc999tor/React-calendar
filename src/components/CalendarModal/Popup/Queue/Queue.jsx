@@ -5,8 +5,6 @@ export default class Queue extends Component {
   render () {
     const event = this.props.info.event
     const extendedProps = event.extendedProps
-    // console.log('event', event)
-    // console.log('extends', extendedProps)
     return (
       <div id='eventPopup' style={config.calendar.isRTL ? { 'direction': 'rtl' } : { 'direction': 'ltr' }} >
         <div className='client-view'>
@@ -16,7 +14,6 @@ export default class Queue extends Component {
             </div>
             <div className='client-page'>
               <div className='client-info'>
-                <span className='hour'>{moment(event.start).format('YYYY-MM-DD')}</span>
                 <div className='client-icons'>
                   {extendedProps.client_id && <div className='wrap-icons'>
                     {/* {event.birthdate && bday(event, view.dateProfile.date)} */}

@@ -59,10 +59,10 @@ class Agenda extends Component {
           onSlideChangeEnd={this.onSlideChangeEnd}
           initialSlide={1}
           loop>
-          {/*         columnHeaderText={date => moment(date).format('dddd YYYY-MM-DD')} */}
           {this.state.visibleDays.map(i => (
             <div key={i}>
               <DemoCalendar
+                columnHeaderText={date => moment(date).format('dddd YYYY-MM-DD')}
                 events={this.props.events}
                 defaultView='agenda'
                 defaultDate={i} />
