@@ -2,35 +2,35 @@ import React, { Component } from 'react'
 import DemoCalendar from './DemoCalendar/index.jsx'
 import { setCalendarAPIs } from 'store/calendar/actions'
 import { getEvents } from 'store/events/actions'
-import { getFormattedDate } from 'helpers'
+import { getFormattedDate, getStandardFormat } from 'helpers'
 import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import { Swiper } from 'project-components'
 import { connect } from 'react-redux'
 import './Agenda.styl'
 
 class Agenda extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       visibleDays: [
-        getFormattedDate(this.props.defaultDate, 'subtract', 'days'),
-        this.props.defaultDate,
-        getFormattedDate(this.props.defaultDate, 'add', 'days')
+        getFormattedDate(props.defaultDate, 'subtract', 'days'),
+        props.defaultDate,
+        getFormattedDate(props.defaultDate, 'add', 'days')
       ]
     }
   }
-  static getDerivedStateFromProps(props, state) {
-    const curPropsDate = moment(props.defaultDate).format('YYYY-MM-DD')
-    const midlStateDate = moment(state.visibleDays[1]).format('YYYY-MM-DD')
+
+  static getDerivedStateFromProps (props, state) {
+    const curPropsDate = getStandardFormat(props.defaultDate)
+    const midlStateDate = getStandardFormat(state.visibleDays[1])
     const visibleDays = [
       getFormattedDate(curPropsDate, 'subtract', 'days'),
       curPropsDate,
       getFormattedDate(curPropsDate, 'add', 'days')
     ]
-    if (curPropsDate === midlStateDate) return null
-    else if (curPropsDate !== midlStateDate && !state.refresh) return { visibleDays }
-    else return null
+    return curPropsDate !== midlStateDate && !state.refresh ? { visibleDays } : null
   }
+
   componentDidMount = () => {
     this.props.dispatch(setCalendarAPIs(this.state.visibleDays))
     this.props.dispatch(getEvents())
@@ -40,13 +40,15 @@ class Agenda extends Component {
 
   onSlideChangeStart = o => {
     const { swipeDirection } = o
+    console.log(this.defaultDate)
     if (swipeDirection) {
       const action = swipeDirection === 'next' ? 'add' : 'subtract'
       const defaultDate = moment(this.defaultDate)[action](1, 'days').format(this.format)
       this.defaultDate = defaultDate
+      console.log('after', this.defaultDate)
     }
   }
-  
+
   onSlideChangeEnd = () => {
     if (this.defaultDate && (this.defaultDate !== this.state.visibleDays[1])) {
       const visibleDays = [
