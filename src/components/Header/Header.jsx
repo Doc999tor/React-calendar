@@ -26,9 +26,6 @@ class Header extends Component {
     let isCurrentDay = currentDay === getStandardFormat(title)
     let currentMonth = moment().format('MM') === moment(title).format('MM')
     // let curDay = moment().format('YYYY-MM-DD')
-    let start = getStandardFormat(calendarApi.state.dateProfile.currentRange.start)
-    let end = getStandardFormat(calendarApi.state.dateProfile.currentRange.end)
-    let isBetween = moment(currentDay).isBetween(moment(start), moment(end))
     const obj = {
       daily: () => ({
         calendarDate: (
@@ -39,15 +36,20 @@ class Header extends Component {
         ),
         state: { view: config.translations.daily, todayBtn: !isCurrentDay }
       }),
-      weekly: () => ({
-        calendarDate: (
-          <React.Fragment>
-            <span className='current_date_field' style={{ 'direction': 'ltr' }}>{moment(start).format('DD') + ' - ' + moment(end).subtract(1, 'days').format('DD') + ' ' + moment(start).format('MMM')}</span>
-            {isBetween && <span className='this_week'>{config.translations.thisWeek}</span>}
-          </React.Fragment>
-        ),
-        state: { view: config.translations.weekly, todayBtn: !isBetween }
-      }),
+      weekly: () => {
+        const start = getFormattedDate(this.props.defaultDate || calendarApi.state.dateProfile.currentRange.start)
+        const end = getFormattedDate(this.props.defaultDate || calendarApi.state.dateProfile.currentRange.start, 'add', 4)
+        const isBetween = moment(currentDay).isBetween(moment(start), moment(end))
+        return {
+          calendarDate: (
+            <React.Fragment>
+              <span className='current_date_field' style={{ 'direction': 'ltr' }}>{moment(start).format('DD') + ' - ' + moment(end).subtract(1, 'days').format('DD') + ' ' + moment(start).format('MMM')}</span>
+              {isBetween && <span className='this_week'>{config.translations.thisWeek}</span>}
+            </React.Fragment>
+          ),
+          state: { view: config.translations.weekly, todayBtn: !isBetween }
+        }
+      },
       monthly: () => ({
         calendarDate: (
           <React.Fragment>
@@ -98,11 +100,11 @@ class Header extends Component {
     this.props.dispatch(setDefaultDay(getFormattedDate(this.props.defaultDate, 'subtract')), true)
     // await this.props.dispatch(setSwiperDirection('prev'))
     // this.props.swiperApi.slidePrev()
-    
   }
 
   render () {
     const { calendarDate, view, todayBtn } = this.getCalendarDate()
+    // console.log('this.props.defaultDate', this.props.defaultDate)
     return (
       <div id='header' style={{ 'direction': config.calendar.isRTL ? 'rtl' : 'ltr' }}>
         <div className={'menu_refresh ' + (config.calendar.isRTL ? 'menu_rtl' : 'menu_ltr')}>

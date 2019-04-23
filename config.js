@@ -186,7 +186,7 @@ const config = {
     dragScroll: true,
     allDaySlot: false,
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    isRTL: true,
+    isRTL: false,
     nowIndicator: true,
     firstDay: 0,
     slotDuration: '00:15:00', // The frequency for displaying time slots

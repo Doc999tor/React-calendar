@@ -58,6 +58,7 @@ class Weekly extends Component {
 
   render () {
     // console.log('this.state.visibleDays', this.state.visibleDays)
+    // console.log('this.props.default', this.props.defaultDate)
     return (
       <React.Fragment>
         <div id='calendar-weekly'>
