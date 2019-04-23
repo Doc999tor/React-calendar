@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import DemoCalendar from 'components/DemoCalendar/index.jsx'
 import { getEvents } from 'store/events/actions'
-import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import { Swiper } from 'project-components'
 import { getFormattedDate } from 'helpers'
 import { connect } from 'react-redux'
@@ -22,8 +21,6 @@ class Monthly extends Component {
   componentDidMount = () => {
     this.props.dispatch(getEvents())
   }
-
-  handleEventClick = info => this.setState({ info })
 
   onSlideChangeStart = o => {
     const { swipeDirection } = o
@@ -59,14 +56,12 @@ class Monthly extends Component {
           {this.state.visibleDays.map(i => (
             <div key={i}>
               <DemoCalendar
-                eventClick={this.handleEventClick}
                 events={this.props.events}
                 defaultView='monthly'
                 defaultDate={i} />
             </div>
           ))}
         </Swiper>
-        <CalendarModal info={this.state.info} handleEventClick={this.handleEventClick} />
       </div>
     )
   }

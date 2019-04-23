@@ -25,6 +25,18 @@ export default (state = initialState, action = {}) => {
         defaultDayRefresh: action.payload.defaultDayRefresh,
         defaultDate: action.payload.defaultDate
       }
+    },
+    [types.GET_EVENT_INFO]: () => {
+      return {
+        ...state,
+        eventInfo: action.payload.eventInfo
+      }
+    },
+    [types.DELETE_EVENT_INFO]: () => {
+      return {
+        ...state,
+        eventInfo: ''
+      }
     }
   }
   const res = obj[action.type]

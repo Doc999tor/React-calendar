@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { setCalendarAPI } from 'store/calendar/actions'
+import { setCalendarAPI, getEventInfo } from 'store/calendar/actions'
 import { connect } from 'react-redux'
 import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -12,15 +12,19 @@ import '@fullcalendar/list/main.css'
 import '@fullcalendar/core/main.css'
 
 class DemoCalendar extends Component {
+  handleEventClick = eventInfo => this.props.dispatch(getEventInfo(eventInfo))
   render () {
     return (
-      <FullCalendar
-        {...config.calendar}
-        defaultView={this.props.defaultView}
-        plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
-        ref={node => this.props.dispatch(setCalendarAPI(node, this.props.defaultDate))}
-        {...this.props}
-      />
+      <React.Fragment>
+        <FullCalendar
+          {...config.calendar}
+          defaultView={this.props.defaultView}
+          plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+          ref={node => this.props.dispatch(setCalendarAPI(node, this.props.defaultDate))}
+          eventClick={this.handleEventClick}
+          {...this.props}
+        />
+      </React.Fragment>
     )
   }
 }

@@ -6,15 +6,12 @@ class CalendarModal extends Component {
   render () {
     if (!this.props.info) return null
     const attr = {
-      close: () => this.props.handleEventClick(),
+      close: () => this.props.close(),
       info: this.props.info
     }
-    return (
-      <div>{this.props.info?.event?.extendedProps?.off_time 
-        ? <OffTime {...attr} /> 
-        : <Queue {...attr} />}
-      </div>
-    )
+    return this.props.info ?.event ?.extendedProps ?.off_time
+      ? <OffTime {...attr} />
+      : <Queue {...attr} />
   }
 }
 

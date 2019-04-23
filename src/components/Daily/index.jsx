@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import DemoCalendar from 'components/DemoCalendar/index.jsx'
 import { getEvents } from 'store/events/actions'
 // import { getFormattedDate, getStandardFormat } from 'helpers'
@@ -63,14 +62,12 @@ class Calendar extends Component {
           {this.state.visibleDays.map(i => (
             <div key={i}>
               <DemoCalendar
-                eventClick={this.handleEventClick}
                 events={this.props.events}
                 defaultView='daily'
                 defaultDate={i} />
             </div>
           ))}
         </Swiper>
-        <CalendarModal info={this.state.info} handleEventClick={this.handleEventClick} />
       </div>
     )
   }
