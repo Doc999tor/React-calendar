@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { getEvents } from 'store/events/actions'
 import { getFormattedDate, getStandardFormat } from 'helpers'
 import DemoCalendar from 'components/DemoCalendar/index.jsx'
-import CalendarModal from './CalendarModal/CalendarModal.jsx'
+import { setDefaultDay } from 'store/calendar/actions'
 import { Swiper } from 'project-components'
 import { connect } from 'react-redux'
 import './Agenda.styl'
@@ -35,18 +35,14 @@ class Agenda extends Component {
     this.props.dispatch(getEvents())
   }
 
-  handleEventClick = info => this.setState({ info })
-
-  onSlideChangeStart = o => {
+  onSlideChangeEnd = o => {
     const { swipeDirection } = o
     if (swipeDirection) {
       const action = swipeDirection === 'next' ? 'add' : 'subtract'
       const defaultDate = moment(this.defaultDate)[action](1, 'days').format(this.format)
       this.defaultDate = defaultDate
+      this.props.dispatch(setDefaultDay(defaultDate))
     }
-  }
-
-  onSlideChangeEnd = () => {
     if (this.defaultDate && (this.defaultDate !== this.state.visibleDays[1])) {
       const visibleDays = [
         getFormattedDate(this.defaultDate, 'subtract', 'days'),
@@ -66,7 +62,6 @@ class Agenda extends Component {
     return (
       <div id='swiper-calendar' className='agenda-view'>
         <Swiper
-          onSlideChangeStart={this.onSlideChangeStart}
           onSlideChangeEnd={this.onSlideChangeEnd}
           initialSlide={1}
           loop>
@@ -74,14 +69,12 @@ class Agenda extends Component {
           {this.state.visibleDays.map(i => (
             <div key={i}>
               <DemoCalendar
-                eventClick={this.handleEventClick}
                 events={this.props.events}
                 defaultView='agenda'
                 defaultDate={i} />
             </div>
           ))}
         </Swiper>
-        <CalendarModal info={this.state.info} handleEventClick={this.handleEventClick} />
       </div>
     )
   }

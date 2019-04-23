@@ -3,19 +3,20 @@ import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import DemoCalendar from 'components/DemoCalendar/index.jsx'
 import { getEvents } from 'store/events/actions'
 // import { getFormattedDate, getStandardFormat } from 'helpers'
+import { setDefaultDay } from 'store/calendar/actions'
 import { Swiper } from 'project-components'
 import { getFormattedDate } from 'helpers'
 import { connect } from 'react-redux'
 
 class Calendar extends Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.state = {
       defaultView: config.calendar.defaultView,
       visibleDays: [
-        getFormattedDate(config.calendar.defaultDate, 'subtract', 'days'),
-        config.calendar.defaultDate,
-        getFormattedDate(config.calendar.defaultDate, 'add', 'days')
+        getFormattedDate(props.defaultDate, 'subtract', 'days'),
+        props.defaultDate,
+        getFormattedDate(props.defaultDate, 'add', 'days')
       ]
     }
   }
@@ -33,18 +34,14 @@ class Calendar extends Component {
     this.props.dispatch(getEvents())
   }
 
-  handleEventClick = info => this.setState({ info })
-
-  onSlideChangeStart = o => {
+  onSlideChangeEnd = o => {
     const { swipeDirection } = o
     if (swipeDirection) {
       const action = swipeDirection === 'next' ? 'add' : 'subtract'
       const defaultDate = moment(this.defaultDate)[action](1, 'days').format(this.format)
       this.defaultDate = defaultDate
+      this.props.dispatch(setDefaultDay(defaultDate))
     }
-  }
-
-  onSlideChangeEnd = () => {
     if (this.defaultDate && (this.defaultDate !== this.state.visibleDays[1])) {
       const visibleDays = [
         getFormattedDate(this.defaultDate, 'subtract', 'days'),
@@ -62,7 +59,6 @@ class Calendar extends Component {
     return (
       <div id='swiper-calendar'>
         <Swiper
-          onSlideChangeStart={this.onSlideChangeStart}
           onSlideChangeEnd={this.onSlideChangeEnd}
           initialSlide={1}
           loop>
