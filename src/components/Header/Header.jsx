@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { switchView, setDefaultDay } from 'store/calendar/actions'
+import { getStandardFormat, currentDay } from 'helpers'
 import HeaderMenu from './HeaderMenu/index.jsx'
 import './Header.styl'
 
@@ -19,23 +20,23 @@ class Header extends Component {
   }
 
   getCalendarDate = () => {
-    let title = moment(this.props.defaultDate).format('YYYY-MM-DD')
+    let title = getStandardFormat(this.props.defaultDate)
     let calendarApi = this.props.calendarApi
-    let currentDay = moment().format('YYYY-MM-DD') === moment(title).format('YYYY-MM-DD')
+    let isCurrentDay = currentDay === getStandardFormat(title)
     let currentMonth = moment().format('MM') === moment(title).format('MM')
-    let curDay = moment().format('YYYY-MM-DD')
-    let start = moment(calendarApi.state.dateProfile.currentRange.start).format('YYYY-MM-DD')
-    let end = moment(calendarApi.state.dateProfile.currentRange.end).format('YYYY-MM-DD')
-    let isBetween = moment(curDay).isBetween(moment(start), moment(end))
+    // let curDay = moment().format('YYYY-MM-DD')
+    let start = getStandardFormat(calendarApi.state.dateProfile.currentRange.start)
+    let end = getStandardFormat(calendarApi.state.dateProfile.currentRange.end)
+    let isBetween = moment(currentDay).isBetween(moment(start), moment(end))
     const obj = {
       daily: () => ({
         calendarDate: (
           <React.Fragment>
-            {currentDay && <span className='today'>{config.translations.today}</span>}
-            <span className={'current_date_field' + (currentDay ? ' for_today' : '')}>{moment(title).format('ddd, MMM DD')}</span>
+            {isCurrentDay && <span className='today'>{config.translations.today}</span>}
+            <span className={'current_date_field' + (isCurrentDay ? ' for_today' : '')}>{moment(title).format('ddd, MMM DD')}</span>
           </React.Fragment>
         ),
-        state: { view: config.translations.daily, todayBtn: !currentDay }
+        state: { view: config.translations.daily, todayBtn: !isCurrentDay }
       }),
       weekly: () => ({
         calendarDate: (
@@ -58,11 +59,11 @@ class Header extends Component {
       agenda: () => ({
         calendarDate: (
           <React.Fragment>
-            {currentDay && <span className='today'>{config.translations.today}</span>}
-            <span className={'current_date_field' + (currentDay ? ' for_today' : '')}>{moment(title).format('ddd, MMM DD')}</span>
+            {isCurrentDay && <span className='today'>{config.translations.today}</span>}
+            <span className={'current_date_field' + (isCurrentDay ? ' for_today' : '')}>{moment(title).format('ddd, MMM DD')}</span>
           </React.Fragment>
         ),
-        state: { view: config.translations.agenda, todayBtn: !currentDay }
+        state: { view: config.translations.agenda, todayBtn: !isCurrentDay }
       })
     }
     const { calendarDate, state } = obj[this.props.currentView || calendarApi?.view?.type]()
@@ -83,7 +84,6 @@ class Header extends Component {
   }
 
   handleToday = () => {
-    let currentDay = moment().format('YYYY-MM-DD')
     this.props.dispatch(setDefaultDay(currentDay))
   }
   
