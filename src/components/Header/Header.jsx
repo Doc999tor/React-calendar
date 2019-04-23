@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { switchView, setDefaultDay } from 'store/calendar/actions'
-import { getStandardFormat, currentDay } from 'helpers'
+import { getFormattedDate, getStandardFormat, currentDay } from 'helpers'
 import HeaderMenu from './HeaderMenu/index.jsx'
 import './Header.styl'
 
@@ -84,19 +84,21 @@ class Header extends Component {
   }
 
   handleToday = () => {
-    this.props.dispatch(setDefaultDay(currentDay))
+    this.props.dispatch(setDefaultDay(currentDay, true))
   }
-  
+
   handleNext = () => {
     let calendarApi = this.props.calendarApi
     calendarApi.next()
+    this.props.dispatch(setDefaultDay(getFormattedDate(this.props.defaultDate, 'add')), true)
   }
-  
+
   handlePrev = () => {
     let calendarApi = this.props.calendarApi
     calendarApi.prev()
+    this.props.dispatch(setDefaultDay(getFormattedDate(this.props.defaultDate, 'subtract')), true)
   }
-  
+
   render () {
     const { calendarDate, view, todayBtn } = this.getCalendarDate()
     return (

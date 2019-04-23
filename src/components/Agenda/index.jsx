@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // import DemoCalendar from './DemoCalendar/index.jsx'
 import { getEvents } from 'store/events/actions'
-import { getFormattedDate, getStandardFormat } from 'helpers'
+import { getFormattedDate } from 'helpers'
 import DemoCalendar from 'components/DemoCalendar/index.jsx'
 import { setDefaultDay } from 'store/calendar/actions'
 import { Swiper } from 'project-components'
@@ -20,16 +20,17 @@ class Agenda extends Component {
     }
   }
 
-  // static getDerivedStateFromProps (props, state) {
-  //   const curPropsDate = getStandardFormat(props.defaultDate)
-  //   const midlStateDate = getStandardFormat(state.visibleDays[1])
-  //   const visibleDays = [
-  //     getFormattedDate(curPropsDate, 'subtract', 'days'),
-  //     curPropsDate,
-  //     getFormattedDate(curPropsDate, 'add', 'days')
-  //   ]
-  //   return curPropsDate !== midlStateDate && !state.refresh ? { visibleDays } : null
-  // }
+  static getDerivedStateFromProps (props) {
+    return props.defaultDayRefresh
+      ? {
+        visibleDays: [
+          getFormattedDate(props.defaultDate, 'subtract', 'days'),
+          props.defaultDate,
+          getFormattedDate(props.defaultDate, 'add', 'days')
+        ]
+      }
+      : null
+  }
 
   componentDidMount = () => {
     this.props.dispatch(getEvents())
@@ -39,7 +40,7 @@ class Agenda extends Component {
     let dd
     if (swipeDirection) {
       const action = swipeDirection === 'next' ? 'add' : 'subtract'
-      dd = moment(this.props.defaultDate)[action](1, 'days').format(this.format)
+      dd = getFormattedDate(this.props.defaultDate, action)
       this.props.dispatch(setDefaultDay(dd))
     }
     if (dd && (dd !== this.state.visibleDays[1])) {
@@ -51,7 +52,7 @@ class Agenda extends Component {
   }
 
   render () {
-    if (this.state.refresh) return null
+    if (this.state.refresh || this.props.defaultDayRefresh) return null
     return (
       <div id='swiper-calendar' className='agenda-view'>
         <Swiper
@@ -74,6 +75,7 @@ class Agenda extends Component {
 }
 
 const mapStateToProps = state => ({
+  defaultDayRefresh: state.calendar.defaultDayRefresh,
   eventsFetching: state.events.eventsFetching,
   calendarApi: state.calendar.calendarApi,
   defaultDate: state.calendar.defaultDate,

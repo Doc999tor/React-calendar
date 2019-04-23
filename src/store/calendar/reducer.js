@@ -22,6 +22,7 @@ export default (state = initialState, action = {}) => {
     [types.SET_DEFAULT_DAY]: () => {
       return {
         ...state,
+        defaultDayRefresh: action.payload.defaultDayRefresh,
         defaultDate: action.payload.defaultDate
       }
     }

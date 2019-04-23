@@ -2,8 +2,11 @@
 // import React from 'react'
 import * as types from './actionTypes'
 
-export const setDefaultDay = defaultDate => dispatch => {
-  dispatch({ type: types.SET_DEFAULT_DAY, payload: { defaultDate } })
+export const setDefaultDay = (defaultDate, defaultDayRefresh = false) => dispatch => {
+  dispatch({ type: types.SET_DEFAULT_DAY, payload: { defaultDate, defaultDayRefresh } })
+  if (defaultDayRefresh) {
+    setTimeout(() => { dispatch({ type: types.SET_DEFAULT_DAY, payload: { defaultDayRefresh: false } }) }, 0)
+  }
 }
 
 export const setCalendarAPI = (day, dd) => async (dispatch, getState) => {

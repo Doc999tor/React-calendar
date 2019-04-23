@@ -21,14 +21,17 @@ class Calendar extends Component {
     }
   }
 
-  // static getDerivedStateFromProps (props, state) {
-  //   const visibleDays = [
-  //     getFormattedDate(props.defaultDate, 'subtract', 'days'),
-  //     props.defaultDate,
-  //     getFormattedDate(props.defaultDate, 'add', 'days')
-  //   ]
-  //   return props.defaultDate !== state.visibleDays[1] && !state.refresh ? { visibleDays } : null
-  // }
+  static getDerivedStateFromProps (props) {
+    return props.defaultDayRefresh
+      ? {
+        visibleDays: [
+          getFormattedDate(props.defaultDate, 'subtract', 'days'),
+          props.defaultDate,
+          getFormattedDate(props.defaultDate, 'add', 'days')
+        ]
+      }
+      : null
+  }
 
   componentDidMount = () => {
     this.props.dispatch(getEvents())
@@ -38,7 +41,7 @@ class Calendar extends Component {
     let dd
     if (swipeDirection) {
       const action = swipeDirection === 'next' ? 'add' : 'subtract'
-      dd = moment(this.props.defaultDate)[action](1, 'days').format(this.format)
+      dd = getFormattedDate(this.props.defaultDate, action)
       this.props.dispatch(setDefaultDay(dd))
     }
     if (dd && (dd !== this.state.visibleDays[1])) {
@@ -50,7 +53,7 @@ class Calendar extends Component {
   }
 
   render () {
-    if (this.state.refresh) return null
+    if (this.state.refresh || this.props.defaultDayRefresh) return null
     return (
       <div id='swiper-calendar'>
         <Swiper
@@ -74,9 +77,10 @@ class Calendar extends Component {
 }
 
 const mapStateToProps = state => ({
+  defaultDayRefresh: state.calendar.defaultDayRefresh,
   eventsFetching: state.events.eventsFetching,
-  calendarApi: state.calendar.calendarApi,
   defaultDate: state.calendar.defaultDate,
+  calendarApi: state.calendar.calendarApi,
   events: state.events.events
 })
 export default connect(mapStateToProps)(Calendar)
