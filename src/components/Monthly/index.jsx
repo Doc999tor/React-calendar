@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import DemoCalendar from './DemoCalendar/index.jsx'
-import { setCalendarAPIs } from 'store/calendar/actions'
 import { getEvents } from 'store/events/actions'
 import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import { Swiper } from 'project-components'
@@ -21,7 +20,6 @@ class Monthly extends Component {
   }
 
   componentDidMount = () => {
-    this.props.dispatch(setCalendarAPIs(this.state.visibleDays))
     this.props.dispatch(getEvents())
   }
 
@@ -45,7 +43,6 @@ class Monthly extends Component {
       ]
       this.setState({ visibleDays, refresh: true }, () => {
         this.setState({ refresh: false })
-        this.props.dispatch(setCalendarAPIs(visibleDays))
       })
     }
   }
@@ -77,7 +74,6 @@ class Monthly extends Component {
 
 const mapStateToProps = state => ({
   eventsFetching: state.events.eventsFetching,
-  calendarAPIs: state.calendar.calendarAPIs,
   calendarApi: state.calendar.calendarApi,
   events: state.events.events
 })

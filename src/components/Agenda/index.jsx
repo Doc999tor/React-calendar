@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import DemoCalendar from './DemoCalendar/index.jsx'
-import { setCalendarAPIs } from 'store/calendar/actions'
 import { getEvents } from 'store/events/actions'
 import { getFormattedDate, getStandardFormat } from 'helpers'
 import CalendarModal from './CalendarModal/CalendarModal.jsx'
@@ -32,7 +31,6 @@ class Agenda extends Component {
   }
 
   componentDidMount = () => {
-    this.props.dispatch(setCalendarAPIs(this.state.visibleDays))
     this.props.dispatch(getEvents())
   }
 
@@ -59,7 +57,6 @@ class Agenda extends Component {
 
       this.setState({ visibleDays, refresh: true }, () => {
         this.setState({ refresh: false })
-        this.props.dispatch(setCalendarAPIs(visibleDays))
         // this.props.dispatch(getEvents())
       })
     }
@@ -92,7 +89,6 @@ class Agenda extends Component {
 
 const mapStateToProps = state => ({
   eventsFetching: state.events.eventsFetching,
-  calendarAPIs: state.calendar.calendarAPIs,
   calendarApi: state.calendar.calendarApi,
   defaultDate: state.calendar.defaultDate,
   events: state.events.events

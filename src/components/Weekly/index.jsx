@@ -57,6 +57,7 @@ class Weekly extends Component {
       refs: node => this.props.dispatch(setCalendarAPI(node, this.props.defaultDate)),
       events: this.props.events
     }
+    console.log('this.state.visibleDays', this.state.visibleDays)
     return (
       <React.Fragment>
         <div id='calendar-weekly'>

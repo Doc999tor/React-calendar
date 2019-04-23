@@ -2,18 +2,11 @@
 import * as types from './actionTypes'
 
 const initialState = {
-  calendarAPIs: {},
   currentView: config.calendar.defaultView,
   defaultDate: config.calendar.defaultDate
 }
 export default (state = initialState, action = {}) => {
   const obj = {
-    [types.SET_CALENDAR_APIS]: () => {
-      return {
-        ...state,
-        ...action.payload
-      }
-    },
     [types.SET_CALENDAR_API]: () => {
       return {
         ...state,
