@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { switchView, setDefaultDay } from 'store/calendar/actions'
-// setSwiperDirection
 import { getFormattedDate, getStandardFormat, currentDay } from 'helpers'
+import { setDefaultDayRefresh, switchView, setDefaultDay } from 'store/calendar/actions'
 import HeaderMenu from './HeaderMenu/index.jsx'
+import { connect } from 'react-redux'
 import './Header.styl'
 
 // TODO: Handle 'defaultDay'
@@ -89,17 +88,25 @@ class Header extends Component {
   handleToday = () => this.props.dispatch(setDefaultDay(currentDay, true))
 
   handleNext = async () => {
+    const date = getFormattedDate(this.props.defaultDate, 'add')
+    this.props.dispatch(setDefaultDay(date))
     this.props.calendarApi.next()
-    this.props.dispatch(setDefaultDay(getFormattedDate(this.props.defaultDate, 'add')), true)
-    // await this.props.dispatch(setSwiperDirection('next'))
-    // this.props.swiperApi.slideNext()
+    this.props.swiperApi.slideNext()
+    setTimeout(() => {
+      this.props.dispatch(setDefaultDayRefresh())
+      // this.props.swiperApi.update()
+    }, 600)
   }
 
   handlePrev = async () => {
+    const date = getFormattedDate(this.props.defaultDate, 'subtract')
+    this.props.dispatch(setDefaultDay(date))
     this.props.calendarApi.prev()
-    this.props.dispatch(setDefaultDay(getFormattedDate(this.props.defaultDate, 'subtract')), true)
-    // await this.props.dispatch(setSwiperDirection('prev'))
-    // this.props.swiperApi.slidePrev()
+    this.props.swiperApi.slidePrev()
+    setTimeout(() => {
+      this.props.dispatch(setDefaultDayRefresh())
+      this.props.swiperApi.update()
+    }, 600)
   }
 
   render () {

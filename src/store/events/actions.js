@@ -27,7 +27,7 @@ export const getEvents = () => async (dispatch, getState) => {
   let currentView = getCalendarState.calendar.currentView
   let defaultDate = moment(getCalendarState.calendar.defaultDate).format('YYYY-MM-DD')
   try {
-    dispatch({ type: types.GET_STANDART_EVENTS })
+    // dispatch({ type: types.GET_STANDART_EVENTS })
     const obj = {
       agenda: () => {
         let start = moment(defaultDate).subtract(1, 'days')
@@ -52,7 +52,7 @@ export const getEvents = () => async (dispatch, getState) => {
     }
     const { dayStart, dayEnd } = obj[currentView]()
     const res = await fetchingEvents(dayStart, dayEnd)
-    dispatch({ type: types.GET_STANDART_EVENTS_SUCCESS, payload: { events: res.events } })
+    // dispatch({ type: types.GET_STANDART_EVENTS_SUCCESS, payload: { events: res.events } })
   } catch (err) {
     dispatch({ type: types.GET_STANDART_EVENTS_ERROR })
   }

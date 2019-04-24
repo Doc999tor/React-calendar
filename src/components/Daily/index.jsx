@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { setDefaultDay, setSwiperApi, setSwiperDirection } from 'store/calendar/actions'
+import { setDefaultDay, setSwiperApi } from 'store/calendar/actions'
 import DemoCalendar from 'components/DemoCalendar/index.jsx'
 import { getEvents } from 'store/events/actions'
-// import { getFormattedDate, getStandardFormat } from 'helpers'
 import { Swiper } from 'project-components'
 import { getFormattedDate } from 'helpers'
 import { connect } from 'react-redux'
@@ -36,11 +35,10 @@ class Calendar extends Component {
     this.props.dispatch(getEvents())
   }
 
-  onSlideChangeEnd = o => {
-    const sd = o.swipeDirection // || this.props.swipeDirection
+  onSlideChangeEnd = ({ swipeDirection }) => {
     let dd
-    if (sd) {
-      const action = sd === 'next' ? 'add' : 'subtract'
+    if (swipeDirection) {
+      const action = swipeDirection === 'next' ? 'add' : 'subtract'
       dd = getFormattedDate(this.props.defaultDate, action)
       this.props.dispatch(setDefaultDay(dd))
     }
@@ -50,7 +48,6 @@ class Calendar extends Component {
         this.setState({ refresh: false })
       })
     }
-    // if (this.props.swipeDirection) this.props.dispatch(setSwiperDirection())
   }
 
   render () {
@@ -58,7 +55,7 @@ class Calendar extends Component {
     return (
       <div id='swiper-calendar'>
         <Swiper
-        // ref={node => this.props.dispatch(setSwiperApi(node))}
+          ref={node => this.props.dispatch(setSwiperApi(node))}
           onSlideChangeEnd={this.onSlideChangeEnd}
           initialSlide={1}
           loop>
@@ -78,7 +75,6 @@ class Calendar extends Component {
 
 const mapStateToProps = state => ({
   defaultDayRefresh: state.calendar.defaultDayRefresh,
-  // swipeDirection: state.calendar.swipeDirection,
   eventsFetching: state.events.eventsFetching,
   defaultDate: state.calendar.defaultDate,
   calendarApi: state.calendar.calendarApi,

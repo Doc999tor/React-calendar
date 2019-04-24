@@ -25,17 +25,17 @@ export default (state = initialState, action = {}) => {
         currentView: action.payload.currentView
       }
     },
-    [types.SET_SWIPER_DIRECTION]: () => {
-      return {
-        ...state,
-        swipeDirection: action.payload.swipeDirection
-      }
-    },
     [types.SET_DEFAULT_DAY]: () => {
       return {
         ...state,
         defaultDayRefresh: action.payload.defaultDayRefresh,
         defaultDate: action.payload.defaultDate
+      }
+    },
+    [types.SET_DEFAULT_DAY_REFRESH]: () => {
+      return {
+        ...state,
+        defaultDayRefresh: action.payload.defaultDayRefresh
       }
     },
     [types.GET_EVENT_INFO]: () => {
