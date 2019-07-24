@@ -5,6 +5,8 @@ export default class Queue extends Component {
   render () {
     const event = this.props.info.event
     const extendedProps = event.extendedProps
+    const { fullMonths } = config.translations.dates
+    const { days } = config.translations.dates
     return (
       <div id='eventPopup' style={config.calendar.isRTL ? { 'direction': 'rtl' } : { 'direction': 'ltr' }} >
         <div className='client-view'>
@@ -75,15 +77,15 @@ export default class Queue extends Component {
               </div>
               <div className='date-wrap'>
                 <p>
-                  <span className='hour'>asdasd</span>
-                  <span className='monthDay'>asdsad</span>
-                  <span className='dayOfWeek'>asdasd</span>
+                  <span className='hour'>{days[moment(event.start).days()]}</span>
+                  <span className='monthDay'>{moment(event.start).format('DD') + ' ' + fullMonths[moment(event.start).month()]}</span>
+                  <span className='dayOfWeek'>{moment(event.start).format('YYYY')}</span>
                 </p>
                 {event.durationEditable && <p className='approved'>${config.translations.approved}</p>}
               </div>
             </div>
             <div className='time-dur'>
-              <p className='time'>12 - 123</p>
+              <p className='time'><span>{moment(event.start).format('HH:mm')}</span> - <span>{moment(event.end).format('HH:mm')}</span></p>
               <div className='duration'>
                 <img className='mini' src={config.urls.staticImg + '/clock.svg'} />
                 {/* <div className='event-duration'>${customTimeToText(event.end - event.start)}</div> */}
