@@ -21,7 +21,12 @@ class Monthly extends Component {
   componentDidMount = () => {
     this.props.dispatch(getEvents())
   }
-
+  componentDidUpdate = (prevProps, prevState) => {
+    // console.log(prevState.visibleDays[1])
+    // console.log(this.state.visibleDays[1])
+    if (prevState.visibleDays[1] === this.state.visibleDays[1]) return false
+    this.props.dispatch(getEvents())
+  }
   onSlideChangeStart = o => {
     const { swipeDirection } = o
     if (swipeDirection) {

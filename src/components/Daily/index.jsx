@@ -35,7 +35,10 @@ class Calendar extends Component {
   componentDidMount = () => {
     this.props.dispatch(getEvents())
   }
-
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.visibleDays[1] === this.state.visibleDays[1]) return false
+    this.props.dispatch(getEvents())
+  }
   onSlideChangeEnd = o => {
     const sd = o.swipeDirection // || this.props.swipeDirection
     let dd
@@ -52,7 +55,6 @@ class Calendar extends Component {
     }
     // if (this.props.swipeDirection) this.props.dispatch(setSwiperDirection())
   }
-
   render () {
     if (this.state.refresh || this.props.defaultDayRefresh) return null
     return (

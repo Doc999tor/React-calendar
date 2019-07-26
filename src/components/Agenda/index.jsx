@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import DemoCalendar from './DemoCalendar/index.jsx'
 import { getEvents } from 'store/events/actions'
 import { getFormattedDate } from 'helpers'
 import DemoCalendar from 'components/DemoCalendar/index.jsx'
@@ -35,7 +34,10 @@ class Agenda extends Component {
   componentDidMount = () => {
     this.props.dispatch(getEvents())
   }
-
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.visibleDays[1] === this.state.visibleDays[1]) return false
+    this.props.dispatch(getEvents())
+  }
   onSlideChangeEnd = ({ swipeDirection }) => {
     let dd
     if (swipeDirection) {
