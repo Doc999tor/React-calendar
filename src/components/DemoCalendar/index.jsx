@@ -12,7 +12,12 @@ import '@fullcalendar/list/main.css'
 import '@fullcalendar/core/main.css'
 
 class DemoCalendar extends Component {
+  calendarRef = React.createRef()
   handleEventClick = eventInfo => this.props.dispatch(getEventInfo(eventInfo))
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    this.props.dispatch(setCalendarAPI(this.calendarRef.current, this.props.defaultDate))
+  }
+
   render () {
     return (
       <React.Fragment>
@@ -20,7 +25,7 @@ class DemoCalendar extends Component {
           {...config.calendar}
           defaultView={this.props.defaultView}
           plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
-          ref={node => this.props.dispatch(setCalendarAPI(node, this.props.defaultDate))}
+          ref={this.calendarRef}
           eventClick={this.handleEventClick}
           {...this.props}
         />

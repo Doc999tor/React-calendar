@@ -62,6 +62,7 @@ class Calendar extends Component {
     }
     // if (this.props.swipeDirection) this.props.dispatch(setSwiperDirection())
   }
+
   render () {
     if (this.state.refresh || this.props.defaultDayRefresh) return null
     const swiperParams = {

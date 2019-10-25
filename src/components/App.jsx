@@ -19,11 +19,10 @@ class App extends Component {
       daily: Daily
     }
     const Calendars = objView[this.props.currentView]
-    // console.log('this.props.calendarApi', this.props.calendarApi)
-    // console.log('this.props', this.props)
+    // console.log(this.props.calendar)
     return (
       <div className='app'>
-        <Header calendarApi={this.props.calendarApi} />
+        {this.props.calendarApi && <Header calendarApi={this.props.calendarApi} />}
         <Workers />
         <Calendars />
         {this.props.eventInfo && <CalendarModal info={this.props.eventInfo} close={() => this.props.dispatch(deleteEventInfo())} />}
@@ -35,6 +34,7 @@ class App extends Component {
 const mapStateToProps = state => ({
   calendarApi: state.calendar.calendarApi,
   currentView: state.calendar.currentView,
-  eventInfo: state.calendar.eventInfo
+  eventInfo: state.calendar.eventInfo,
+  calendar: state.calendar
 })
 export default connect(mapStateToProps)(App)

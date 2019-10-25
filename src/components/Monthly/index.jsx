@@ -4,19 +4,20 @@ import { getEvents } from 'store/events/actions'
 import { default as Swiper } from 'project-components/Swiper/Swiper.js'
 import { default as getFormattedDate } from 'helpers/getFormattedDate.js'
 import { connect } from 'react-redux'
+import { setDefaultDay } from '../../store/calendar/actions'
 
 class Monthly extends Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.state = {
-      defaultView: config.calendar.defaultView,
       visibleDays: [
-        getFormattedDate(config.calendar.defaultDate, 'subtract', 'months'),
-        config.calendar.defaultDate,
-        getFormattedDate(config.calendar.defaultDate, 'add', 'months')
+        getFormattedDate(props.defaultDate, 'subtract', 'months'),
+        props.defaultDate,
+        getFormattedDate(props.defaultDate, 'add', 'months')
       ]
     }
   }
+
   static getDerivedStateFromProps (props) {
     return props.defaultDayRefresh
       ? {
@@ -28,6 +29,7 @@ class Monthly extends Component {
       }
       : null
   }
+
   componentDidMount = () => {
     this.props.dispatch(getEvents())
   }
@@ -46,7 +48,14 @@ class Monthly extends Component {
     }
   }
 
-  onSlideChangeEnd = () => {
+  onSlideChangeEnd = (o) => {
+    let sd = o.swipeDirection
+    let dd
+    if(sd) {
+      const action = sd === 'next' ? 'add' : 'subtract'
+      dd = getFormattedDate(this.defaultDate, action)
+      this.props.dispatch(setDefaultDay(dd))
+    }
     if (this.defaultDate && (this.defaultDate !== this.state.visibleDays[1])) {
       const visibleDays = [
         getFormattedDate(this.defaultDate, 'subtract', 'months'),
@@ -60,7 +69,8 @@ class Monthly extends Component {
   }
 
   render () {
-    if (this.state.refresh) return null
+    console.log(this.props)
+    if (this.state.refresh || this.props.defaultDayRefresh) return null
     return (
       <div id='swiper-calendar'>
         <Swiper
@@ -83,8 +93,10 @@ class Monthly extends Component {
 }
 
 const mapStateToProps = state => ({
+  defaultDayRefresh: state.calendar.defaultDayRefresh,
   eventsFetching: state.events.eventsFetching,
   calendarApi: state.calendar.calendarApi,
-  events: state.events.events
+  events: state.events.events,
+  defaultDate: state.calendar.defaultDate,
 })
 export default connect(mapStateToProps)(Monthly)
