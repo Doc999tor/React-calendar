@@ -1,0 +1,94 @@
+#notes
+  border-radius 7px
+  margin 7px 7px
+  .note-header
+    height 4em
+    display flex
+    justify-content space-between
+    align-items center
+    padding 0 14px
+    border-bottom 1px solid #dedeff
+    background-color: #fff
+    span
+      font-size 1.5em
+      font-weight 700
+    .back
+      display flex
+      align-items center
+      justify-content center
+      background-color transparent
+      border none
+      padding 0
+      outline none
+      font-size 14px
+      font-weight 500
+      color #4f2da7;
+      img
+        width 20px
+        height 20px
+        -webkit-margin-end 0.2rem
+        -moz-margin-end 0.2rem
+        margin-inline-end 0.2rem
+  .note-body
+    // overflow hidden
+    // overflow-y auto
+    background-color: #fff
+    .note-list
+      display flex
+      justify-content space-between
+      border-top 1px solid #dedeff
+      .left-side
+        margin auto 10px
+        .date
+          display flex
+          flex-direction row
+          .notes-list-date
+            font-size 0.7em
+          .notes-list-reminder
+            -webkit-margin-start 5px
+            -moz-margin-start 5px
+            height 15px
+        .notes-list-desc
+          // width: 250px
+          max-height: 75px  
+          overflow: hidden;
+          line-height: 25px;   
+          font-size: 1.3em;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;  
+        .full-note
+          white-space pre-line
+          max-height: unset 
+          overflow: unset;
+          display flex
+      .right-side
+        padding-inline-end 0.7rem
+        -webkit-padding-end 0.7rem
+        -moz-padding-end 0.7rem
+        display flex
+        align-items center
+        padding-inline-start 0.7rem
+        -webkit-padding-start 0.7rem
+        -moz-padding-start 0.7rem
+  .note-footer
+    background-color: #fff;
+    width: 100%;
+    height: 4em;
+    display: flex;
+    justify-content: space-between;
+    label
+      color #5e36b1;
+      font-size 14px
+      font-weight 600
+    img
+      padding-inline-end 0.7rem
+      -webkit-padding-end 0.7rem
+      -moz-padding-end 0.7rem
+  .bot-border
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    margin-bottom 7px
+  .top-border
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;

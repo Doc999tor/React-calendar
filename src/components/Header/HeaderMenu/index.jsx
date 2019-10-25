@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Menu } from 'project-components'
+import { default as Menu } from 'project-components/Menu/Menu.jsx'
 
 class HeaderMenu extends Component {
   state = { }

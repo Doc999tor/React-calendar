@@ -4,19 +4,41 @@
   flex-direction column
   justify-content center
   align-items center
-  .category:first-child
-    border none
+  .extended-category
+    display flex
+    flex-direction column
+  .acordeon
+    visibility hidden
+    opacity 0
+    height 0
+    background-color white
+    transition height 0.3s, visibility 0.3s, opacity 0.3s linear
+  .active
+    visibility visible
+    height 100%
+    opacity 1
+    background-color white
+  .active_category
+    background-color var(--sec-color)
+    transition background-color 1s linear
+  .border
+    width 95%
+    border-top 1px solid #dedeff
   .category
     display flex
     height 4rem
-    border-top 1px solid #dedeff
     align-items center
     -webkit-padding-start 1rem  
     -moz-padding-start 1rem
     padding-inline-start 1rem
+    -webkit-padding-end 1.5rem  
+    -moz-padding-end 1.5rem
+    padding-inline-end 1.5rem
     .category_name
     .category_count
       font-size 16px
+    .category_name
+      word-break break-all
     .category_count
       -webkit-margin-start 0.6rem  
       -moz-margin-start 0.6rem
@@ -30,8 +52,14 @@
       .rtl-arrow
         width 30px
         height 30px
+        transition all 0.3s linear
       .rtl-arrow
-        transform scale(-1, -1)
+        display block
+        transform rotate(180deg)
+      .rotate-arrow
+        transform rotate(90deg)
+      .rotate-active
+        transform rotate(90deg)
   .procedures-title
     margin 0
     padding 0.8rem 1.5rem 0
@@ -74,9 +102,6 @@
   .edditional-info
     display flex
   .procedure-wrap
-    -webkit-padding-end 0.7rem  
-    -moz-padding-end 0.7rem
-    padding-inline-end 0.7rem
     border-radius 8px
     overflow-y auto
     height 27rem
@@ -86,13 +111,16 @@
     border-top none
   .wrap-service
     border-top 1px solid #dedeff
+    -webkit-margin-end 0.7rem  
+    -moz-margin-end 0.7rem
+    margin-inline-end 0.7rem
+  .wrap-service:last-child
+    border-bottom 1px solid #dedeff
+    
   .service
     height 4rem
     display flex
-    padding-top 1rem
-    padding-bottom 0.5rem
-    flex-direction column
-    align-items start
+    align-items center
     justify-content space-between
     -webkit-border-start 6px solid 
     -moz-border-start 6px solid 
@@ -100,14 +128,23 @@
     -webkit-padding-start 0.7rem  
     -moz-padding-start 0.7rem
     padding-inline-start 0.7rem
+    .common-wrap
+      height 100%
+      flex-direction column
+      justify-content space-between
+      display flex
+      padding-top 0.8rem
+      padding-bottom 0.5rem
+      flex-direction column
     h2
       margin 0
+      word-break break-all
       font-size 18px
     .name
       opacity 0.87
       font-weight normal
       font-size 16px
-      line-height 0.75
+      line-height 1rem
       color #222222
     .add_wrap
       display inline-block

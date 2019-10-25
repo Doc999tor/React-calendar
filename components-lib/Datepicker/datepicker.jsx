@@ -1,51 +1,88 @@
 import './datepicker.styl'
 export default class Datepicker extends React.Component {
   state = {
-    birthdate: this.props.birthdate,
-    day: '',
-    month: '',
-    year: '',
-    birthyear: this.props.birthyear,
-    configValue: this.props.defaultValue
-    // configValue1: this.props.defaultValue1
+    min: '1930',
+    max: moment().format('YYYY')
   }
-  componentDidUpdate = () => {
-    let option = document.querySelectorAll('option')
-    option.forEach(i => {
-      if (!i.value) i.disabled = true
-    })
-  }
-  render () {
-    let stringYear = String(config.data.birthyear)
-    let stringDate = String(config.data.birthdate)
-    let date = this.props.newDays
-    return (
-      <ComboDatePicker
-        order='ymd'
-        months={config.translations.months}
-        placeholder={config.translations.profile_birthdate}
-        date={this.props.defaultBirthday ? ((config.data.birthyear ? moment(stringYear).format('YYYY') : moment().format('YYYY')) + '-'
-        + (config.data.birthdate ? moment(stringDate).format('MM') : moment().format('MM')) + '-'
-        + (config.data.birthdate ? moment(stringDate).format('DD') : moment().format('DD'))) : ''}
-        onChange={(e, a) => {
-          this.setState({
-            day: moment(a).format('DD'),
-            month: moment(a).format('MM'),
-            year: moment(a).format('YYYY'),
-            configValue: moment(a).format('YYYY-MM-DD'),
-            birthdate: moment(a).isValid() ? (moment(a).format('MM') + '-' + moment(a).format('DD')) : '',
-            birthyear: moment(a).isValid() && moment(a).format('YYYY')
-          }, () => {
-            !!this.props.getBirthdate && this.props.getBirthdate(this.state.birthdate)
-            !!this.props.getBirthyear && this.props.getBirthyear(this.state.birthyear)
-            !!this.props.getHandleDay && this.props.getHandleDay(this.state.day)
-            !!this.props.getHandleMonth && this.props.getHandleMonth(this.state.month)
-            !!this.props.getHandleYear && this.props.getHandleYear(this.state.year)
-            this.props.handleDate && this.props.handleDate(this.state.birthdate, this.state.birthyear)
-          })
-        }}
-      />
 
+  renderOptionsYear = () => {
+    const arr = []
+    for (let i = this.state.min; i <= this.state.max; i++) {
+      arr.push(i)
+    }
+    return (
+      arr.map(opt => (
+        <option key={opt} value={opt}>
+          {opt}
+        </option>
+      ))
+    )
+  }
+
+  renderOptionsMonth = () => {
+    moment.locale(config.locale)
+    const arr = []
+    for (let index = 0; index < 12; index++) {
+      let months = moment().set('month', index).format('MMMM')
+      arr.push(months.charAt(0).toUpperCase() + months.slice(1))
+    }
+    const res = arr.map((opt, index) => {
+      let indexStr = (index + 1) + ''
+      if (indexStr.length < 2) indexStr = 0 + indexStr
+      return (
+        <option key={opt} value={indexStr}>
+          {opt}
+        </option>
+      )
+    }
+    )
+    return res
+  }
+
+  renderOptionsDay = () => {
+    const arr = []
+    const month = this.props.month && !isNaN(+this.props.month) ? this.props.month : '01'
+    for (let i = 0; i < moment(month, 'MM').daysInMonth(); i++) {
+      let day = (i + 1) + ''
+      if (day.length < 2) day = 0 + day
+      arr.push(day)
+    }
+    const res = arr.map((opt, index) => {
+      let indexStr = (index + 1) + ''
+      if (indexStr.length < 2) indexStr = 0 + indexStr
+      return (
+        <option key={opt} value={indexStr}>
+          {opt}
+        </option>
+      )
+    }
+    )
+    return res
+  }
+
+  render () {
+    return (
+      <div className='picker-wrap'>
+        <select className='year' value={this.props.year} onChange={this.props.handleChangeYear}>
+          <option value={config.translations.datepicker.placeholder.year} disabled>{config.translations.datepicker.placeholder.year}</option>
+          {
+            this.renderOptionsYear()
+          }
+        </select>
+
+        <select className='month' value={this.props.month} onChange={this.props.handleChangeMonth}>
+          <option value={config.translations.datepicker.placeholder.month} disabled>{config.translations.datepicker.placeholder.month}</option>
+          {
+            this.renderOptionsMonth()
+          }
+        </select>
+        <select className='day' value={this.props.day} onChange={this.props.handleChangeDay}>
+          <option value={config.translations.datepicker.placeholder.day} disabled>{config.translations.datepicker.placeholder.day}</option>
+          {
+            this.renderOptionsDay()
+          }
+        </select>
+      </div>
     )
   }
 }

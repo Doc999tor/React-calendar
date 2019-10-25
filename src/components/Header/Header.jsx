@@ -16,7 +16,7 @@ class Header extends Component {
     let activeWorker = config.workers.find(worker => +worker.id === +config.activeWorkerId)
     if (activeWorker) {
       let businessHours = activeWorker.businessHours
-      calendarApi.setOption('businessHours', businessHours)
+      calendarApi?.setOption('businessHours', businessHours)
     }
   }
 

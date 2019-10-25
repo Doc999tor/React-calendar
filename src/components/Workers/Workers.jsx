@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Swiper } from 'project-components'
+import { default as Swiper } from 'project-components/Swiper/Swiper.js'
 import SingleWorker from './SingleWorker.jsx'
 import { connect } from 'react-redux'
 import './Workers.styl'

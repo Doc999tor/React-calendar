@@ -1,4 +1,4 @@
-import {dataURLtoFile, getOrientation} from 'project-components'
+import { default as getOrientation } from 'project-components/getOrientation.js'
 export default (photo, bar) => {
   let img = new Image()
   getOrientation(photo, or => {

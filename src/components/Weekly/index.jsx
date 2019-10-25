@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import DemoCalendar from 'components/DemoCalendar/index.jsx'
 // import { getEvents } from 'store/events/actions'
 import { setDefaultDay } from 'store/calendar/actions'
-import { getFormattedDate } from 'helpers'
+import { default as getFormattedDate } from 'helpers/getFormattedDate.js'
 import { connect } from 'react-redux'
 import './Weekly.styl'
 

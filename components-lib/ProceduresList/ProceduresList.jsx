@@ -1,14 +1,15 @@
 import './ProceduresList.styl'
-
+const getVisibleServices = (services, filter) => services.filter(service => service.name.includes(filter))
 export default class ProceduresList extends React.Component {
   constructor (props) {
     super(props)
     this.services = props.data
     this.state = {
+      clickId: '',
+      filter: '',
+      showServices: false,
       categories: this.getGroup(props.data),
-      services: this.services,
-      isCategory: false,
-      search: ''
+      services: this.services
     }
   }
   getGroup = a => {
@@ -16,50 +17,69 @@ export default class ProceduresList extends React.Component {
     a.forEach(i => { o[i.category.id] = { ...i.category, count: o[i.category.id] ? o[i.category.id].count + 1 : 1 } })
     return Object.values(o)
   }
-  search = e => {
-    if (!this.props.isOpenServices) this.props.toogleOpenServices()
-    let services = e !== '' ? this.services.filter(i => i.name.includes(e) || (i.category && i.category.name.includes(e))) : this.services
-    this.setState({services, search: e, isCategory: true})
+  handleFilterChange = e => {
+    this.setState({ filter: e.target.value })
   }
-  next = id => this.setState({services: this.props.data.filter(i => i.category.id === id)}, () => this.props.toogleOpenServices())
+
+  handleclickCategory = id => {
+    this.setState({
+      showServices: !this.state.showServices,
+      clickId: id
+    })
+  }
+
+  renderService = item => (<div className='wrap-service'><div className='service' style={{borderColor: item.color}} onClick={() => this.props.getService(item)}>
+    <div className='common-wrap'>
+      <h2 className='name'>{item.name}</h2>
+      <div className='edditional-info'>
+        <div className='dur-wrap'><img src={`${config.urls.media}ic_time.svg`} /><p className='duration'>{`${item.duration} ${config.translations.punch_cards.procedures_list.duration_minutes}`}</p></div>
+        <div className='price-wrap'><p className='price'>{`${item.price} ${config.data.currency}`}</p></div>
+      </div>
+    </div>
+    <img className='add-img' src={`${config.urls.media}plus_add.svg`} />
+  </div>
+  </div>
+  )
+
   render () {
+    const { showServices, clickId, services, filter } = this.state
+    const visibleServices = getVisibleServices(services, filter)
     return (
       <div id='procedures_list'>
-        <h2 className='procedures-title'>{config.translations.choose_service}</h2>
+        <h2 className='procedures-title'>{config.translations.punch_cards.procedures_list.choose_service}</h2>
         <div className='search-strip'>
           <div className='search-wrap'>
-            <input className='search-input' value={this.state.search} onChange={e => this.search(e.target.value)} type='text' placeholder={config.translations.search_service} />
+            <input className='search-input' value={this.state.filter} onChange={this.handleFilterChange} type='text' placeholder={config.translations.punch_cards.procedures_list.search_service} />
             <img className='search-img' src={`${config.urls.media}magnifier.svg`} />
           </div>
         </div>
-        {/* <div className='search-wrap'>
-          <span className='search-icon'><img src={config.urls.media + 'search.png'} /></span>
-          <input type='text' value={this.state.search} onChange={e => this.search(e.target.value)} placeholder={config.translations.serch_proc} />
-        </div> */}
         <div className='procedure-wrap'>
-          {!this.props.isOpenServices && this.state.categories.map(i => <div className='category' onClick={() => this.next(i.id)}>
-            <p className='category_name'>{i.name}</p>
-            <p className='category_count'>({i.count})</p>
-            <div className='icon_wrap'>
-              <img className={config.isRTL ? 'rtl-arrow' : 'ltr-arrow'} src={config.urls.media + 'chevron-right.svg'} />
+          {!this.props.isOpenServices && filter === ''
+            ? this.state.categories.map(i => <div key={i.id} data_id={i.id} className={'extended-category ' + (showServices && clickId === i.id && 'active_category')} onClick={() => this.handleclickCategory(i.id)}><div className=''>
+              <div className='category'>
+                <p className='category_name'>{i.name}</p>
+                <p className='category_count'>({i.count})</p>
+                <div className='icon_wrap'>
+                  <img className={config.isRTL
+                    ? 'rtl-arrow ' + (showServices && clickId === i.id && 'rotate-active')
+                    : 'ltr-arrow ' + (showServices && clickId === i.id && 'rotate-arrow')} src={config.urls.media + 'chevron-right.svg'} />
+                </div>
+              </div>
+              <div className='border' />
             </div>
-          </div>)}
-          {this.props.isOpenServices && this.state.services.map(i => <div className='wrap-service'><div className='service' style={{borderColor: i.color}} onClick={() => this.props.getService(i)}>
-            {/* <div className='add_wrap'><img src={config.urls.media + 'add.svg'} /></div> */}
-            <h2 className='name'>{i.name}</h2>
-            <div className='edditional-info'>
-              <div className='dur-wrap'><img src={`${config.urls.media}ic_time.svg`} /><p className='duration'>{`${i.duration} ${config.translations.duration_minutes}`}</p></div>
-              <div className='price-wrap'><img src={`${config.urls.media}debt.svg`} /><p className='price'>{`${i.price} ${config.data.currency}`}</p></div>
+            <div className={'acordeon ' + (showServices && clickId === i.id && 'active')}>
+              {this.state.services.filter(item => item.category.id === i.id).map(i => this.renderService(i))}
             </div>
-            {/* {this.state.isCategory && <h1 style={{color: 'deepskyblue', padding: '0px 63px'}}>{i.category.name}</h1>} */}
-          </div></div>)}
+            </div>)
+            : <div>
+              {visibleServices.map(i => this.renderService(i))}
+            </div>}
         </div>
       </div>
     )
   }
 }
 ProceduresList.propTypes = {
-  toogleOpenServices: PropTypes.func,
   isOpenServices: PropTypes.bool,
   getService: PropTypes.func,
   data: PropTypes.arr

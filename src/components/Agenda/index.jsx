@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { getEvents } from 'store/events/actions'
-import { getFormattedDate } from 'helpers'
+import { default as getFormattedDate } from 'helpers/getFormattedDate.js'
 import DemoCalendar from 'components/DemoCalendar/index.jsx'
 import { setDefaultDay } from 'store/calendar/actions'
-import { Swiper } from 'project-components'
+import { default as Swiper } from 'project-components/Swiper/Swiper.js'
 import { connect } from 'react-redux'
 import './Agenda.styl'
 

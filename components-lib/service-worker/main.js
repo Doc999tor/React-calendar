@@ -1,4 +1,3 @@
-import { ipData } from 'project-services'
 import './components/home/home.jsx'
 import './main.styl'
 

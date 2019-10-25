@@ -1,0 +1,134 @@
+#modal-wrapper
+  display flex !important
+  align-items center
+  #modal-content
+    overflow hidden
+.phone-modal-body
+  border-top-left-radius 10px
+  border-top-right-radius 10px
+  .close-bnt
+    position absolute
+    top 10px
+  .rtl-phone-modal
+    left 10px
+  .ltr-phone-modal
+    right 10px
+  input
+    border none
+    width 90%
+    -webkit-padding-start 10px
+    -moz-padding-start 10px
+    padding-inline-start: 10px
+    &:focus
+      outline none
+  .phone-top
+    padding 10px 36px 0 36px
+    background-image: linear-gradient(328deg, #a784f8, #522fa9);
+    padding-bottom 1rem
+    .picture
+      margin 0 auto
+      margin-top 36px
+      margin-bottom 18px
+      display flex
+      align-items center
+      justify-content center
+      width: 40px;
+      height: 40px;
+      border: solid 2px #fe358b
+      border-radius: 50%
+      img
+        width 20px
+    .text-wrap
+      text-align: center
+      // width 85%
+      // margin 0 auto
+      p 
+        margin 0
+        line-height: 1.56rem;
+        color #fff
+  .phone-bot
+    .phone-bot-text
+      width 100%
+      text-align: center
+      padding 0 1rem
+      color #522fa9
+      font-weight: 600
+    .phone-input-wrap
+      display flex
+      justify-content center
+      .input-wrap
+        display flex
+        // justify-content space-around
+        align-items center
+        margin-top: 10px;
+        width: 245px;
+        height: 48px;
+        border: solid 1px #dedeff;
+        color: #00b6fb;
+        font-weight: 500;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px 0 rgba(82,47,169,0.3);
+        .trueValidation
+          padding-inline-end: 10px
+          display flex
+          img
+            width 32px
+            height 32px
+        .del-info
+          padding-inline-end: 10px
+          display flex
+.phone-modal-footer
+  height 60px
+  margin-top 50px
+  display flex
+  border-bottom-left-radius 10px
+  border-bottom-right-radius 10px
+  p
+    font-size 1rem
+    white-space nowrap
+    padding-inline-end 0.5rem
+    overflow hidden
+    text-overflow ellipsis
+  img
+    -webkit-padding-start 10px
+    -moz-padding-start 10px
+    padding-inline-start: 10px
+  .right
+    -webkit-padding-start 0
+    -moz-padding-start 0
+    padding-inline-start 0
+    transform rotate(180deg)
+  button
+    display display flex
+    height 100%
+    width 50%
+    padding 0
+    background-color white
+    border none
+    text-transform uppercase
+    display flex
+    justify-content center
+    align-items center
+    transition all 0.3s
+    &:focus
+      outline none
+  .skip
+    color #522fa9
+  .send_disabled
+    color #b3b3b3 
+  .send_active
+    color var(--active-color)
+  .img_save_disabled
+    fill #b3b3b3
+    width 22px
+    height 22px
+    transition all 0.3s
+  .img_save_active
+    fill var(--active-color)
+    width 22px
+    height 22px
+    transition all 0.3s
+  .img_skip
+    fill var(--dark-color)
+    width 22px
+    height 22px

@@ -19,9 +19,11 @@ class App extends Component {
       daily: Daily
     }
     const Calendars = objView[this.props.currentView]
+    // console.log('this.props.calendarApi', this.props.calendarApi)
+    // console.log('this.props', this.props)
     return (
       <div className='app'>
-        {this.props.calendarApi && <Header calendarApi={this.props.calendarApi} />}
+        <Header calendarApi={this.props.calendarApi} />
         <Workers />
         <Calendars />
         {this.props.eventInfo && <CalendarModal info={this.props.eventInfo} close={() => this.props.dispatch(deleteEventInfo())} />}

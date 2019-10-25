@@ -9,6 +9,10 @@
     height 100%
     overflow auto
     background-color rgba(255, 255, 255, 0.88)
+  .menu_container
+    margin 0 auto
+    height 100%
+    max-width 640px
   .menu_wrap
     width 60%
     height 100%
@@ -18,17 +22,22 @@
     background-size cover
     color #fff
   .list-wrap
-    background-color rgba(79, 45, 167, 0.7)
     height 100%
   .menu
     .menu-logo
-      height 25%
+      min-height 25%
+      background-color rgba(79, 45, 167, 0.7)
+      word-break break-all
       display flex
       flex-direction column
       justify-content center
       align-items center
       padding .6rem 1rem
       color #fff
+      .business_container
+        display flex
+        flex-direction column
+        text-align center
       .logo
           display flex
           justify-content center
@@ -36,7 +45,6 @@
           width 77px
           height 77px
           border-radius 50%
-          // background-color #fff
           object-fit cover
           .business_logo
             width 77px
@@ -49,34 +57,65 @@
           margin .6rem 0 .5rem
       .business_address
         font-size .75rem
-        text-align center
         .business_address_img
           width .7rem
           height .7rem
           margin-inline-end .4rem
   .menu
     height 100%
+    display flex
+    flex-direction column
   .menu-list
     display flex
     flex-direction column
-    height 75%
+    flex-grow 1
+    background-color rgba(79, 45, 167, 0.7)
   .list-item
+    min-height 4rem
+    -moz-padding-start 1.4rem
+    -webkit-padding-start 1.4rem
     padding-inline-start 1.4rem
+    -moz-padding-end 0.3rem
+    -webkit-padding-end 0.3rem
+    padding-inline-end 0.3rem
     box-sizing border-box
     list-style none
-    height 2rem
-    flex-grow 1
     display flex
     border-top 1px solid #B7ACCF
+    &:last-child
+      border-bottom 1px solid #B7ACCF
   .item-link
     display flex
     align-items center
     text-decoration none
+    word-break break-all
     width 100%
     font-weight 500
     font-size .9rem
     color #fff
-  .menu-img
+    text-align start
+  .img-wrap
+    display flex
+    justify-content center
+    align-items center
+    -moz-margin-end 1.4rem
+    -webkit-margin-end 1.4rem
     margin-inline-end 1.4rem
+  .menu-img
     height 25px
     width 25px
+    
+@media (orientation: landscape)
+  #menu_modal
+    .menu-logo
+      flex-direction row
+      justify-content space-between
+      .business_container
+        flex-grow 1
+        -moz-padding-start 1rem
+        -webkit-padding-start 1rem
+        padding-inline-start 1rem
+    .menu_container
+      height auto
+    .list-item
+      min-height 4rem

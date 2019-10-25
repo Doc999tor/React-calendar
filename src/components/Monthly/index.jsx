@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import DemoCalendar from 'components/DemoCalendar/index.jsx'
 import { getEvents } from 'store/events/actions'
-import { Swiper } from 'project-components'
-import { getFormattedDate } from 'helpers'
+import { default as Swiper } from 'project-components/Swiper/Swiper.js'
+import { default as getFormattedDate } from 'helpers/getFormattedDate.js'
 import { connect } from 'react-redux'
 
 class Monthly extends Component {
@@ -17,7 +17,17 @@ class Monthly extends Component {
       ]
     }
   }
-
+  static getDerivedStateFromProps (props) {
+    return props.defaultDayRefresh
+      ? {
+        visibleDays: [
+          getFormattedDate(props.defaultDate, 'subtract', 'months'),
+          props.defaultDate,
+          getFormattedDate(props.defaultDate, 'add', 'months')
+        ]
+      }
+      : null
+  }
   componentDidMount = () => {
     this.props.dispatch(getEvents())
   }
