@@ -49,7 +49,13 @@ export default (state = initialState, action = {}) => {
         ...state,
         eventInfo: ''
       }
-    }
+    },
+    [types.SET_VISIBLE_DAYS]: () => {
+      return {
+        ...state,
+        visibleDays: [...action.payload.visibleDays]
+      }
+    },
   }
   const res = obj[action.type]
   return res ? res() : state

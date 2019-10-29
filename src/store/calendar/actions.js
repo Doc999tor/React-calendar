@@ -1,11 +1,21 @@
 // import { fetchingEvents } from 'project-services'
 // import React from 'react'
 import * as types from './actionTypes'
+import getFormattedDate from '../../helpers/getFormattedDate'
 
 export const setDefaultDay = (defaultDate, defaultDayRefresh = false) => dispatch => {
   dispatch({ type: types.SET_DEFAULT_DAY, payload: { defaultDate, defaultDayRefresh } })
   if (defaultDayRefresh) {
     setTimeout(() => { dispatch({ type: types.SET_DEFAULT_DAY, payload: { defaultDate, defaultDayRefresh: false } }) }, 0)
+  }
+}
+
+export const setVisibleDays = (defaultDate) => async dispatch => {
+  if(defaultDate) {
+    let dd = defaultDate
+    dispatch({type: types.SET_VISIBLE_DAYS, payload: {visibleDays: [ getFormattedDate(dd, 'subtract', 'days'), dd, getFormattedDate(dd, 'add', 'days') ]}})
+  } else {
+    dispatch({type: types.SET_VISIBLE_DAYS, payload: {visibleDays: []}})
   }
 }
 

@@ -6,12 +6,14 @@ import { getEvents } from 'store/events/actions'
 import { default as Swiper } from 'project-components/Swiper/Swiper.js'
 import { default as getFormattedDate } from 'helpers/getFormattedDate.js'
 import { connect } from 'react-redux'
+import { setCalendarAPI, setVisibleDays } from '../../store/calendar/actions'
 
 class Calendar extends Component {
   constructor (props) {
     super(props)
     this.state = {
       swiper: null,
+      activeSlide: 1,
       activeSlideIndex: null,
       defaultView: config.calendar.defaultView,
       visibleDays: [
@@ -22,20 +24,10 @@ class Calendar extends Component {
     }
     this.swiperRef = this.swiperRef.bind(this)
   }
-  static getDerivedStateFromProps (props) {
-    return props.defaultDayRefresh
-      ? {
-        visibleDays: [
-          getFormattedDate(props.defaultDate, 'subtract', 'days'),
-          props.defaultDate,
-          getFormattedDate(props.defaultDate, 'add', 'days')
-        ]
-      }
-      : null
-  }
 
   componentDidMount = () => {
     this.props.dispatch(getEvents())
+    this.props.dispatch(setVisibleDays(this.props.defaultDate))
   }
   componentDidUpdate = (prevProps, prevState) => {
     if (prevState.visibleDays[1] === this.state.visibleDays[1]) return false
@@ -43,7 +35,9 @@ class Calendar extends Component {
   }
   swiperRef = ref => {
     // console.log('ref', ref)
-    this.setState({ swiper: ref.swiper })
+    if (ref) {
+      this.setState({ swiper: ref.swiper })
+    }
   }
   onSlideChangeEnd = o => {
     // console.log('onSlideChangeEnd', o.swipeDirection)
@@ -54,48 +48,54 @@ class Calendar extends Component {
       dd = getFormattedDate(this.props.defaultDate, action)
       this.props.dispatch(setDefaultDay(dd))
     }
+    //
     if (dd && (dd !== this.state.visibleDays[1])) {
-      const visibleDays = [ getFormattedDate(dd, 'subtract', 'days'), dd, getFormattedDate(dd, 'add', 'days') ]
-      this.setState({ visibleDays, refresh: true }, () => {
-        this.setState({ refresh: false })
-      })
+      const visibleDays = [getFormattedDate(dd, 'subtract', 'days'), dd, getFormattedDate(dd, 'add', 'days')]
+      //   // this.setState({ visibleDays, refresh: true }, () => {
+      //   //   this.setState({ refresh: false })
+      //   // })
+
+      // this.setState({visibleDays: visibleDays})
+
+      // this.props.dispatch(setVisibleDays())
+      this.props.dispatch(setVisibleDays(dd))
     }
-    // if (this.props.swipeDirection) this.props.dispatch(setSwiperDirection())
+
+    this.props.dispatch(setSwiperDirection(sd))
   }
 
   render () {
-    if (this.state.refresh || this.props.defaultDayRefresh) return null
+    if (!this.props.visibleDays) return null
     const swiperParams = {
-      initialSlide: 1,
-      loop: true,
-      onSlideChangeEnd:
-        e => {
-          // console.log('swipe', e)
-          this.state.swiper && this.onSlideChangeEnd()
-        }
+      rebuildOnUpdate: true,
 
+      // shouldSwiperUpdate: true
+      // initialSlide: 1,
+      // loop: true,
+      // onSlideChangeEnd:
+      //   e => {
+      //    // console.log('swipe', e)
+      //     this.state.swiper && this.onSlideChangeEnd(e)
+      //   }
     }
     return (
       <div id='swiper-calendar'>
         <Swiper
-        // {...swiperParams} ref={this.swiperRef}
-        // ref={node => this.props.dispatch(setSwiperApi(node))}
+          {...swiperParams}
+          // ref={this.swiperRef}
+          ref={node => this.props.dispatch(setSwiperApi(node))}
           onSlideChangeEnd={this.onSlideChangeEnd}
           initialSlide={1}
           loop
-          >
-          {this.state.visibleDays.map(i => (
-            // <div key={i} className='custom-slide'>
-            //   <p>{i}</p>
-            // </div>
-            <div key={i}>
-              <DemoCalendar
-                columnHeaderText={date => moment(date).format('dddd YYYY-MM-DD')}
-                events={this.props.events}
-                defaultView='daily'
-                defaultDate={i} />
-            </div>
-          ))}
+        >{this.props.visibleDays.map((i, index) => (
+          <div key={i}>
+            <DemoCalendar
+              columnHeaderText={date => moment(date).format('dddd YYYY-MM-DD')}
+              events={this.props.events}
+              defaultView='daily'
+              defaultDate={i}/>
+          </div>
+        ))}
         </Swiper>
       </div>
     )
@@ -104,10 +104,11 @@ class Calendar extends Component {
 
 const mapStateToProps = state => ({
   defaultDayRefresh: state.calendar.defaultDayRefresh,
-  // swipeDirection: state.calendar.swipeDirection,
+  swipeDirection: state.calendar.swipeDirection,
   eventsFetching: state.events.eventsFetching,
   defaultDate: state.calendar.defaultDate,
   calendarApi: state.calendar.calendarApi,
-  events: state.events.events
+  events: state.events.events,
+  visibleDays: state.calendar.visibleDays
 })
 export default connect(mapStateToProps)(Calendar)
