@@ -9,8 +9,17 @@ import Weekly from './Weekly/index.jsx'
 import Daily from './Daily/index.jsx'
 import { connect } from 'react-redux'
 import './App.styl'
+import { TimeLabel } from './TimeLabels/TimeLabel.jsx'
 
 class App extends Component {
+
+  componentDidMount () {
+    let calendar = document.getElementById('swiper-calendar')
+    if(calendar) {
+      config.workers.length === 1 ? calendar.classList.add('calendar-without-workers') : calendar.classList.add('calendar-with-workers')
+    }
+  }
+
   render () {
     const objView = {
       monthly: Monthly,
@@ -19,13 +28,14 @@ class App extends Component {
       daily: Daily
     }
     const Calendars = objView[this.props.currentView]
-    // console.log(this.props.calendar)
     return (
       <div className='app'>
-        {this.props.calendarApi && <Header calendarApi={this.props.calendarApi} />}
-        <Workers />
-        <Calendars />
-        {this.props.eventInfo && <CalendarModal info={this.props.eventInfo} close={() => this.props.dispatch(deleteEventInfo())} />}
+        <Header calendarApi={this.props?.calendarApi}/>
+        {config.workers.length !== 1 && <Workers/>}
+        <Calendars/>
+        {this.props.eventInfo &&
+        <CalendarModal info={this.props.eventInfo} close={() => this.props.dispatch(deleteEventInfo())}/>}
+        {(this.props.currentView === 'daily' || this.props.currentView === 'weekly') && <TimeLabel currentView={this.props.currentView}/>}
       </div>
     )
   }

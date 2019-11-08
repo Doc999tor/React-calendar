@@ -59,9 +59,10 @@ class Weekly extends Component {
   render () {
     // console.log('this.state.visibleDays', this.state.visibleDays)
     // console.log('this.props.default', this.props.defaultDate)
+    let topParam = config.workers.length === 1 ? 'calendar-without-workers' : 'calendar-with-workers'
     return (
       <React.Fragment>
-        <div id='calendar-weekly'>
+        <div id='calendar-weekly' className={topParam}>
           <div className='calendar-weekly'
             style={{ width: this.state.visibleDays.length * 100 + '%' }}>
             {this.state.visibleDays.map(i => (

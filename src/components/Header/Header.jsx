@@ -27,7 +27,7 @@ class Header extends Component {
     let currentMonth = moment().format('MM') === moment(title).format('MM')
     // let curDay = moment().format('YYYY-MM-DD')
     const obj = {
-      daily: () => ({
+      agenda: () => ({
         calendarDate: (
           <React.Fragment>
             {isCurrentDay && <span className='today'>{config.translations.today}</span>}
@@ -36,7 +36,7 @@ class Header extends Component {
         ),
         state: { view: config.translations.daily, todayBtn: !isCurrentDay }
       }),
-      weekly: () => {
+      daily: () => {
         const start = getFormattedDate(this.props.defaultDate || calendarApi.state.dateProfile.currentRange.start)
         const end = getFormattedDate(this.props.defaultDate || calendarApi.state.dateProfile.currentRange.start, 'add', 4)
         const isBetween = moment(currentDay).isBetween(moment(start), moment(end))
@@ -50,7 +50,7 @@ class Header extends Component {
           state: { view: config.translations.weekly, todayBtn: !isBetween }
         }
       },
-      monthly: () => ({
+      weekly: () => ({
         calendarDate: (
           <React.Fragment>
             <span className='current_date_field'>{moment(title).format('MMMM')}</span>
@@ -59,7 +59,7 @@ class Header extends Component {
         ),
         state: { view: config.translations.monthly, todayBtn: !currentMonth }
       }),
-      agenda: () => ({
+      monthly: () => ({
         calendarDate: (
           <React.Fragment>
             {isCurrentDay && <span className='today'>{config.translations.today}</span>}

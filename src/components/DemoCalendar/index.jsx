@@ -13,12 +13,19 @@ import '@fullcalendar/core/main.css'
 
 class DemoCalendar extends Component {
   calendarRef = React.createRef()
-  handleEventClick = eventInfo => this.props.dispatch(getEventInfo(eventInfo))
+  handleEventClick = eventInfo => {
+    if(this.props.defaultView !== 'monthly') {
+      this.props.dispatch(getEventInfo(eventInfo))
+    }
+  }
+
   componentDidUpdate (prevProps, prevState, snapshot) {
     this.props.dispatch(setCalendarAPI(this.calendarRef.current, this.props.defaultDate))
   }
 
   render () {
+    var documentHeight = document.documentElement.clientHeight
+    var calendarHeight = config.workers.length === 1 ? documentHeight - 60 : documentHeight - 161
     return (
       <React.Fragment>
         <FullCalendar
@@ -28,10 +35,16 @@ class DemoCalendar extends Component {
           ref={this.calendarRef}
           eventClick={this.handleEventClick}
           {...this.props}
+          contentHeight={this.props.defaultView === 'monthly' ? calendarHeight : 'auto'}
         />
       </React.Fragment>
     )
   }
 }
 
-export default connect()(DemoCalendar)
+const mapStateToProps = state => ({
+  calendarApi: state.calendar.calendarApi,
+  currentView: state.calendar.currentView,
+  defaultDate: state.calendar.defaultDate
+})
+export default connect(mapStateToProps)(DemoCalendar)

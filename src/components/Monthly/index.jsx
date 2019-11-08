@@ -69,10 +69,10 @@ class Monthly extends Component {
   }
 
   render () {
-    console.log(this.props)
     if (this.state.refresh || this.props.defaultDayRefresh) return null
+    let topParam = config.workers.length === 1 ? 'calendar-without-workers' : 'calendar-with-workers'
     return (
-      <div id='swiper-calendar'>
+      <div id='swiper-calendar' className={topParam}>
         <Swiper
           onSlideChangeStart={this.onSlideChangeStart}
           onSlideChangeEnd={this.onSlideChangeEnd}
@@ -83,7 +83,8 @@ class Monthly extends Component {
               <DemoCalendar
                 events={this.props.events}
                 defaultView='monthly'
-                defaultDate={i} />
+                defaultDate={i}
+              />
             </div>
           ))}
         </Swiper>

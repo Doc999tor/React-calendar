@@ -21,7 +21,8 @@ const config = {
         }
       ],
       active: false
-    }, {
+    },
+    {
       id: '11',
       name: 'Dwayne',
       photo: 'dwayne.jpg',
@@ -142,11 +143,10 @@ const config = {
   },
   calendar: {
     events: [
-  
     ],
     eventLongPressDelay: 1000,
     selectLongPressDelay: 1000,
-    defaultView: 'daily', // agenda, daily, weekly, monthly
+    defaultView: 'agenda', // agenda, daily, weekly, monthly
     defaultDate: moment().format('YYYY-MM-DD'),
     // defaultDate: moment(window.location.pathname.match(new RegExp('\\d{4}\\-\\d{1,2}\\-\\d{1,2}', 'g'))[0]).isValid() ? moment(window.location.pathname.match(new RegExp('\\d{4}\\-\\d{1,2}\\-\\d{1,2}', 'g'))[0]) : moment('2018-01-01'),
     eventOverlap: true,
@@ -192,7 +192,7 @@ const config = {
     firstDay: 0,
     slotDuration: '00:15:00', // The frequency for displaying time slots
     slotLabelInterval: '00:15', // The frequency that the time slots should be labelled with text
-    minTime: '08:00',
+    minTime: '08:15',
     maxTime: '20:15',
     editable: true,
     longPressDelay: 1000,

@@ -1,0 +1,52 @@
+td.fc-axis {
+  display: none;
+}
+
+.timeBox {
+  position: absolute;
+  left: 0;
+  width: 43px;
+  background-color: #fff;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #ededed;
+}
+
+.timeBox-with-workers {
+  top: 160px;
+}
+
+.timeBox-without-workers {
+  top: 60px;
+}
+
+.timeBox .time-week {
+  border: none;
+  height: 25px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.timeBox .true-time {
+  box-sizing: border-box;
+  border-bottom: 1px solid #ededed;
+}
+.timeBox .time-week:first-child {
+  border-top: 1px solid #ededed;
+}
+.timeBox .time-week:last-child {
+  border-bottom: 0;
+}
+.timeBox .true-time-daily {
+  border-top: 1px solid #ededed;
+}
+.timeBox .true-time-daily:last-child {
+  box-sizing: content-box;
+}
+.timeBox .time-text {
+  font-size: 16px;
+  font-weight: bold;
+  color: #a5a5a5;
+}

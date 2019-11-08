@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import { getEvents } from 'store/events/actions'
 import { default as getFormattedDate } from 'helpers/getFormattedDate.js'
-import DemoCalendar from 'components/DemoCalendar/index.jsx'
 import { setDefaultDay } from 'store/calendar/actions'
-import { default as Swiper } from 'project-components/Swiper/Swiper.js'
+// import { default as Swiper } from 'project-components/Swiper/Swiper.js'
+import Swiper from 'react-id-swiper'
 import { connect } from 'react-redux'
 import './Agenda.styl'
+import AgendaEvents from './agendaEvents.jsx'
+import { eventsSort, freeTimeArrCreator } from '../../helpers/event'
+import { getEventInfo } from '../../store/calendar/actions'
 
 class Agenda extends Component {
   constructor (props) {
@@ -47,27 +50,50 @@ class Agenda extends Component {
     }
     if (dd && (dd !== this.state.visibleDays[1])) {
       const visibleDays = [ getFormattedDate(dd, 'subtract', 'days'), dd, getFormattedDate(dd, 'add', 'days') ]
-      this.setState({ visibleDays, refresh: true }, () => {
-        this.setState({ refresh: false })
-      })
+      this.setState({visibleDays: visibleDays})
     }
   }
 
+  handleEventClick = eventInfo => {
+    let obj = {event: {extendedProps: eventInfo}}
+    this.props.dispatch(getEventInfo(obj))
+  }
+
   render () {
-    if (this.state.refresh || this.props.defaultDayRefresh) return null
+    let params = {
+      on: {
+        slideNextTransitionEnd: () => {
+          this.onSlideChangeEnd({swipeDirection: 'next'})
+          console.log('next')
+        },
+        slidePrevTransitionEnd: () => {
+          this.onSlideChangeEnd({swipeDirection: 'prev'})
+          console.log('prev')
+        }
+      },
+      runCallbacksOnInit: false,
+      rebuildOnUpdate: true,
+      initialSlide: 1,
+      loop: true
+    }
+    let sortedEvent = eventsSort(this.props.events, this.props.defaultDate)
+    let freeTimeArr = sortedEvent.length === 0 ? null : freeTimeArrCreator(sortedEvent, this.props.defaultDate)
     return (
       <div id='swiper-calendar' className='agenda-view'>
         <Swiper
-          onSlideChangeEnd={this.onSlideChangeEnd}
-          initialSlide={1}
-          loop>
+          // rebuildOnUpdate
+          // onSlideChangeEnd={this.onSlideChangeEnd}
+          {...params}
+          // initialSlide={1}
+          // loop
+        >
           {this.state.visibleDays.map(i => (
             <div key={i}>
-              <DemoCalendar
-                columnHeaderText={date => moment(date).format('dddd YYYY-MM-DD')}
-                events={this.props.events}
-                defaultView='agenda'
-                defaultDate={i} />
+              <AgendaEvents events={sortedEvent}
+                            freeTimeArr={freeTimeArr}
+                            defaultDate={this.props.defaultDate}
+                            eventClick={this.handleEventClick}
+              />
             </div>
           ))}
         </Swiper>
@@ -81,6 +107,7 @@ const mapStateToProps = state => ({
   eventsFetching: state.events.eventsFetching,
   calendarApi: state.calendar.calendarApi,
   defaultDate: state.calendar.defaultDate,
-  events: state.events.events
+  events: state.events.events,
 })
+
 export default connect(mapStateToProps)(Agenda)
