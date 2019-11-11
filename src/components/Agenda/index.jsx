@@ -76,10 +76,8 @@ class Agenda extends Component {
       initialSlide: 1,
       loop: true
     }
-    let sortedEvent = eventsSort(this.props.events, this.props.defaultDate)
-    let freeTimeArr = sortedEvent.length === 0 ? null : freeTimeArrCreator(sortedEvent, this.props.defaultDate)
     return (
-      <div id='swiper-calendar' className='agenda-view'>
+      <div id='swiper-calendar' className={`agenda-view${config.workers.length === 1 ? ' calendar-without-workers' : ' calendar-with-workers'}`}>
         <Swiper
           // rebuildOnUpdate
           // onSlideChangeEnd={this.onSlideChangeEnd}
@@ -87,15 +85,19 @@ class Agenda extends Component {
           // initialSlide={1}
           // loop
         >
-          {this.state.visibleDays.map(i => (
-            <div key={i}>
-              <AgendaEvents events={sortedEvent}
-                            freeTimeArr={freeTimeArr}
-                            defaultDate={this.props.defaultDate}
-                            eventClick={this.handleEventClick}
-              />
-            </div>
-          ))}
+          {this.state.visibleDays.map(i => {
+            let sortedEvent = eventsSort(this.props.events, i)
+            let freeTimeArr = sortedEvent.length === 0 ? null : freeTimeArrCreator(sortedEvent, i)
+            return (
+              <div key={i}>
+                <AgendaEvents events={sortedEvent}
+                              freeTimeArr={freeTimeArr}
+                              defaultDate={i}
+                              eventClick={this.handleEventClick}
+                />
+              </div>
+            )
+          })}
         </Swiper>
       </div>
     )

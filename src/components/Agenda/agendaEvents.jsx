@@ -43,45 +43,45 @@ const AgendaEvents = (props) => {
                     <p className='name-wrap'>{event.off_time === 'break' ? config.translations.business_lunch : config.translations.meeting}</p>
                     {event.note
                       ? <div className='note-wrap'>
-                          <img className='note-img' src={`${config.urls.staticImg}/feather.svg`}/>
-                          <p className='client-note'>{event.note}</p>
-                        </div>
+                        <img className='note-img' src={`${config.urls.staticImg}/feather.svg`}/>
+                        <p className='client-note'>{event.note}</p>
+                      </div>
                       : ''
                     }
                     {event.address
                       ? <div className='address-wrap'>
-                          <div className='address-img-wrap'>
-                            <img className='address_pin' src={`${config.urls.staticImg}/grey-pin.svg`}/>
-                          </div>
-                          <p className='address-line'>{event.address}</p>
+                        <div className='address-img-wrap'>
+                          <img className='address_pin' src={`${config.urls.staticImg}/grey-pin.svg`}/>
                         </div>
+                        <p className='address-line'>{event.address}</p>
+                      </div>
                       : ''
                     }
-                    </div>
-                    <div className={`time-block ${config.calendar.isRTL ? ' styleTimeRTL' : ' styleTimeLTR'}`}
-                         style={{borderImage: `linear-gradient(to bottom ${colorStr(event.services)} ) 1 100%`}}
-                    >
-                      <div className='start-duration'>
-                        <p className='event-start'>{getHoursLabel(event.start.slice(-5, -3).toString(), event.start.slice(-2).toString())}</p>
-                        <div className='duration-wrap'>
-                          <img className='duration-img' src={`${config.urls.staticImg}/clock.svg`}/>
-                          <div className='event-duration'>{customTimeToText(event.end, event.start)}</div>
-                        </div>
+                  </div>
+                  <div className={`time-block ${config.calendar.isRTL ? ' styleTimeRTL' : ' styleTimeLTR'}`}
+                       style={{borderImage: `linear-gradient(to bottom ${colorStr(event.services)} ) 1 100%`}}
+                  >
+                    <div className='start-duration'>
+                      <p className='event-start'>{getHoursLabel(event.start.slice(-5, -3).toString(), event.start.slice(-2).toString())}</p>
+                      <div className='duration-wrap'>
+                        <img className='duration-img' src={`${config.urls.staticImg}/clock.svg`}/>
+                        <div className='event-duration'>{customTimeToText(event.end, event.start)}</div>
                       </div>
                     </div>
                   </div>
                 </div>
-                {isFreeTimeBoxNeeded(props.events, index).isNeeded ? <div className='duration-time' data-time-start={moment(isFreeTimeBoxNeeded(props.events, index).end).format('YYYY-MM-DD HH-mm')}>
-                  <div className='duration-time-content'>
-                    <div className='free-time_value'>{isFreeTimeBoxNeeded(props.events, index).hours}</div>
-                    <div className='duration-time_container'>
-                      <div className='free-time'>
-                        <img className='cross' src={`${config.urls.staticImg}/plus.svg`}/>
-                      </div>
+              </div>
+              {isFreeTimeBoxNeeded(props.events, index).isNeeded ? <div className='duration-time' data-time-start={moment(isFreeTimeBoxNeeded(props.events, index).end).format('YYYY-MM-DD HH-mm')}>
+                <div className='duration-time-content'>
+                  <div className='free-time_value'>{isFreeTimeBoxNeeded(props.events, index).hours}</div>
+                  <div className='duration-time_container'>
+                    <div className='free-time'>
+                      <img className='cross' src={`${config.urls.staticImg}/plus.svg`}/>
                     </div>
-                    <div className='free-time_title'><span>{config.translations.duration.description}</span></div>
                   </div>
-                </div> : null}
+                  <div className='free-time_title'><span>{config.translations.duration.description}</span></div>
+                </div>
+              </div> : null}
             </div>
           );
         } else {
@@ -202,6 +202,22 @@ const AgendaEvents = (props) => {
             <div className='free-time_title'><span>{config.translations.duration.description}</span></div>
           </div>
         </div> : null : null
+      }
+      {
+        props.events.length === 0
+          ? <div className='empty-page' style={config.calendar.isRTL ? {direction: 'rtl', backgroundImage: `url(${config.urls.staticImg + '/empty-agenda.svg'})`} : {direction: 'ltr', backgroundImage: `url(${config.urls.staticImg + '/empty-agenda.svg'})`}}>
+              <div className='empty-page-content-wrap'>
+                <h1 className='agenda-title'>{config.translations.no_queues}</h1>
+                <div className='agenda-text'>
+                  <p>{config.translations.empty_agenda}</p>
+                </div>
+                <div className='order-wrap'>
+                  <p className='order-text'>{config.translations.order_queue}</p>
+                  <div className='order-btn'><img className='cross' src={`${config.urls.staticImg}/plus.svg`} /></div>
+                </div>
+              </div>
+            </div>
+            : ''
       }
     </div>
   )

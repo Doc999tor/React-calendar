@@ -12,14 +12,6 @@ import './App.styl'
 import { TimeLabel } from './TimeLabels/TimeLabel.jsx'
 
 class App extends Component {
-
-  componentDidMount () {
-    let calendar = document.getElementById('swiper-calendar')
-    if(calendar) {
-      config.workers.length === 1 ? calendar.classList.add('calendar-without-workers') : calendar.classList.add('calendar-with-workers')
-    }
-  }
-
   render () {
     const objView = {
       monthly: Monthly,

@@ -79,7 +79,7 @@ class Calendar extends Component {
       //   }
     }
     return (
-      <div id='swiper-calendar'>
+      <div id='swiper-calendar' className={config.workers.length === 1 ? ' calendar-without-workers' : ' calendar-with-workers'}>
         <Swiper
           {...swiperParams}
           // ref={this.swiperRef}

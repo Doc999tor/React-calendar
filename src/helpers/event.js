@@ -106,7 +106,7 @@ export const freeTimeArrCreator = (events, currentDate) => {
   let freeTimeArr = []
   let firstFreeTimeBox = null
   let lastFreeTimeBox = null
-  if(Math.floor(moment.duration((moment(events[0].start) - moment(minTime)), 'milliseconds').asHours()) > 0) {
+  if(moment.duration((moment(events[0].start) - moment(minTime)), 'milliseconds').asHours() > 0) {
     firstFreeTimeBox = {
       position: 'first',
       hours: freeTime(moment(events[0].start) - moment(minTime)),
@@ -115,7 +115,7 @@ export const freeTimeArrCreator = (events, currentDate) => {
     freeTimeArr.push(firstFreeTimeBox)
   }
 
-  if(Math.floor(moment.duration((moment(maxTime) - moment(moment(events[events.length - 1].end))), 'milliseconds').asHours()) > 0) {
+  if(moment.duration((moment(maxTime) - moment(moment(events[events.length - 1].end))), 'milliseconds').asHours() > 0) {
     lastFreeTimeBox = {
       position: 'last',
       hours: freeTime(moment(maxTime) - moment(moment(events[events.length - 1].end))),
