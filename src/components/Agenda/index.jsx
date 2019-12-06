@@ -9,6 +9,7 @@ import './Agenda.styl'
 import AgendaEvents from './agendaEvents.jsx'
 import { eventsSort, freeTimeArrCreator } from '../../helpers/event'
 import { getEventInfo } from '../../store/calendar/actions'
+import EmptyPage from './EmptyPage.jsx'
 
 class Agenda extends Component {
   constructor (props) {
@@ -99,6 +100,9 @@ class Agenda extends Component {
             )
           })}
         </Swiper>
+        <div className={`preloader${config.calendar.isRTL ? ' styleLoaderRTL' : ' styleLoaderLTR'}`} style={{display: this.props.eventsFetching ? 'flex' : 'none'}}>
+          <img className='loader' src={config.urls.staticImg + '/preloader.svg'} />
+        </div>
       </div>
     )
   }

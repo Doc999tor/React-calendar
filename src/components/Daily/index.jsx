@@ -7,6 +7,7 @@ import { default as Swiper } from 'project-components/Swiper/Swiper.js'
 import { default as getFormattedDate } from 'helpers/getFormattedDate.js'
 import { connect } from 'react-redux'
 import { setCalendarAPI, setVisibleDays } from '../../store/calendar/actions'
+import './daily.styl'
 
 class Calendar extends Component {
   constructor (props) {
@@ -79,7 +80,7 @@ class Calendar extends Component {
       //   }
     }
     return (
-      <div id='swiper-calendar' className={config.workers.length === 1 ? ' calendar-without-workers' : ' calendar-with-workers'}>
+      <div id='swiper-calendar' style={{direction: config.calendar.dir}} className={config.workers.length === 1 ? ' calendar-without-workers' : ' calendar-with-workers'}>
         <Swiper
           {...swiperParams}
           // ref={this.swiperRef}

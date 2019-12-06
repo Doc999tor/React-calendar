@@ -5,6 +5,7 @@ import { switchView, setDefaultDay } from 'store/calendar/actions'
 import { getFormattedDate, getStandardFormat, currentDay } from 'helpers'
 import HeaderMenu from './HeaderMenu/index.jsx'
 import './Header.styl'
+import { getEvents } from '../../store/events/actions'
 
 // TODO: Handle 'defaultDay'
 class Header extends Component {
@@ -83,7 +84,7 @@ class Header extends Component {
       daily: 'weekly',
       agenda: 'daily'
     }
-    this.props.dispatch(switchView(objView[this.props.currentView]))
+    this.props.switchView(objView[this.props.currentView])
   }
 
   handleToday = () => this.props.dispatch(setDefaultDay(currentDay, true))
@@ -109,7 +110,7 @@ class Header extends Component {
       <div id='header' style={{ 'direction': config.calendar.isRTL ? 'rtl' : 'ltr' }}>
         <div className={'menu_refresh ' + (config.calendar.isRTL ? 'menu_rtl' : 'menu_ltr')}>
           <HeaderMenu />
-          <button id='refresh_button'>
+          <button id='refresh_button' onClick={this.props.getEvents}>
             <img className='refresh_button_img' src={config.urls.staticImg + '/refresh.svg'} />
           </button>
         </div>
@@ -145,4 +146,5 @@ const mapStateToProps = state => ({
   currentView: state.calendar.currentView,
   swiperApi: state.calendar.swiperApi
 })
-export default connect(mapStateToProps)(Header)
+
+export default connect(mapStateToProps, {getEvents, switchView})(Header)

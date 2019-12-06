@@ -1,0 +1,23 @@
+:root {
+    --black-color: #000;
+    --grey-color: #8b8b8b;
+    --vacation-bgcolor: #ff4c4c;
+    --duration-time-bgcolor: #e1d4fd;
+    --dept-color: #ff4c4c;
+    --paid-bgcolor: rgba(255, 255, 255, 0.5);
+    --off-time-bgcolor: #ededed;
+    --off-time-popup-bgcolor: rgba(107, 68, 190, 0.8);
+    --off-time-daily-bgcolor: #e1d4fd;
+    --off-time-title-bgcolor: #badaff;
+    --fc-header-color: #ededed;
+    --month-bgcolor: #ff4c4c;
+    --weekly-holiday-bgcolor: #ff4c4c;
+    --modal-bgcolor: rgba(0,0,0,0.467);
+    --home-dayOff-bgcolor: #ebebeb;
+    --home-normalDay-bgcolor: #cdb6ff;
+    --home-busyDay-bgcolor: #b593fc;
+    --home-easyDay-bgcolor: #ece4ff;
+    --day-header-color: #4a4a4a;
+    --event-bgcolor: #f4f9ff;
+    --time-text-color: #a5a5a5;
+}

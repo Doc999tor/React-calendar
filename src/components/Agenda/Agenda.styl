@@ -224,190 +224,169 @@
       border-inline-end 7px solid white
       -webkit-border-end 7px solid white
       -moz-border-end 7px solid white
-
-.off_time
-  display flex
-  justify-content space-between
-  width 100%
-  height 85px
-  overflow hidden
-  background-color #ebebeb
-  border-bottom 1px solid #ddd
-  .off_time_wrap
+    .address_pin
+      display block
+      width 10px
+      height auto
+.agenda-events
+  .off_time
     display flex
-    align-items center
-    justify-content center
-    width 7rem
-    .off_time_img
-      width 46px
-      height 40px
-  .off_time_info
-    display flex
-  .note-about-user
-    .name-wrap
-      margin-bottom 5px
-.duration-time
-  height 42px
-  width 100%
-  display flex
-  align-items center
-  justify-content center
-  background-color #e1d4fd
-  &-content
+    justify-content space-between
+    width 100%
+    height 85px
+    overflow hidden
+    background-color #ebebeb
+    border-bottom 1px solid #ddd
+    .off_time_wrap
+      display flex
+      align-items center
+      justify-content center
+      width 7rem
+      .off_time_img
+        width 46px
+        height 40px
+    .off_time_info
+      display flex
+    .note-about-user
+      .name-wrap
+        margin-bottom 5px
+  .duration-time
+    height 42px
     width 100%
     display flex
     align-items center
     justify-content center
-    // div
-    //   margin 5px
-    .duration-time_container
-      display flex
-      justify-content center
-      align-items center
-      width 10%
-    .free-time
-      display flex
-      justify-content center
-      align-items center
-      width 21px
-      height 21px
-      border-radius 50%
-      background-color var(--dark-color)
-      .cross
-        height 15px
-        width 15px
-        color #fff
-    .free-time_title
-    .free-time_value
-      flex-grow 1
-      width 45%
-    .free-time_value
-      display flex
-      justify-content flex-end
-    .free-time_title
-      display flex
-      justify-content flex-start
-.empty-page
-  flex-grow 1
-  display flex
-  flex-direction column
-  align-items center
-  padding-bottom 4rem
-  justify-content flex-end
-  background-position-x center
-  background-position-y -2.5rem
-  background-repeat no-repeat
-  .wrap-img
-    text-align center
-  .agenda-title
-    text-align center
-    font-size 24px
-    letter-spacing 0.3px
-    color var(--dark-color)
-  .agenda-text
-    display flex
-    justify-content center
-    flex-wrap wrap
-    padding 1rem 4.5rem
-    font-size 14px
-    color var(--main-color)
-    text-align center
-  .order-wrap
-    // width 10rem
-    height 2.9rem
-    margin-top 1rem
-    display flex
-    justify-content space-between
-    align-items center
-    border-radius 30px
-    -webkit-padding-end 5px
-    -moz-padding-end 5px
-    padding-inline-end 5px
-    -webkit-padding-start 24px
-    -moz-padding-start 24px
-    padding-inline-start 24px
-    background-color var(--sec-bgcolor)
-    color white
-    .order-text
-      font-size 13px
-      text-transform uppercase
-      flex-grow 1
-      text-align center
-      min-width 2.5rem
-    .order-btn
+    background-color #e1d4fd
+    &-content
+      width 100%
       display flex
       align-items center
       justify-content center
-      width 2.4rem
-      height 2.4rem
-      border-radius 50%
-      background-color var(--main-bgcolor)
-      margin-inline-start 0.7rem
-      -webkit-margin-start 0.7rem
-      -moz-margin-start 0.7rem
-      .cross
-        height 15px
-        width 15px
-.empty-page
-  flex-grow 1
-  display flex
-  flex-direction column
-  align-items center
-  padding-bottom 4rem
-  justify-content flex-end
-  background-position-x center
-  background-position-y -2.5rem
-  background-repeat no-repeat
-  .empty-page-content-wrap
-    margin-top 350px
-    .wrap-img
-      text-align center
-    .agenda-title
-      text-align center
-      font-size 24px
-      letter-spacing 0.3px
-      color var(--dark-color)
-    .agenda-text
-      display flex
-      justify-content center
-      flex-wrap wrap
-      padding 1rem 4.5rem
-      font-size 14px
-      color var(--main-color)
-      text-align center
-    .order-wrap
-      // width 10rem
-      height 2.9rem
-      margin-top 1rem
-      display flex
-      justify-content space-between
-      align-items center
-      border-radius 30px
-      -webkit-padding-end 5px
-      -moz-padding-end 5px
-      padding-inline-end 5px
-      -webkit-padding-start 24px
-      -moz-padding-start 24px
-      padding-inline-start 24px
-      background-color var(--sec-bgcolor)
-      color white
-      .order-text
-        font-size 13px
-        text-transform uppercase
-        flex-grow 1
-        text-align center
-        min-width 2.5rem
-      .order-btn
+      // div
+      //   margin 5px
+      .duration-time_container
         display flex
-        align-items center
         justify-content center
-        width 2.4rem
-        height 2.4rem
+        align-items center
+        width 10%
+      .free-time
+        display flex
+        justify-content center
+        align-items center
+        width 21px
+        height 21px
         border-radius 50%
-        background-color var(--main-bgcolor)
-        margin-inline-start 0.7rem
-        -webkit-margin-start 0.7rem
-        -moz-margin-start 0.7rem
+        background-color var(--dark-color)
         .cross
           height 15px
           width 15px
+          color #fff
+      .free-time_title
+      .free-time_value
+        flex-grow 1
+        width 45%
+      .free-time_value
+        display flex
+        justify-content flex-end
+      .free-time_title
+        display flex
+        justify-content flex-start
+  .empty-page-wrapper
+    display: flex
+    flex-direction column
+    align-items center
+    min-height calc(100vh - 151px)
+    .empty-page
+      flex-grow 1
+      display flex
+      flex-direction column
+      align-items center
+      padding-bottom 4rem
+      justify-content flex-end
+      background-position-x center
+      background-position-y -2.5rem
+      background-repeat no-repeat
+      .wrap-img
+        text-align center
+      .agenda-title
+        text-align center
+        font-size 24px
+        letter-spacing 0.3px
+        color var(--dark-color)
+      .agenda-text
+        display flex
+        justify-content center
+        flex-wrap wrap
+        padding 1rem 4.5rem
+        font-size 14px
+        color var(--main-color)
+        text-align center
+      .order-wrap
+        // width 10rem
+        height 2.9rem
+        margin-top 1rem
+        display flex
+        justify-content space-between
+        align-items center
+        border-radius 30px
+        -webkit-padding-end 5px
+        -moz-padding-end 5px
+        padding-inline-end 5px
+        -webkit-padding-start 24px
+        -moz-padding-start 24px
+        padding-inline-start 24px
+        background-color var(--sec-bgcolor)
+        color var(--white-color)
+        .order-text
+          font-size 13px
+          text-transform uppercase
+          flex-grow 1
+          text-align center
+          min-width 2.5rem
+        .order-btn
+          display flex
+          align-items center
+          justify-content center
+          width 2.4rem
+          height 2.4rem
+          border-radius 50%
+          background-color var(--main-bgcolor)
+          margin-inline-start 0.7rem
+          -webkit-margin-start 0.7rem
+          -moz-margin-start 0.7rem
+          .cross
+            height 15px
+            width 15px
+
+.styleLoaderRTL
+  right 30px
+// bottom 30px
+.styleLoaderLTR
+  left 30px
+.preloader
+  position fixed
+  bottom 30px
+  // bottom 30px
+  justify-content center
+  align-items center
+  z-index 20
+  .loader
+    width 56px
+    height 56px
+    animation 1s spin infinite linear
+    opacity .8
+  @keyframes spin
+    from
+      transform rotate(0deg)
+    to
+      transform rotate(360deg)
+@media only screen and (min-width: 610px) {
+  .styleLoaderLTR {
+    left: 50%;
+    transform: translate(-515%);
+  }
+  .styleLoaderRTL {
+    right: 50%;
+    transform: translate(515%);
+  }
+}

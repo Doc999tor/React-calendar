@@ -1,5 +1,3 @@
-import { calendar } from '../store/reducers'
-
 export const customTimeToText = (end, start) => {
   let endSeconds = (end.slice(-5, -3) * 3600) + (end.slice(-2) * 60)
   let startSeconds = (start.slice(-5, -3) * 3600) + (start.slice(-2) * 60)
@@ -15,9 +13,12 @@ export const customTimeToText = (end, start) => {
   } else if (minutes === 0) {
     return `${hours} ${config.translations.duration.hours}`
   } else {
-    return <p className='full-dur'><span
-      className='hours'>{hours}</span><span>{config.translations.duration.abbreviated_hours}</span><span
-      className='minutes'>{minutes}</span><span>{config.translations.duration.abbreviated_minutes}</span></p>
+    return <p className='full-dur'>
+      <span className='hours'>{hours}</span>
+      <span>{config.translations.duration.abbreviated_hours}</span>
+      <span className='minutes'>{minutes}</span><
+      span>{config.translations.duration.abbreviated_minutes}</span>
+    </p>
   }
 }
 
@@ -80,7 +81,7 @@ export const debt = () => {
 }
 
 export const eventsSort = (events, currentDate) => {
-  events = events.filter(e => e.start.slice(0, 10) === currentDate).sort((a, b) => moment(a.start) - moment(b.start))
+  events = events.filter(e => moment(e.start).format('YYYY-MM-DD') === currentDate).sort((a, b) => moment(a.start) - moment(b.start))
   return events
 }
 
@@ -131,7 +132,7 @@ export const isFreeTimeBoxNeeded = (events, index) => {
   if(events) {
     if(index === (events.length - 1)) {
       return {isNeeded: false}
-    } else if((moment(events[index + 1].start) - moment(events[index].end)) > 0) {
+    } else if ((moment(events[index + 1].start) - moment(events[index].end)) > 0) {
       return {
         isNeeded: true,
         hours: freeTime(moment(events[index + 1].start) - moment(events[index].end)),

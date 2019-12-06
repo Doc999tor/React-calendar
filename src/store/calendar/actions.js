@@ -20,10 +20,10 @@ export const setVisibleDays = (defaultDate) => async dispatch => {
 }
 
 export const setCalendarAPI = (day, dd) => async (dispatch, getState) => {
-  // console.log(day, dd)
   const { defaultDate } = getState().calendar
   if (defaultDate === dd) {
-    dispatch({ type: types.SET_CALENDAR_API, payload: { calendarApi: day?.getApi() } })
+    const api = await day.getApi()
+    dispatch({ type: types.SET_CALENDAR_API, payload: { calendarApi: api } })
   }
 }
 

@@ -1,0 +1,408 @@
+.fc-daily-view
+  .fc-event
+    background-color var(--event-bgcolor)
+    border-inline-start 2px solid #f4f9ff
+    -webkit-border-start 2px solid #f4f9ff
+    -moz-border-start 2px solid #f4f9ff
+    border-inline-end 1px solid #f4f9ff
+    -webkit-border-end 1px solid #f4f9ff
+    -moz-border-end 1px solid #f4f9ff
+    border-top 1px solid #ffffff
+    border-bottom 1px solid #ffffff
+    .mini
+      height 8px
+      width 8px
+    .ev-custom
+      height 100%
+      position relative
+      .custom-event
+        width 100%
+        height 100%
+        overflow hidden
+        .main-info
+          height 100%
+          .foto-time
+            display flex
+            padding-top 3px
+            .foto-name
+              display flex
+              width 100%
+              flex-grow 1
+              padding 0 3px 0
+              overflow hidden
+              .fit
+                object-fit cover
+                &.normalSize
+                  height 32px
+                  width 32px
+                  border-radius 100%
+              .name-service
+                padding-inline-start 8px
+                -webkit-padding-start 8px
+                -moz-padding-start 8px
+                width 78%
+                .client-name
+                  margin-top 3px
+                  white-space nowrap
+                  font-size 13px
+                  font-weight bold
+                  overflow hidden
+                  color var(--black-color)
+                  max-height 55px
+                  text-overflow ellipsis
+                  .bday
+                    display inline-flex
+                    align-items center
+                    height 14px
+                    line-height 14px
+                    margin-inline-start 5px
+                    -webkit-padding-start 5px
+                    -moz-padding-start 5px
+                  .debt
+                    display inline-flex
+                    align-items center
+                    height 14px
+                    line-height 14px
+                    background-color var(--dept-color)
+                    border-radius 50%
+                    margin-inline-start 5px
+                    -webkit-padding-start 5px
+                    -moz-padding-start 5px
+                .services-name
+                  margin-top 3px
+                  white-space nowrap
+                  font-size 13px
+                  font-weight bold
+                  overflow hidden
+                  color var(--grey-color)
+                  max-height 55px
+                  text-overflow ellipsis
+                  &.single
+                    padding-inline-start 5px
+                    -webkit-padding-start 5px
+                    -moz-padding-start 5px
+                    flex-grow 1
+            .iconsEditional
+              display flex
+              flex-direction column
+              align-items center
+              padding-inline-end 10px
+              -webkit-padding-end 10px
+              -moz-padding-end 10px
+              .paid
+                padding 0 3px 0
+                font-size 12px
+                line-height 12px
+                height 14px
+                background-color var(--paid-bgcolor)
+                color var(--dark-color)
+                font-weight bold
+              .new-icon
+                width 31px
+                height 13px
+            .time-info
+              box-sizing border-box
+              width 85px
+              padding-inline-end 0.8rem
+              -webkit-padding-end 0.8rem
+              -moz-padding-end 0.8rem
+              .event-start
+                margin 0
+                text-align end
+                font-size 11px
+                white-space nowrap
+                font-weight bold
+                color var(--black-color)
+              .short-cont
+                .duration-wrap
+                  margin 4px 0 0 0
+                  text-align end
+                  white-space nowrap
+                  font-size 11px
+                  font-weight bold
+                  color var(--black-color)
+                  display flex
+                  align-items baseline
+                  justify-content flex-end
+                  .event-duration
+                    padding-inline-start 5px
+                    -webkit-padding-start 5px
+                    -moz-padding-start 5px
+          .note-address
+            .address-wrap
+              box-sizing border-box
+              margin-top 5px
+              padding-inline-start 45px
+              -webkit-padding-start 45px
+              -moz-padding-start 45px
+              padding-inline-end 45px
+              -webkit-padding-end 45px
+              -moz-padding-end 45px
+              display flex
+              .address-img-wrap
+                display flex
+                align-items center
+                img
+                  width 10px
+                  height 10px
+              .client-address
+                margin 0
+                padding-inline-start 2px
+                -webkit-padding-start 2px
+                -moz-padding-start 2px
+                font-size 12px
+                text-overflow ellipsis
+                white-space nowrap
+                overflow hidden
+                color var(--main-color)
+            .note-wrap
+              box-sizing border-box
+              padding-inline-start 45px
+              -webkit-padding-start 45px
+              -moz-padding-start 45px
+              padding-inline-end 45px
+              -webkit-padding-end 45px
+              -moz-padding-end 45px
+              margin-top 4px
+              display flex
+              .img-wrap
+                .feather
+                  width 10px
+                  height 10px
+              .client-note
+                margin 0
+                padding-inline-start 2px
+                -webkit-padding-start 2px
+                -moz-padding-start 2px
+                font-size 12px
+                overflow hidden
+                text-overflow ellipsis
+                color var(--black-color)
+                &.nowrap
+                  white-space nowrap
+        &.half
+          .main-info
+            .foto-time
+              .foto-name
+                flex-direction column
+                .wrap-time
+                  display flex
+                  justify-content space-between
+                  padding-top 0.2rem
+                  padding-bottom 0.2rem
+                  padding-inline-start 0.1rem
+                  -webkit-padding-start 0.1rem
+                  -moz-padding-start 0.1rem
+                  .time-info
+                    width 50%
+                    padding-inline-end 3px
+                    -webkit-padding-end 3px
+                    -moz-padding-end 3px
+                    .event-start
+                      padding 0
+              .name-service
+                display flex
+                width 100%
+                padding-inline-start 0
+                -webkit-padding-start 0
+                -moz-padding-start 0
+                .name-service-wrap
+                  width 50%
+                  flex-grow 1
+                  .client-name
+                    margin-inline-end 0
+                    -webkit-margin-end 0
+                    -moz-margin-end 0
+                  .services-name
+                    margin-inline-end 0
+                    -webkit-margin-end 0
+                    -moz-margin-end 0
+                    padding-inline-start 0
+                    -webkit-padding-start 0
+                    -moz-padding-start 0
+                    overflow hidden
+                    text-overflow ellipsis
+            .note-address
+              padding 0 3px 0
+              .address-wrap
+                padding 0
+                .client-address
+                  white-space nowrap
+                  overflow hidden
+                  text-overflow ellipsis
+              .note-wrap
+                padding 0
+      .click-mask
+        position absolute
+        height 100%
+        width 100%
+      .off_time
+        height 100%
+        background-color var(--off-time-bgcolor)
+        display flex
+        .name_full
+          white-space nowrap
+          text-overflow ellipsis
+          overflow hidden
+          font-size 13px
+          font-weight bold
+          color var(--black-color)
+        .main_info
+          width 100%
+          overflow hidden
+          flex-grow 1
+          .address-wrap
+            box-sizing border-box
+            margin-top 3px
+            display flex
+            .address-img-wrap
+              display flex
+              align-items center
+              img
+                width 10px
+                height 10px
+            .client-address
+              margin 0
+              font-size 12px
+              text-overflow ellipsis
+              white-space nowrap
+              overflow hidden
+              color var(--main-color)
+              padding-inline-start 2px
+              -webkit-padding-start 2px
+              -moz-padding-start 2px
+        .note-wrap
+          margin-top 4px
+          box-sizing border-box
+          display flex
+          .img-wrap
+            .feather
+              box-sizing border-box
+              width 10px
+              height 10px
+        .client-note
+          margin 0
+          padding-inline-start 2px
+          -webkit-padding-start 2px
+          -moz-padding-start 2px
+          font-size 12px
+          text-overflow ellipsis
+          white-space nowrap
+          overflow hidden
+          color var(--black-color)
+        &.short
+          display flex
+          justify-content space-between
+          padding-top .2rem
+          .name_full
+            padding-inline-start 0.3rem
+            -webkit-padding-start 0.3rem
+            -moz-padding-start 0.3rem
+          .event-start
+            margin 0
+            padding-top 2px
+            padding-inline-end 0.3rem
+            -webkit-padding-end 0.3rem
+            -moz-padding-end 0.3rem
+            text-align end
+            font-size 11px
+            font-weight bold
+            color var(--black-color)
+        &.short-half
+          padding 3px 3px 0
+          justify-content space-between
+          .event-start
+            min-width 70px
+            padding-top 0.1rem
+            margin 0
+            text-align end
+            font-size 11px
+            font-weight bold
+            color var(--black-color)
+        &.short-third
+          .name_full
+            display flex
+            padding-top 2px
+            align-items center
+        &.half_off
+          display block
+          .off_time_extended
+            padding 0
+            .off_time_wrap
+              padding 0 0.4rem 0 0.4rem
+              display flex
+              width 100%
+              justify-content space-between
+              .off_time-info
+                padding 5px 0 0 0
+          .main_info
+            padding-top 0.4rem
+            padding-inline-start 0.1rem
+            -webkit-padding-start 0.1rem
+            -moz-padding-start 0.1rem
+            .note-wrap
+              margin-top 0.3rem
+        &.third_off
+          display block
+          .off_time_extended
+            padding 0
+            .off_time_wrap
+              padding 0 .1rem 0 .1rem
+              display flex
+              width 100%
+              justify-content space-between
+              .off_time-info
+                padding 5px 0 0 0
+          .main_info
+            padding-top .4rem
+            padding-inline-start 0.1rem
+            -webkit-padding-start 0.1rem
+            -moz-padding-start 0.1rem
+            .address-wrap
+              margin-top .3rem
+            .note-wrap
+              margin-top .3rem
+        .off_time_extended
+          display flex
+          padding-top 5px
+          flex-grow 2
+          .off_time_wrap
+            padding 0 10px 10px 10px
+        .off_time-info
+          padding-top 5px
+          padding-inline-end 10px
+          -webkit-padding-end 10px
+          -moz-padding-end 10px
+          .event-start
+            margin 0
+            text-align end
+            white-space nowrap
+            font-size 11px
+            font-weight bold
+            color var(--black-color)
+          .short-cont
+            padding-top 5px
+            .duration-wrap
+              margin 0
+              text-align end
+              white-space nowrap
+              font-size 11px
+              font-weight bold
+              color var(--black-color)
+              display flex
+              align-items baseline
+              justify-content flex-end
+              .mini
+                height 8px
+                width 8px
+              .event-duration
+                padding-inline-start 5px
+                -webkit-padding-start 5px
+                -moz-padding-start 5px
+    .fc-resizer
+      background-color var(--main-bgcolor)
+      border-style none
+  .fc-time-grid-event
+    &.fc-selected
+      overflow hidden
+
