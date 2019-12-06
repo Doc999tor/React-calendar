@@ -4,8 +4,7 @@ td.fc-axis {
 
 .timeBox {
   position: absolute;
-  left: 0;
-  width: 43px;
+  width: 34px;
   background-color: #fff;
   z-index: 1;
   display: flex;
