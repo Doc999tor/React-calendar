@@ -5,10 +5,19 @@ export const customEventFull = (event, element, start, end, view) => {
   let container = element.children[0]
   container.innerHTML = ''
   let services = event.extendedProps.services
-    ? event.extendedProps.services.reduce((phrase, item) => {
-      return item.name && !!item.name ? phrase + `${item.name}` + (item.count > 1 ? ` ⨯ ${item.count},` : '') : phrase
+    ? event.extendedProps.services.reduce((phrase, currentItem, index, arr) => {
+      let currentServiceCount = currentItem.count > 1 ? ` ⨯ ${currentItem.count}` : ''
+      let currentServicePhrase =  !!currentItem.name ? currentItem.name + currentServiceCount : ''
+      if(currentServicePhrase) {
+        if(index === arr.length - 1) {
+          phrase += currentServicePhrase
+        } else {
+          phrase += currentServicePhrase + ', '
+        }
+      }
+      return phrase
     }, '')
-    : []
+    : ''
   if (event.extendedProps.services) {
     services = services.split(',')
   }
@@ -22,7 +31,7 @@ export const customEventFull = (event, element, start, end, view) => {
           <p class='event-start'>${start} - ${end}</p>
         </div>`
         : `<div class='click-mask'></div>
-        <div class='custom-event'>
+        <div class='custom-event short'>
     <div class='name-service flex'>
             ${event.extendedProps.name
           ? `<p class='client-name ${rowCount(event.start, event.end) === 1 ? 'oneRow' : ''}'>${event.extendedProps.name}${event.extendedProps.birthdate ? bday(event, view.dateProfileGenerator.options.defaultDate) : ''}${event.extendedProps.has_debt ? `<span class='debt'><img class='mini' src='${config.urls.staticImg}/debt1.svg'></span>` : ''}</p>`
@@ -90,7 +99,7 @@ export const customEventFull = (event, element, start, end, view) => {
             ${event.extendedProps.name
           ? `<p class='client-name'>${event.extendedProps.name}${event.extendedProps.birthdate ? bday(event, view.dateProfileGenerator.options.defaultDate) : ''}${event.extendedProps.has_debt ? `<span class='debt'><img class='mini' src='${config.urls.staticImg}/debt1.svg'></span>` : ''}</p>`
           : `<p class='client-name'>${config.translations.occasional}${event.extendedProps.birthdate ? bday(event, view.dateProfileGenerator.options.defaultDate) : ''}${event.extendedProps.has_debt ? `<span class='debt'><img class='mini' src='${config.urls.staticImg}/debt1.svg'></span>` : ''}</p>`}
-            <p class='services-name'>${services.map(i => `<span class='service-item'>${i}</span>`).join(' ')}</p>
+            <p class='services-name'>${services.map(i => `<span class='service-item'>${i}</span>`)}</p>
             </div>
           </div>
           ${event.extendedProps.is_new_client || event.durationEditable ? `<div class='iconsEditional'>

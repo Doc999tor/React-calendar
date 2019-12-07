@@ -19,7 +19,7 @@ export const customEventThird = (event, element, start, end, view) => {
         ? `<div class='click-mask'></div><div class='off_time short-third ${config.calendar.isRTL ? 'singleOfftimeRTL' : 'singleOfftimeLTR'}'>
           <p class='name_full'>${event.extendedProps.off_time === 'break' ? config.translations.business_lunch : config.translations.meeting}</p>
         </div>`
-        : `<div class='click-mask'></div><div class='custom-event'>
+        : `<div class='click-mask'></div><div class='custom-event short'>
     <div class='name-service half-flex ${config.calendar.isRTL ? 'singleThirdRTL' : 'singleThirdLTR'}'>
             ${event.extendedProps.name
     ? `<p class='client-name'>${event.extendedProps.name.split(' ', 1)}</p>`

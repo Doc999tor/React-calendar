@@ -126,7 +126,7 @@ export const getIndexByProperty = (arr, property, propertyValue) => {
 
 export const getEventType = (events, currentEvent) => {
   let currentEventIndex = getIndexByProperty(events, 'client_id', currentEvent.extendedProps.client_id)
-  if (events.length > 1 && currentEventIndex >= 0) {
+  if (events.length >= 1 && currentEventIndex >= 0) {
     let overlapCount = 0
     if (currentEventIndex === 0) {
       for (let i = 1; i < events.length; i++) {

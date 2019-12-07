@@ -9,6 +9,75 @@
     -moz-border-end 1px solid #f4f9ff
     border-top 1px solid #ffffff
     border-bottom 1px solid #ffffff
+    .time-info
+      box-sizing border-box
+      width 85px
+      padding-inline-end 0.8rem
+      -webkit-padding-end 0.8rem
+      -moz-padding-end 0.8rem
+      .event-start
+        margin 0
+        text-align end
+        font-size 11px
+        white-space nowrap
+        font-weight bold
+        color var(--black-color)
+      .short-cont
+        .duration-wrap
+          margin 4px 0 0 0
+          text-align end
+          white-space nowrap
+          font-size 11px
+          font-weight bold
+          color var(--black-color)
+          display flex
+          align-items baseline
+          justify-content flex-end
+          .event-duration
+            padding-inline-start 5px
+            -webkit-padding-start 5px
+            -moz-padding-start 5px
+    .iconsEditional
+      display flex
+      flex-direction column
+      align-items center
+      padding-inline-end 10px
+      -webkit-padding-end 10px
+      -moz-padding-end 10px
+      .paid
+        padding 0 3px 0
+        font-size 12px
+        line-height 12px
+        height 14px
+        background-color var(--paid-bgcolor)
+        color var(--dark-color)
+        font-weight bold
+      .new-icon
+        width 31px
+        height 13px
+    .client-name
+      margin-top 3px
+      white-space nowrap
+      font-size 13px
+      font-weight bold
+      overflow hidden
+      color var(--black-color)
+      max-height 55px
+      text-overflow ellipsis
+    .services-name
+      margin-top 3px
+      white-space nowrap
+      font-size 13px
+      font-weight bold
+      overflow hidden
+      color var(--grey-color)
+      max-height 55px
+      text-overflow ellipsis
+      &.single
+        padding-inline-start 5px
+        -webkit-padding-start 5px
+        -moz-padding-start 5px
+        flex-grow 1
     .mini
       height 8px
       width 8px
@@ -42,14 +111,6 @@
                 -moz-padding-start 8px
                 width 78%
                 .client-name
-                  margin-top 3px
-                  white-space nowrap
-                  font-size 13px
-                  font-weight bold
-                  overflow hidden
-                  color var(--black-color)
-                  max-height 55px
-                  text-overflow ellipsis
                   .bday
                     display inline-flex
                     align-items center
@@ -59,73 +120,14 @@
                     -webkit-padding-start 5px
                     -moz-padding-start 5px
                   .debt
-                    display inline-flex
-                    align-items center
+                    display inline-block
+                    //text-align center
+                    width 14px
                     height 14px
                     line-height 14px
                     background-color var(--dept-color)
                     border-radius 50%
                     margin-inline-start 5px
-                    -webkit-padding-start 5px
-                    -moz-padding-start 5px
-                .services-name
-                  margin-top 3px
-                  white-space nowrap
-                  font-size 13px
-                  font-weight bold
-                  overflow hidden
-                  color var(--grey-color)
-                  max-height 55px
-                  text-overflow ellipsis
-                  &.single
-                    padding-inline-start 5px
-                    -webkit-padding-start 5px
-                    -moz-padding-start 5px
-                    flex-grow 1
-            .iconsEditional
-              display flex
-              flex-direction column
-              align-items center
-              padding-inline-end 10px
-              -webkit-padding-end 10px
-              -moz-padding-end 10px
-              .paid
-                padding 0 3px 0
-                font-size 12px
-                line-height 12px
-                height 14px
-                background-color var(--paid-bgcolor)
-                color var(--dark-color)
-                font-weight bold
-              .new-icon
-                width 31px
-                height 13px
-            .time-info
-              box-sizing border-box
-              width 85px
-              padding-inline-end 0.8rem
-              -webkit-padding-end 0.8rem
-              -moz-padding-end 0.8rem
-              .event-start
-                margin 0
-                text-align end
-                font-size 11px
-                white-space nowrap
-                font-weight bold
-                color var(--black-color)
-              .short-cont
-                .duration-wrap
-                  margin 4px 0 0 0
-                  text-align end
-                  white-space nowrap
-                  font-size 11px
-                  font-weight bold
-                  color var(--black-color)
-                  display flex
-                  align-items baseline
-                  justify-content flex-end
-                  .event-duration
-                    padding-inline-start 5px
                     -webkit-padding-start 5px
                     -moz-padding-start 5px
           .note-address
@@ -232,6 +234,95 @@
                   text-overflow ellipsis
               .note-wrap
                 padding 0
+        &.third
+          .main-info
+            .foto-time
+              .foto-name
+                flex-direction column
+                padding-inline-start 0.1rem
+                -webkit-padding-start 0.1rem
+                -moz-padding-start 0.1rem
+                .wrap-time
+                  display flex
+                  justify-content space-between
+                  .time-info
+                    padding-inline-end 2px
+                    -webkit-padding-end 2px
+                    -moz-padding-end 2px
+                .name-service
+                  padding 0.2rem 0 0 0
+                  width 100%
+                  .services-name
+                    margin-top 0.3rem
+                    padding-inline-start 0
+                    -webkit-padding-start 0
+            .note-address
+              padding-inline-start 0.1rem
+              -webkit-padding-start 0.1rem
+              -moz-padding-start 0.1rem
+              .address-wrap
+                padding-inline-start 0
+                -webkit-padding-start 0
+                -moz-padding-start 0
+                padding-inline-end 0
+                -webkit-padding-end 0
+                -moz-padding-end 0
+              .note-wrap
+                padding-inline-start 0
+                -webkit-padding-start 0
+                -moz-padding-start 0
+                padding-inline-end 0
+                -webkit-padding-end 0
+                -moz-padding-end 0
+                .client-note
+                  white-space nowrap
+        &.extra
+          .foto-time
+            .foto-name
+              padding-inline-start 0
+              -webkit-padding-start 0
+              -moz-padding-start 0
+              .name-service
+                padding-inline-start 0.1rem
+                -webkit-padding-start 0.1rem
+                -moz-padding-start 0.1rem
+                width: 100%
+                .client-name
+                  margin-inline-end 0
+                  -webkit-margin-end 0
+                  -moz-margin-end 0
+                .sevices-name
+                  padding 0
+                  margin-inline-end 0
+                  -webkit-margin-end 0
+                  -moz-margin-end 0
+          .note-address
+            .address-wrap
+              padding 0
+            .note-wrap
+              padding 0
+              .client-note
+                white-space nowrap
+        &.short
+          .flex
+            display flex
+            height 100%
+            align-items center
+            justify-content space-between
+            padding-inline-start 5px
+            -webkit-padding-start 5px
+            -moz-padding-start 5px
+            .single-time
+              .event-start
+                padding-top 2px
+          .half-flex
+            display flex
+            justify-content space-between
+            padding 3px 3px 0
+            .client-name
+              max-width 50%
+            .single
+              margin 0
       .click-mask
         position absolute
         height 100%

@@ -20,7 +20,7 @@ export const customEventHalf = (event, element, start, end, view) => {
           <p class='name_full'>${event.extendedProps.off_time === 'break' ? config.translations.business_lunch : config.translations.meeting}</p>
           <p class='event-start'>${start} - ${end}</p>
         </div>`
-        : `<div class='click-mask'></div><div class='custom-event'>
+        : `<div class='click-mask'></div><div class='custom-event short'>
     <div class='name-service half-flex ${config.calendar.isRTL ? 'singleHalfRTL' : 'singleHalfLTR'}'>
             ${event.name
     ? `<p class='client-name'>${event.extendedProps.name.split(' ', 1)}</p>`
