@@ -67,6 +67,7 @@ class Calendar extends Component {
 
   render () {
     if (!this.props.visibleDays) return null
+    if (this.props.events.length === 0) return null
     const swiperParams = {
       rebuildOnUpdate: true,
 

@@ -107,25 +107,25 @@ class Header extends Component {
     const { calendarDate, view, todayBtn } = this.getCalendarDate()
     // console.log('this.props.defaultDate', this.props.defaultDate)
     return (
-      <div id='header' style={{ 'direction': config.calendar.isRTL ? 'rtl' : 'ltr' }}>
-        <div className={'menu_refresh ' + (config.calendar.isRTL ? 'menu_rtl' : 'menu_ltr')}>
+      <div id='header' style={{ 'direction': config.calendar.dir }}>
+        <div className={'menu_refresh ' + ('menu_' + config.calendar.dir)}>
           <HeaderMenu />
           <button id='refresh_button' onClick={this.props.getEvents}>
             <img className='refresh_button_img' src={config.urls.staticImg + '/refresh.svg'} />
           </button>
         </div>
         <div className='middle-section'>
-          <button onClick={this.handlePrev} className={'prev_button_wrap common ' + (config.calendar.isRTL ? 'rtlStyle' : 'ltrStyle')}>
+          <button onClick={this.handlePrev} className={'prev_button_wrap common ' + (config.calendar.dir + 'Style')}>
             <img className='prev_button btn' src={config.urls.staticImg + '/prev.svg'} />
           </button>
           <div className='current_date'>
             {calendarDate}
           </div>
-          <button onClick={this.handleNext} className={'next_button_wrap common ' + (config.calendar.isRTL ? 'rtlStyle' : 'ltrStyle')}>
+          <button onClick={this.handleNext} className={'next_button_wrap common ' + (config.calendar.dir + 'Style')}>
             <img className='next_button btn' src={config.urls.staticImg + '/next.svg'} />
           </button>
         </div>
-        <div className={'header_right ' + (config.calendar.isRTL ? 'view_buttons_rtl' : 'view_buttons_ltr')}>
+        <div className={'header_right ' + ('view_buttons_'  + config.calendar.dir)}>
           {todayBtn && <button className='today_wrap' onClick={this.handleToday}>
             <img className='img_today' src={config.urls.staticImg + '/today.svg'} />
             {config.translations.today}

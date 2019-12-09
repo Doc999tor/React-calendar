@@ -7,8 +7,8 @@ export const TimeLabel = (props) => {
   return <div className={`timeBox ${topParam}`} style={{
     height: `${getFormattedTimeLabels().length * 25}px`,
     marginTop: `${props.currentView === 'weekly' ? '23px' : ''}`,
-    left: config.calendar.isRTL ? '' : 0,
-    right: config.calendar.isRTL ? 0 : ''
+    left: config.calendar.dir === 'rtl'? '' : 0,
+    right: config.calendar.dir === 'rtl'? 0 : ''
   }}>
     {getFormattedTimeLabels().map((i, index) => <div key={index}
                                                      className={`time-week${(i !== 0) ? ' true-time-daily' : ''}`}

@@ -7,7 +7,7 @@ const AgendaEvents = (props) => {
   let firstTimeBox = props.freeTimeArr ? props.freeTimeArr.filter(timeBox => timeBox.position === 'first') : null
   let lastTimeBox = props.freeTimeArr ? props.freeTimeArr.filter(timeBox => timeBox.position === 'last') : null
   return (
-    <div className='agenda-events' style={config.calendar.isRTL ? { direction: 'rtl' } : { direction: 'ltr' }}>
+    <div className='agenda-events' style={config.calendar.dir === 'rtl'? { direction: 'rtl' } : { direction: 'ltr' }}>
       {
         firstTimeBox ? firstTimeBox[0] ?
           <div className='duration-time' data-time-start={moment(firstTimeBox[0].start).format('YYYY-MM-DD HH-mm')}>

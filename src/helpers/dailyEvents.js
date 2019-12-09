@@ -89,7 +89,7 @@ export const customTimeToText = seconds => {
   } else if (minutes === 0) {
     return `${hours} ${config.translations.duration.hours}`
   } else {
-    return `<p class='full-dur'>
+    return `<p class='full-dur' style="direction: ltr">
   <span class='hours'>${hours}</span>
   <span>${config.translations.duration.abbreviated_hours}</span>
   <span class='minutes'>${minutes}</span>
@@ -112,7 +112,7 @@ const draggingResizing = (event, element, start, end, view) => {
             </div>
     </div>`
   )
-  container.innerHTML += customEvent
+  container.innerHTML = customEvent
   return element
 }
 
@@ -128,6 +128,7 @@ export const getEventType = (events, currentEvent) => {
   let currentEventIndex = getIndexByProperty(events, 'client_id', currentEvent.extendedProps.client_id)
   if (events.length >= 1 && currentEventIndex >= 0) {
     let overlapCount = 0
+
     if (currentEventIndex === 0) {
       for (let i = 1; i < events.length; i++) {
         if (!(moment(events[i].start) - moment(events[currentEventIndex].end) >= 0)) {
@@ -175,40 +176,45 @@ export const getEventType = (events, currentEvent) => {
 }
 
 const eventRender = (data) => {
-  let {el, event, view} = data
-  let color = event.extendedProps.services && event.extendedProps.services.length > 0 && event.extendedProps.services[0].color
-    ? event.extendedProps.services[0].color
-    : event.off_time
-      ? '#777777'
-      : '#4f2da7'
-  el.style.direction = config.calendar.isRTL ? 'rtl' : 'ltr'
-  el.style.borderImage = 'linear-gradient(to bottom' + colorStr(event.extendedProps.services) + ') 1 100%'
-  el.style.backgroundColor = event.extendedProps.off_time ? '' : mixColors(color, '#FFFFFF')
-  let start = getHoursLabel(event.start.getHours().toString(), event.start.getMinutes().toString())
-  let end = event.end
-    ? getHoursLabel(event.end.getHours().toString(), event.end.getMinutes().toString())
-    : ''
-  return draggingResizing(event, el, start, end, view)
-}
-
-export const eventAfterRender = ({el, event, view}, api) => {
-  let events = api ? api.getEvents() : []
-  let sortedEvents = events.length > 0 ? eventsSort(events, view.dateProfileGenerator.options.defaultDate) : []
-  let start = getHoursLabel(event.start.getHours().toString(), event.start.getMinutes().toString())
-  let end = event.end
-    ? getHoursLabel(event.end.getHours().toString(), event.end.getMinutes().toString())
-    : ''
-  const eventType = getEventType(sortedEvents, event)
-  if(eventType === 'full') {
-    return customEventFull(event, el, start, end, view)
-  } else if (eventType === 'half'){
-    return customEventHalf(event, el, start, end, view)
-  } else if (eventType === 'third') {
-    return customEventThird(event, el, start, end, view)
-  } else if (eventType === 'extra') {
-    return customEventExtra(event, el, start, end, view)
+  if (data.view.type=== 'daily' || data.view.type === 'agendaFourDay') {
+    let {el, event, view} = data
+    let color = event.extendedProps.services && event.extendedProps.services.length > 0 && event.extendedProps.services[0].color
+      ? event.extendedProps.services[0].color
+      : event.off_time
+        ? '#777777'
+        : '#4f2da7'
+    el.style.direction = config.calendar.dir
+    el.style.borderImage = 'linear-gradient(to bottom' + colorStr(event.extendedProps.services) + ') 1 100%'
+    el.style.backgroundColor = event.extendedProps.off_time ? '' : mixColors(color, '#FFFFFF')
+    let start = getHoursLabel(event.start.getHours().toString(), event.start.getMinutes().toString())
+    let end = event.end
+      ? getHoursLabel(event.end.getHours().toString(), event.end.getMinutes().toString())
+      : ''
+    return draggingResizing(event, el, start, end, view)
   }
+}
+export const eventPositioned = ({el, event, view, isMirror}, api) => {
+  if(view.type === 'daily') {
+    let events = api ? api.getEvents() : []
+    let sortedEvents = events ? eventsSort(events, view.dateProfileGenerator.options.defaultDate) : []
+    let start = getHoursLabel(event.start.getHours().toString(), event.start.getMinutes().toString())
+    let end = event.end
+      ? getHoursLabel(event.end.getHours().toString(), event.end.getMinutes().toString())
+      : ''
 
+    if(!isMirror) {
+      const eventType = getEventType(sortedEvents, event)
+      if(eventType === 'full') {
+        return customEventFull(event, el, start, end, view)
+      } else if (eventType === 'half'){
+        return customEventHalf(event, el, start, end, view)
+      } else if (eventType === 'third') {
+        return customEventThird(event, el, start, end, view)
+      } else if (eventType === 'extra') {
+        return customEventExtra(event, el, start, end, view)
+      }
+    }
+  }
 }
 
 export default eventRender

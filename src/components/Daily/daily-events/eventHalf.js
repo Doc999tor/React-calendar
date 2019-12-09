@@ -16,12 +16,12 @@ export const customEventHalf = (event, element, start, end, view) => {
   if (rowCount(event.start, event.end) >= 0.5 && rowCount(event.start, event.end) < 2) {
     customEvent = event.extendedProps.off_time
         ? `<div class='click-mask'></div>
-        <div class='off_time short-half ${config.calendar.isRTL ? 'shortOfftimeRTL' : 'shortOfftimeLTR'}'>
+        <div class='off_time short-half ${config.calendar.dir === 'rtl'? 'shortOfftimeRTL' : 'shortOfftimeLTR'}'>
           <p class='name_full'>${event.extendedProps.off_time === 'break' ? config.translations.business_lunch : config.translations.meeting}</p>
           <p class='event-start'>${start} - ${end}</p>
         </div>`
         : `<div class='click-mask'></div><div class='custom-event short'>
-    <div class='name-service half-flex ${config.calendar.isRTL ? 'singleHalfRTL' : 'singleHalfLTR'}'>
+    <div class='name-service half-flex ${config.calendar.dir === 'rtl'? 'singleHalfRTL' : 'singleHalfLTR'}'>
             ${event.name
     ? `<p class='client-name'>${event.extendedProps.name.split(' ', 1)}</p>`
     : `<p class='client-name'>${config.translations.occasional.split(' ', 1)}</p>`}
@@ -30,7 +30,7 @@ export const customEventHalf = (event, element, start, end, view) => {
   }
   if (rowCount(event.start, event.end) >= 2) {
     customEvent = event.extendedProps.off_time
-        ? `<div class='click-mask'></div><div class='off_time half_off ${config.calendar.isRTL ? 'halfOfftimeRTL' : 'halfOfftimeLTR'}'>
+        ? `<div class='click-mask'></div><div class='off_time half_off ${config.calendar.dir === 'rtl'? 'halfOfftimeRTL' : 'halfOfftimeLTR'}'>
             <div class='off_time_extended'>
               <div class='off_time_wrap'>
                 <img class='off_time_img' src='${event.extendedProps.off_time === 'break' ? `${config.urls.staticImg}/break.svg` : `${config.urls.staticImg}/meeting.svg`}' />
@@ -63,7 +63,7 @@ export const customEventHalf = (event, element, start, end, view) => {
     : ''}
                 </div>
           </div>`
-        : `<div class='click-mask'></div><div class='custom-event half ${config.calendar.isRTL ? 'halfRTL' : 'halfLTR'}'>
+        : `<div class='click-mask'></div><div class='custom-event half ${config.calendar.dir === 'rtl'? 'halfRTL' : 'halfLTR'}'>
         <div class='main-info'>
           <div class='foto-time'>
              <div class='foto-name'>
@@ -108,7 +108,7 @@ export const customEventHalf = (event, element, start, end, view) => {
     : ''
 }
             <div class='name-service'>
-            <div class='name-service-wrap ${config.calendar.isRTL && rowCount(event.start, event.end) >= 5 ? 'nameHalfRTL' : 'nameHalfLTR'}'>
+            <div class='name-service-wrap ${config.calendar.dir === 'rtl'&& rowCount(event.start, event.end) >= 5 ? 'nameHalfRTL' : 'nameHalfLTR'}'>
             ${event.extendedProps.name
     ? `<p class='client-name'>${event.extendedProps.name.split(' ', 1)}${event.extendedProps.birthdate ? bday(event, view.dateProfileGenerator.options.defaultDate) : ''}${event.extendedProps.has_debt ? `<span class='debt'><img class='mini' src='${config.urls.staticImg}/debt1.svg'></span>` : ''}</p>`
     : `<p class='client-name'>${config.translations.occasional.split(' ', 1)}${event.extendedProps.birthdate ? bday(event, view.dateProfileGenerator.options.defaultDate) : ''}${event.extendedProps.has_debt ? `<span class='debt'><img class='mini' src='${config.urls.staticImg}/debt1.svg'></span>` : ''}</p>`}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { setCalendarAPI, getEventInfo } from 'store/calendar/actions'
-import renderDailyEvents, { eventAfterRender } from '../../helpers/dailyEvents'
+import renderDailyEvents, { eventPositioned } from '../../helpers/dailyEvents'
 import { connect } from 'react-redux'
 import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -18,7 +18,7 @@ class DemoCalendar extends Component {
 
   handleEventClick = eventInfo => {
     if (this.props.defaultView !== 'monthly') {
-      this.props.dispatch(getEventInfo(eventInfo))
+      this.props.getEventInfo(eventInfo)
     }
   }
 
@@ -26,10 +26,16 @@ class DemoCalendar extends Component {
     if(!this.props.calendarApi) {
       this.props.setCalendarAPI(this.calendarRef.current, this.props.defaultDate)
     }
+    if(this.props.defaultView === 'daily' ) {
+      let swiper = document.getElementById('swiper-calendar')
+      swiper.style.paddingInlineStart = '34px'
+      swiper.style.mozPaddingStart = '34px'
+      swiper.style.webkitPaddingStart = '34px'
+      swiper.style.blabla = '33px'
+    }
   }
 
   render () {
-    let events = this.props.calendarApi && this.props.calendarApi.getEvents()
     let documentHeight = document.documentElement.clientHeight
     let calendarHeight = config.workers.length === 1 ? documentHeight - 60 : documentHeight - 161
     return (
@@ -43,7 +49,7 @@ class DemoCalendar extends Component {
           {...this.props}
           contentHeight={this.props.defaultView === 'monthly' ? calendarHeight : 'auto'}
           eventRender={(data) => renderDailyEvents(data)}
-          eventPositioned={(data) => eventAfterRender(data, this.props.calendarApi)}
+          eventPositioned={(data) => eventPositioned(data, this.props.calendarApi)}
         />
       </React.Fragment>
     )
@@ -53,5 +59,5 @@ class DemoCalendar extends Component {
 const mapStateToProps = state => ({
   calendarApi: state.calendar.calendarApi,
 })
-export default connect(mapStateToProps, {setCalendarAPI})(DemoCalendar)
+export default connect(mapStateToProps, {setCalendarAPI, getEventInfo})(DemoCalendar)
 

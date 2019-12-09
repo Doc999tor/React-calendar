@@ -8,10 +8,10 @@ export default class Queue extends Component {
     const { fullMonths } = config.translations.dates
     const { days } = config.translations.dates
     return (
-      <div id='eventPopup' style={config.calendar.isRTL ? { 'direction': 'rtl' } : { 'direction': 'ltr' }} >
+      <div id='eventPopup' style={config.calendar.dir === 'rtl'? { 'direction': 'rtl' } : { 'direction': 'ltr' }} >
         <div className='client-view'>
           <div className='gradient'>
-            <div onClick={this.props.close} className='close-popup' style={config.calendar.isRTL ? { 'left': '20px' } : { 'right': '20px' }}>
+            <div onClick={this.props.close} className='close-popup' style={config.calendar.dir === 'rtl'? { 'left': '20px' } : { 'right': '20px' }}>
               <span className='popup-cross'>&times;</span>
             </div>
             <div className='client-page'>
@@ -21,7 +21,7 @@ export default class Queue extends Component {
                     {/* {event.birthdate && bday(event, view.dateProfile.date)} */}
                     <div className='icons-item'>
                       <div className='wrap-icons'>
-                        <img className='vip' src={config.urls.staticImg + '/vip-star.svg'} /> 
+                        <img className='vip' src={config.urls.staticImg + '/vip-star.svg'} />
                       </div>
                       <span>{config.translations.vip}</span>
                     </div>

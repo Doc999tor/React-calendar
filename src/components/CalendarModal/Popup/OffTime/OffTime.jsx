@@ -8,10 +8,10 @@ export default class OffTime extends Component {
     const { fullMonths } = config.translations.dates
     const { days } = config.translations.dates
     return (
-      <div id='offtime' style={config.calendar.isRTL ? { 'direction': 'rtl' } : { 'direction': 'ltr' }}>
+      <div id='offtime' style={{direction: config.calendar.dir}}>
         <div className='client-view'>
           <div className='backgroundForOfftime'>
-            <div onClick={this.props.close} className='close-popup' style={config.calendar.isRTL ? { 'left': '20px' } : { 'right': '20px' }}>
+            <div onClick={this.props.close} className='close-popup' style={config.calendar.dir === 'rtl' ? { 'left': '20px' } : { 'right': '20px' }}>
               <span className='popup-cross'>&times;</span>
             </div>
             <div className='client-page'>
@@ -20,7 +20,7 @@ export default class OffTime extends Component {
           </div>
         </div>
         <div className='service-wrapper service-relative'>
-          <div className='date-info upperWrap wrap-item' style={config.calendar.isRTL ? { 'right': '-50%' } : { 'left': '-50%' }}>
+          <div className='date-info upperWrap wrap-item' style={config.calendar.dir === 'rtl' ? { 'right': '-50%' } : { 'left': '-50%' }}>
             <div className='service-date'>
               <div className='img'>
                 <img className='img-service' src={config.urls.staticImg + '/calendar.svg'} />

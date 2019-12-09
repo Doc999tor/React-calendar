@@ -13,7 +13,7 @@ const CustomEvent = (props) => {
   return (
     <div className='event-wrap'>
       <div className='agenda-event' data-id={props.event.id} data-appointment_id={props.event.id}
-           style={config.calendar.isRTL ? { direction: 'rtl' } : { direction: 'ltr' }}
+           style={config.calendar.dir === 'rtl'? { direction: 'rtl' } : { direction: 'ltr' }}
            onClick={() => {props.eventClick(props.event)}}>
         {props.event.profile_picture && !! props.event.client_id && props.event.client_id >= 0
           ? <div className='foto-wrap'>
@@ -37,7 +37,7 @@ const CustomEvent = (props) => {
             </div>
         }
         <div className='note-info'>
-          <div className={`note-about-user ${config.calendar.isRTL ? ' styleAgendaRTL' : ' styleAgendaLTR'}`}>
+          <div className={`note-about-user ${config.calendar.dir === 'rtl'? ' styleAgendaRTL' : ' styleAgendaLTR'}`}>
             {props.event.name && !! props.event.name
               ? <div className='name-wrap'>
                 <p className='client-name'>{props.event.name}</p>
@@ -87,7 +87,7 @@ const CustomEvent = (props) => {
               : ''
             }
           </div>
-          <div className={`time-block ${config.calendar.isRTL ? ' styleTimeRTL' : ' styleTimeLTR'}`}
+          <div className={`time-block ${config.calendar.dir === 'rtl'? ' styleTimeRTL' : ' styleTimeLTR'}`}
                style={{borderImage: `linear-gradient(to bottom ${colorStr(props.event.services)} ) 1 100%`}}
           >
             <div className='start-duration'>

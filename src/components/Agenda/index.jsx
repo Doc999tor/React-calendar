@@ -100,7 +100,7 @@ class Agenda extends Component {
             )
           })}
         </Swiper>
-        <div className={`preloader${config.calendar.isRTL ? ' styleLoaderRTL' : ' styleLoaderLTR'}`} style={{display: this.props.eventsFetching ? 'flex' : 'none'}}>
+        <div className={`preloader${config.calendar.dir === 'rtl' ? ' styleLoaderRTL' : ' styleLoaderLTR'}`} style={{display: this.props.eventsFetching ? 'flex' : 'none'}}>
           <img className='loader' src={config.urls.staticImg + '/preloader.svg'} />
         </div>
       </div>

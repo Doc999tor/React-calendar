@@ -3,7 +3,7 @@ import React from 'react'
 const EmptyPage = () => {
   return (
     <div className={'empty-page-wrapper'}>
-      <div className='empty-page' style={config.calendar.isRTL ? {direction: 'rtl', backgroundImage: `url(${config.urls.staticImg + '/empty-agenda.svg'})`} : {direction: 'ltr', backgroundImage: `url(${config.urls.staticImg + '/empty-agenda.svg'})`}}>
+      <div className='empty-page' style={config.calendar.dir === 'rtl' ? {direction: 'rtl', backgroundImage: `url(${config.urls.staticImg + '/empty-agenda.svg'})`} : {direction: 'ltr', backgroundImage: `url(${config.urls.staticImg + '/empty-agenda.svg'})`}}>
         <h1 className='agenda-title'>{config.translations.no_queues}</h1>
         <div className='agenda-text'>
           <p>{config.translations.empty_agenda}</p>

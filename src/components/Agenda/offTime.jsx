@@ -5,14 +5,14 @@ const OffTime = (props) => {
   return (
     <div className='off_time-wrap'>
       <div className='off_time' data-id={props.event.id} data-appointment_id={props.event.id}
-           style={{ direction: config.calendar.isRTL ? 'rtl' : 'ltr' }}
+           style={{ direction: config.calendar.dir }}
            onClick={() => {props.eventClick(props.event)}}>
         <div className='off_time_wrap'>
           <img className='off_time_img'
                src={`${props.event.off_time === 'break' ? `${config.urls.staticImg}/break.svg` : `${config.urls.staticImg}/meeting.svg`}`}/>
         </div>
         <div className='note-info'>
-          <div className={`note-about-user ${config.calendar.isRTL ? ' styleAgendaRTL' : ' styleAgendaLTR'}`}>
+          <div className={`note-about-user ${config.calendar.dir === 'rtl' ? ' styleAgendaRTL' : ' styleAgendaLTR'}`}>
             <p className='name-wrap'>{props.event.off_time === 'break' ? config.translations.business_lunch : config.translations.meeting}</p>
             {props.event.note
               ? <div className='note-wrap'>
@@ -31,7 +31,7 @@ const OffTime = (props) => {
               : ''
             }
           </div>
-          <div className={`time-block ${config.calendar.isRTL ? ' styleTimeRTL' : ' styleTimeLTR'}`}
+          <div className={`time-block ${config.calendar.dir === 'rtl' ? ' styleTimeRTL' : ' styleTimeLTR'}`}
                style={{borderImage: `linear-gradient(to bottom ${colorStr(props.event.services)} ) 1 100%`}}
           >
             <div className='start-duration'>

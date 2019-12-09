@@ -22,7 +22,7 @@ class Workers extends Component {
     }
     return (
       <div className='swiper-background'>
-        <div id='workers' className='swiper-container' style={config.calendar.isRTL ? { 'direction': 'rtl' } : { 'direction': 'ltr' }}>
+        <div id='workers' className='swiper-container' style={config.calendar.dir === 'rtl'? { 'direction': 'rtl' } : { 'direction': 'ltr' }}>
           <div className='swiper-wrapper'>
             <Swiper {...params}>
               {config.workers.map(worker => (

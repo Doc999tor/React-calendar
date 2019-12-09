@@ -4,29 +4,28 @@ import * as types from './actionTypes'
 const initialState = {
   eventsFetching: false,
   events: [
-  //   {
-  //   address: "ירושלים, ריבלין יוסף, 28",
-  //   birthdate: "09-29",
-  //   client_id: "76",
-  //   durationEditable: true,
-  //   end: "2019-12-07 16:15",
-  //   id: "623",
-  //   is_reminders_set: false,
-  //   name: "PFl PwEZMgSXXH",
-  //   note: "lSFbnYoR XOzbKSVhmz CtD",
-  //   off_time: null,
-  //   phone: "08-09617410",
-  //   profile_picture: "76.jpg",
-  //   services: [
-  //     {id: 15, name: "qxCMU xKmY GAmzofBlB", color: "#e1e6b3", count: 1},
-  //     {id: 49, name: "cTZ ZUReMP SJHVO xYhbNn", color: "#755559", count: 2},
-  //     {id: 1, name: "hQBx RVsG GyQnkXKxGX WZ", color: "#66a955", count: 1},
-  //     {id: 35, name: "aDNOeeK xMv sU xEFsLgH", color: "#2126a5", count: 2}
-  //   ],
-  //   start: "2019-12-07 13:15",
-  //   total_price: "490"
-  // }
-
+    // {
+    //   address: 'ירושלים, ריבלין יוסף, 28',
+    //   birthdate: '09-29',
+    //   client_id: '76',
+    //   durationEditable: true,
+    //   end: '2019-12-09 16:15',
+    //   id: '623',
+    //   is_reminders_set: false,
+    //   name: 'PFl PwEZMgSXXH',
+    //   note: 'lSFbnYoR XOzbKSVhmz CtD',
+    //   off_time: null,
+    //   phone: '08-09617410',
+    //   profile_picture: '76.jpg',
+    //   services: [
+    //     { id: 35, name: 'DuKB hZlTAXBRfG MH', color: '#ededfa', count: 3 },
+    //     { id: 49, name: 'cTZ ZUReMP SJHVO xYhbNn', color: '#755559', count: 2 },
+    //     { id: 1, name: 'hQBx RVsG GyQnkXKxGX WZ', color: '#66a955', count: 1 },
+    //     { id: 35, name: 'aDNOeeK xMv sU xEFsLgH', color: '#2126a5', count: 2 }
+    //   ],
+    //   start: '2019-12-09 13:15',
+    //   total_price: '490'
+    // },
     // {
     //   address: 'הוד השרון, ש רמת הדר, 6253',
     //   birthdate: '01-01',

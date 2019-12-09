@@ -39,7 +39,7 @@ td.fc-axis {
   border-bottom: 0;
 }
 .timeBox .true-time-daily {
-  border-top: 1px solid #ededed;
+  border-top: 1.5px solid #ededed;
 }
 .timeBox .true-time-daily:last-child {
   box-sizing: content-box;

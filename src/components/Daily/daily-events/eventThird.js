@@ -16,11 +16,11 @@ export const customEventThird = (event, element, start, end, view) => {
   if (rowCount(event.start, event.end) >= 0.5 && rowCount(event.start, event.end) < 2) {
     customEvent = (
       event.extendedProps.off_time
-        ? `<div class='click-mask'></div><div class='off_time short-third ${config.calendar.isRTL ? 'singleOfftimeRTL' : 'singleOfftimeLTR'}'>
+        ? `<div class='click-mask'></div><div class='off_time short-third ${config.calendar.dir === 'rtl'? 'singleOfftimeRTL' : 'singleOfftimeLTR'}'>
           <p class='name_full'>${event.extendedProps.off_time === 'break' ? config.translations.business_lunch : config.translations.meeting}</p>
         </div>`
         : `<div class='click-mask'></div><div class='custom-event short'>
-    <div class='name-service half-flex ${config.calendar.isRTL ? 'singleThirdRTL' : 'singleThirdLTR'}'>
+    <div class='name-service half-flex ${config.calendar.dir === 'rtl'? 'singleThirdRTL' : 'singleThirdLTR'}'>
             ${event.extendedProps.name
     ? `<p class='client-name'>${event.extendedProps.name.split(' ', 1)}</p>`
     : `<p class='client-name'>${config.translations.occasional.split(' ', 1)}</p>`}
@@ -31,7 +31,7 @@ export const customEventThird = (event, element, start, end, view) => {
   if (rowCount(event.start, event.end) >= 2) {
     customEvent = (
       event.extendedProps.off_time
-        ? `<div class='click-mask'></div><div class='off_time third_off ${config.calendar.isRTL ? 'thirdOfftimeRTL' : 'thirdOfftimeLTR'}'>
+        ? `<div class='click-mask'></div><div class='off_time third_off ${config.calendar.dir === 'rtl'? 'thirdOfftimeRTL' : 'thirdOfftimeLTR'}'>
       <div class='off_time_extended'>
       ${rowCount(event.start, event.end) >= 5 ? `<div class='off_time_wrap'>
           <img class='off_time_img' src='${event.extendedProps.off_time === 'break' ? `${config.urls.staticImg}/break.svg` : `${config.urls.staticImg}/meeting.svg`}' />
@@ -64,7 +64,7 @@ export const customEventThird = (event, element, start, end, view) => {
     : ''}
           </div>
     </div>`
-        : `<div class='click-mask'></div><div class='custom-event third ${config.calendar.isRTL ? 'thirdRTL' : 'thirdLTR'}'>
+        : `<div class='click-mask'></div><div class='custom-event third ${config.calendar.dir === 'rtl'? 'thirdRTL' : 'thirdLTR'}'>
         <div class='main-info'>
           <div class='foto-time'>
              <div class='foto-name'>

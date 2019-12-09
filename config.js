@@ -188,7 +188,6 @@ const config = {
     timeZone: 'local',
     // timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     dir: 'rtl',
-    isRTL: true,
     nowIndicator: true,
     firstDay: 0,
     slotDuration: '00:15:00', // The frequency for displaying time slots
