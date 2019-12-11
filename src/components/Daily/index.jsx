@@ -67,7 +67,6 @@ class Calendar extends Component {
 
   render () {
     if (!this.props.visibleDays) return null
-    if (this.props.events.length === 0) return null
     const swiperParams = {
       rebuildOnUpdate: true,
 
@@ -95,7 +94,8 @@ class Calendar extends Component {
               columnHeaderText={date => moment(date).format('dddd YYYY-MM-DD')}
               events={this.props.events}
               defaultView='daily'
-              defaultDate={i}/>
+              defaultDate={i}
+            />
           </div>
         ))}
         </Swiper>

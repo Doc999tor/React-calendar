@@ -192,7 +192,7 @@ const config = {
     firstDay: 0,
     slotDuration: '00:15:00', // The frequency for displaying time slots
     slotLabelInterval: '00:15', // The frequency that the time slots should be labelled with text
-    minTime: '08:15',
+    minTime: '06:15',
     maxTime: '23:15',
     editable: true,
     longPressDelay: 1000,

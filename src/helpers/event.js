@@ -97,7 +97,7 @@ const freeTime = seconds => {
   } else if (minutes === 0) {
     return `${hours} ${config.translations.duration.hours}`
   } else {
-    return <p className='full-dur'><span className='hours'>{hours}</span> <span>{config.translations.duration.hours}</span> <span className='minutes'>{minutes}</span> <span>{config.translations.duration.minutes}</span></p>
+    return <p className='full-dur' style={{direction: 'ltr'}}><span className='hours'>{hours}</span> <span>{config.translations.duration.hours}</span> <span className='minutes'>{minutes}</span> <span>{config.translations.duration.minutes}</span></p>
   }
 }
 
@@ -129,17 +129,32 @@ export const freeTimeArrCreator = (events, currentDate) => {
 }
 
 export const isFreeTimeBoxNeeded = (events, index) => {
-  if(events) {
-    if(index === (events.length - 1)) {
-      return {isNeeded: false}
-    } else if ((moment(events[index + 1].start) - moment(events[index].end)) > 0) {
-      return {
-        isNeeded: true,
-        hours: freeTime(moment(events[index + 1].start) - moment(events[index].end)),
-        end: events[index].end
+  if(events && events.length > 0 && index !== events.length - 1) {
+    let counter = 0
+
+    for(let i = index + 1; i < events.length; i++) {
+      if ((moment(events[i].start) - moment(events[index].end)) <= 0) {
+        counter++
       }
-    } else {
-      return {isNeeded: false}
+    }
+
+    let prevEndArr = [moment(events[index].end)]
+    for(let i = index - 1; i >= 0; i--) {
+      prevEndArr.push(moment(events[i].end))
+      for(let j = index + 1; j < events.length; j++) {
+        if(moment(events[j].start) - moment(events[i].end) <= 0 ) {
+          counter++
+        }
+      }
+    }
+
+    prevEndArr.sort()
+
+    if(counter > 0) return {isNeeded: false}
+    return {
+      isNeeded: true,
+      hours: freeTime(moment(events[index + 1].start) - moment(prevEndArr[prevEndArr.length - 1])),
+      end: events[index].end
     }
   } else {
     return {isNeeded: false}
