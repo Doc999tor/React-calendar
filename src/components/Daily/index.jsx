@@ -28,7 +28,7 @@ class Calendar extends Component {
 
   componentDidMount = () => {
     this.props.dispatch(getEvents())
-    this.props.dispatch(setVisibleDays(this.props.defaultDate))
+    // this.props.dispatch(setVisibleDays(this.props.defaultDate))
   }
   componentDidUpdate = (prevProps, prevState) => {
     if (prevState.visibleDays[1] === this.state.visibleDays[1]) return false
@@ -56,17 +56,16 @@ class Calendar extends Component {
       //   //   this.setState({ refresh: false })
       //   // })
 
-      // this.setState({visibleDays: visibleDays})
+      this.setState({visibleDays: visibleDays})
 
       // this.props.dispatch(setVisibleDays())
-      this.props.dispatch(setVisibleDays(dd))
+      // this.props.dispatch(setVisibleDays(dd))
     }
 
-    this.props.dispatch(setSwiperDirection(sd))
+    // this.props.dispatch(setSwiperDirection(sd))
   }
 
   render () {
-    if (!this.props.visibleDays) return null
     const swiperParams = {
       rebuildOnUpdate: true,
 
@@ -88,7 +87,7 @@ class Calendar extends Component {
           onSlideChangeEnd={this.onSlideChangeEnd}
           initialSlide={1}
           loop
-        >{this.props.visibleDays.map((i, index) => (
+        >{this.state.visibleDays.map((i, index) => (
           <div key={i}>
             <DemoCalendar
               columnHeaderText={date => moment(date).format('dddd YYYY-MM-DD')}

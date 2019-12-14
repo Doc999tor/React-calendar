@@ -73,7 +73,7 @@ module.exports = (env, args) => {
         assets: false,
         hash: false
       },
-      port: '3001'
+      port: '3000'
     },
     plugins: [
       new MiniCssExtractPlugin({

@@ -118,14 +118,14 @@ const draggingResizing = (event, element, start, end, view) => {
 
 export const getIndexByProperty = (arr, property, propertyValue) => {
   for(let i = 0; i < arr.length; i++) {
-    if(arr[i].extendedProps[property] === propertyValue) {
+    if(arr[i][property] === propertyValue) {
       return i
     }
   }
 }
 
 export const getEventType = (events, currentEvent) => {
-  let currentEventIndex = getIndexByProperty(events, 'client_id', currentEvent.extendedProps.client_id)
+  let currentEventIndex = getIndexByProperty(events, 'id', currentEvent.id)
   if (events.length >= 1 && currentEventIndex >= 0) {
     let overlapCount = 0
 
@@ -193,9 +193,10 @@ const eventRender = (data) => {
     return draggingResizing(event, el, start, end, view)
   }
 }
-export const eventPositioned = ({el, event, view, isMirror}, api) => {
+export const eventPositioned = async ({el, event, view, isMirror}, api) => {
   if(view.type === 'daily') {
-    let events = api ? api.getEvents() : []
+    // let apiA = await api
+    let events = await api.getEvents()
     let sortedEvents = events ? eventsSort(events, view.dateProfileGenerator.options.defaultDate) : []
     let start = getHoursLabel(event.start.getHours().toString(), event.start.getMinutes().toString())
     let end = event.end
@@ -204,6 +205,7 @@ export const eventPositioned = ({el, event, view, isMirror}, api) => {
 
     if(!isMirror) {
       const eventType = getEventType(sortedEvents, event)
+      // event.id === '920' && console.log(eventType)
       if(eventType === 'full') {
         return customEventFull(event, el, start, end, view)
       } else if (eventType === 'half'){
