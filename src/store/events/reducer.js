@@ -106,7 +106,8 @@ export default (state = initialState, action = {}) => {
     },
     [types.GET_STANDART_EVENTS_SUCCESS]: () => {
       return {
-        events: state.events.concat(action.payload.events),
+        events: {...action.payload.events},
+        // events: state.events.concat(action.payload.events),
         eventsFetching: false
       }
     }

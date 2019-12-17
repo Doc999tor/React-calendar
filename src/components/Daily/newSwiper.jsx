@@ -21,32 +21,33 @@ class Daily extends Component {
     }
   }
 
-  static getDerivedStateFromProps (props) {
-    return {
-      visibleDays: [
-        getFormattedDate(props.defaultDate, 'subtract', 'days'),
-        props.defaultDate,
-        getFormattedDate(props.defaultDate, 'add', 'days')
-      ]
-    }
-  }
+  // static getDerivedStateFromProps (props) {
+  //   return {
+  //     visibleDays: [
+  //       getFormattedDate(props.defaultDate, 'subtract', 'days'),
+  //       props.defaultDate,
+  //       getFormattedDate(props.defaultDate, 'add', 'days')
+  //     ]
+  //   }
+  // }
 
   componentDidMount () {
-    this.props.getEvents()
+    // this.props.getEvents()
   }
 
   onSlideChangeEnd = ({ swipeDirection }) => {
     const action = swipeDirection === 'next' ? 'add' : 'subtract'
     const dd = getFormattedDate(this.props.defaultDate, action)
     this.props.setDefaultDay(dd)
-    this.props.getEvents()
+    // this.props.getEvents()
 
-    // const visibleDays = [ getFormattedDate(dd, 'subtract', 'days'), dd, getFormattedDate(dd, 'add', 'days') ]
-    // this.setState({ visibleDays })
+    const visibleDays = [ getFormattedDate(dd, 'subtract', 'days'), dd, getFormattedDate(dd, 'add', 'days') ]
+    this.setState({ visibleDays })
   }
 
   render () {
-    console.log(this.state.visibleDays, this.props.events)
+    // if(this.state.refresh) return null
+    // console.log(this.state.visibleDays, this.props.events)
     let params = {
       on: {
         slideNextTransitionEnd: () => {
@@ -69,6 +70,7 @@ class Daily extends Component {
           {this.state.visibleDays.map(date => {
             return (
               <div key={date}>
+
                 <DemoCalendar
                   events={this.props.events}
                   columnHeaderText={date => moment(date).format('dddd YYYY-MM-DD')}
@@ -89,4 +91,7 @@ const mapStateToProps = state => ({
   events: state.events.events
 })
 
-export default connect(mapStateToProps, {setDefaultDay, getEvents})(Daily)
+export default connect(mapStateToProps, {
+  setDefaultDay,
+  getEvents
+})(Daily)

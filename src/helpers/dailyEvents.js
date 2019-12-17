@@ -193,10 +193,10 @@ const eventRender = (data) => {
     return draggingResizing(event, el, start, end, view)
   }
 }
-export const eventPositioned = async ({el, event, view, isMirror}, api) => {
+export const eventPositioned = ({el, event, view, isMirror}, api) => {
   if(view.type === 'daily') {
     // let apiA = await api
-    let events = await api.getEvents()
+    let events = api ? api.getEvents() : []
     let sortedEvents = events ? eventsSort(events, view.dateProfileGenerator.options.defaultDate) : []
     let start = getHoursLabel(event.start.getHours().toString(), event.start.getMinutes().toString())
     let end = event.end

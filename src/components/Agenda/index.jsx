@@ -36,11 +36,11 @@ class Agenda extends Component {
   }
 
   componentDidMount = () => {
-    this.props.dispatch(getEvents())
+    // this.props.dispatch(getEvents())
   }
   componentDidUpdate = (prevProps, prevState) => {
     if (prevState.visibleDays[1] === this.state.visibleDays[1]) return false
-    this.props.dispatch(getEvents())
+    // this.props.dispatch(getEvents())
   }
   onSlideChangeEnd = ({ swipeDirection }) => {
     let dd
@@ -87,7 +87,8 @@ class Agenda extends Component {
           // loop
         >
           {this.state.visibleDays.map(i => {
-            let sortedEvent = eventsSort(this.props.events, i)
+            console.log(this.props.events)
+            let sortedEvent = eventsSort(this.props.events[i], i)
             let freeTimeArr = sortedEvent.length === 0 ? null : freeTimeArrCreator(sortedEvent, i)
             return (
               <div key={i}>

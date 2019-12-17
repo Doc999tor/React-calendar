@@ -46,7 +46,9 @@ class DemoCalendar extends Component {
           plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
           ref={this.calendarRef}
           eventClick={this.handleEventClick}
-          {...this.props}
+          defaultDate={this.props.defaultDate}
+          events={this.props.events[this.props.defaultDate]}
+          columnHeaderText={this.props.columnHeaderText}
           contentHeight={this.props.defaultView === 'monthly' ? calendarHeight : 'auto'}
           eventRender={(data) => renderDailyEvents(data)}
           eventPositioned={(data) => eventPositioned(data, this.props.calendarApi)}
