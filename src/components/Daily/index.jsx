@@ -17,6 +17,8 @@ import { getFormattedDate } from '../../helpers'
 import { connect } from 'react-redux'
 import listPlugin from '@fullcalendar/list'
 import renderDailyEvents, { eventPositioned } from '../../helpers/dailyEvents'
+import { setDefaultDay } from '../../store/calendar/actions'
+import { getEvents } from '../../store/events/actions'
 
 class SimpleSlider extends Component {
   calendarComponentRef0 = React.createRef();
@@ -25,6 +27,15 @@ class SimpleSlider extends Component {
   state = {
     pages: [0, 1, 2],
   };
+
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    if (this.dates[this.state.midIndex]) {
+      this.props.setDefaultDay(moment(this.dates[this.state.midIndex]).format('YYYYY-MM-DD'))
+    }
+    if(this.state.midIndex !== prevState.midIndex) {
+      this.props.getEvents()
+    }
+  }
 
   dates = [
     getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'days'),
@@ -50,7 +61,6 @@ class SimpleSlider extends Component {
     const today = prevApi.getDate()
     const newToday = new Date(today.setDate(today.getDate() + (plus ? 1 : -1)))
     this.dates[next] = newToday
-    // console.log('this.dates', this.dates)
   }
 
   afterChange = midIndex => {
@@ -71,14 +81,14 @@ class SimpleSlider extends Component {
     initialSlide: 1,
     slidesToShow: 1,
     infinite: true,
-    speed: 100,
+    speed: 200,
   };
 
 
   renderCalendar = item => {
     const { midIndex, refresh } = this.state
     const formattedDate = moment(this.dates[item]).format('YYYY-MM-DD')
-    console.log(this.props.events[formattedDate], formattedDate)
+    // console.log(this.props.events[formattedDate], formattedDate)
     return item !== midIndex && refresh ? null : (
       <div className="demo-app-calendar">
         <FullCalendar
@@ -88,7 +98,7 @@ class SimpleSlider extends Component {
           defaultView='daily'
           plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
           defaultDate={this.dates[item]}
-          events={this.props.events[formattedDate]}
+          events={this.props.events}
           contentHeight={'auto'}
           eventRender={(data) => renderDailyEvents(data)}
           eventPositioned={(data) => eventPositioned(data, this['calendarComponentRef' + item].current?.getApi())}
@@ -118,4 +128,7 @@ const mapStateToProps = state => ({
   events: state.events.events,
 })
 
-export default connect(mapStateToProps)(SimpleSlider)
+export default connect(mapStateToProps, {
+  setDefaultDay,
+  getEvents
+})(SimpleSlider)
