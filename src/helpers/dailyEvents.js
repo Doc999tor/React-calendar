@@ -199,18 +199,18 @@ const bgrColor = (date, element, events) => {
   const items = events.filter(event => date === moment(event.start).format('YYYY-MM-DD'))
   const activeWorker = config.workers.filter(worker => worker.active)[0]
   const businessHours = activeWorker.businessHours
-  document.querySelectorAll("[data-date='" + date + "']")[0].classList.remove('dayOfRest', 'easyDay', 'normalDay', 'busyDay')
+  element.classList.remove('dayOfRest', 'easyDay', 'normalDay', 'busyDay')
   if (items && businessHours) {
     const times = items.map(i => moment(i.end) - moment(i.start))
     const filteredBusinessHours = businessHours.filter(item => item.daysOfWeek.includes(moment(date).day()))
     const totalHour = filteredBusinessHours.length !== 0 && (textToTime(filteredBusinessHours[0].endTime) - textToTime(filteredBusinessHours[0].startTime)) * 1000
-    document.querySelectorAll("[data-date='" + date + "']")[0].classList.add(filteredBusinessHours.length === 0
+    element.classList.add(filteredBusinessHours.length === 0
       ? 'dayOff'
       : getDayColor(arraySum(times), totalHour))
   }
 }
 
-const eventRender = (data, api) => {
+const eventRender = (data) => {
   if (data.view.type === 'daily' || data.view.type === 'agendaFourDay') {
     let {el, event, view} = data
     let color = event.extendedProps.services && event.extendedProps.services.length > 0 && event.extendedProps.services[0].color
@@ -227,11 +227,14 @@ const eventRender = (data, api) => {
       : ''
     return draggingResizing(event, el, start, end, view)
   }
+}
 
-  if(data.view.type === 'monthly') {
-    bgrColor(moment(data.event.start).format('YYYY-MM-DD'), data.el, api.getEvents())
+export const dayRender = ({date, el, view}, events) => {
+  if(view.type === 'monthly') {
+    bgrColor(moment(date).format('YYYY-MM-DD'), el, events)
   }
 }
+
 export const eventPositioned = ({el, event, view, isMirror}, api) => {
   const events = api.getEvents()
   if (view.type === 'daily') {

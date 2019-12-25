@@ -6,19 +6,19 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import listPlugin from '@fullcalendar/list'
 
 import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
 
-import './monthly.styl'
-
 import { getFormattedDate } from '../../helpers'
 import { connect } from 'react-redux'
-import listPlugin from '@fullcalendar/list'
-import renderDailyEvents, { eventPositioned } from '../../helpers/dailyEvents'
+import { eventPositioned, dayRender } from '../../helpers/dailyEvents'
 import { setDefaultDay } from '../../store/calendar/actions'
 import { getEvents } from '../../store/events/actions'
+
+import './monthly.styl'
 
 class Monthly extends Component {
   calendarComponentRef0 = React.createRef();
@@ -79,11 +79,8 @@ class Monthly extends Component {
     this.side = side
   }
 
-  eventRender = (data, api) => {
-    if(this.props.events) {
-      // console.log(renderDailyEvents(data), data.event.id)
-      return renderDailyEvents(data, api)
-    }
+  dayRender = (data, events) => {
+      return dayRender(data, events)
   }
 
   eventPositioned = (data, api) => {
@@ -106,6 +103,10 @@ class Monthly extends Component {
 
 
   renderCalendar = item => {
+    let midIndex2 = this.state.midIndex ? this.state.midIndex : 1
+    if(midIndex2 === item) {
+      console.log('render')
+    }
     const { midIndex, refresh } = this.state
     const documentHeight = document.documentElement.clientHeight
     const calendarHeight = config.workers.length === 1 ? documentHeight - 60 : documentHeight - 165
@@ -120,7 +121,7 @@ class Monthly extends Component {
           defaultDate={this.dates[item]}
           eventSources={[{events: this.props.events}]}
           contentHeight={calendarHeight}
-          eventRender={data => {this.eventRender(data, this['calendarComponentRef' + item].current.getApi())}}
+          dayRender={data => {this.dayRender(data, this.props.events)}}
         />
       </div>
     )
@@ -129,7 +130,7 @@ class Monthly extends Component {
   render() {
     return (
       <div>
-        <div className="containerCarusel monthly-view" style={{marginTop: '160px'}}>
+        <div className="containerCarusel" id={'monthly-view'} style={{marginTop: '160px'}}>
           <Slider {...this.settings}>
             {[0, 1, 2].map(item => (
               <div key={item}>
