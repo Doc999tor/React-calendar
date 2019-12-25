@@ -175,8 +175,43 @@ export const getEventType = (events, currentEvent) => {
   }
 }
 
-const eventRender = (data) => {
-  if (data.view.type=== 'daily' || data.view.type === 'agendaFourDay') {
+export const arraySum = arr => {
+  let sum = 0
+  for (let i = 0; i < arr.length; i++) {
+    sum += arr[i]
+  }
+  return sum
+}
+
+export const textToTime = str => {
+  return str.slice(0, 2) * 3600 + str.slice(3, 5) * 60
+}
+
+export const getDayColor = (sum, totalSum) => {
+  const coef = sum / totalSum
+  if (coef === 0) { return 'dayOfRest' }
+  if (coef < 0.3) { return 'easyDay' }
+  if (coef < 0.6) { return 'normalDay' }
+  if (coef <= 1 || coef > 1) { return 'busyDay' }
+}
+
+const bgrColor = (date, element, events) => {
+  const items = events.filter(event => date === moment(event.start).format('YYYY-MM-DD'))
+  const activeWorker = config.workers.filter(worker => worker.active)[0]
+  const businessHours = activeWorker.businessHours
+  document.querySelectorAll("[data-date='" + date + "']")[0].classList.remove('dayOfRest', 'easyDay', 'normalDay', 'busyDay')
+  if (items && businessHours) {
+    const times = items.map(i => moment(i.end) - moment(i.start))
+    const filteredBusinessHours = businessHours.filter(item => item.daysOfWeek.includes(moment(date).day()))
+    const totalHour = filteredBusinessHours.length !== 0 && (textToTime(filteredBusinessHours[0].endTime) - textToTime(filteredBusinessHours[0].startTime)) * 1000
+    document.querySelectorAll("[data-date='" + date + "']")[0].classList.add(filteredBusinessHours.length === 0
+      ? 'dayOff'
+      : getDayColor(arraySum(times), totalHour))
+  }
+}
+
+const eventRender = (data, api) => {
+  if (data.view.type === 'daily' || data.view.type === 'agendaFourDay') {
     let {el, event, view} = data
     let color = event.extendedProps.services && event.extendedProps.services.length > 0 && event.extendedProps.services[0].color
       ? event.extendedProps.services[0].color
@@ -192,23 +227,31 @@ const eventRender = (data) => {
       : ''
     return draggingResizing(event, el, start, end, view)
   }
+
+  if(data.view.type === 'monthly') {
+    bgrColor(moment(data.event.start).format('YYYY-MM-DD'), data.el, api.getEvents())
+  }
 }
 export const eventPositioned = ({el, event, view, isMirror}, api) => {
-  if(view.type === 'daily') {
-    // let apiA = await api
-    let events = api ? api.getEvents() : []
-    let sortedEvents = events ? eventsSort(events, view.dateProfileGenerator.options.defaultDate) : []
+  const events = api.getEvents()
+  if (view.type === 'daily') {
     let start = getHoursLabel(event.start.getHours().toString(), event.start.getMinutes().toString())
     let end = event.end
       ? getHoursLabel(event.end.getHours().toString(), event.end.getMinutes().toString())
       : ''
 
-    if(!isMirror) {
-      const eventType = getEventType(sortedEvents, event)
-      // event.id === '920' && console.log(eventType)
-      if(eventType === 'full') {
+    if (!isMirror) {
+      const eventType = getEventType(events, event)
+      if (view.dateProfileGenerator.options.defaultDate === '2019-12-23') {
+        // console.log(eventType, moment(event.start).format('hh:mm'))
+        if(eventType === 'full') {
+          // console.log(el)
+          console.log(customEventFull(event, el, start, end, view))
+        }
+      }
+      if (eventType === 'full') {
         return customEventFull(event, el, start, end, view)
-      } else if (eventType === 'half'){
+      } else if (eventType === 'half') {
         return customEventHalf(event, el, start, end, view)
       } else if (eventType === 'third') {
         return customEventThird(event, el, start, end, view)

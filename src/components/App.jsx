@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import { deleteEventInfo } from 'store/calendar/actions'
 import Workers from './Workers/Workers.jsx'
-import Monthly from './Monthly/index.jsx'
+import Monthly from './Monthly/newSwiper.jsx'
 import Header from './Header/Header.jsx'
 import Agenda from './Agenda/index.jsx'
 import Weekly from './Weekly/index.jsx'
@@ -10,12 +10,8 @@ import Daily from './Daily/index.jsx'
 import { connect } from 'react-redux'
 import './App.styl'
 import { TimeLabel } from './TimeLabels/TimeLabel.jsx'
-import { getEvents } from '../store/events/actions'
 
 class App extends Component {
-  componentDidMount () {
-    this.props.getEvents()
-  }
   render () {
     const objView = {
       monthly: Monthly,
@@ -43,4 +39,4 @@ const mapStateToProps = state => ({
   eventInfo: state.calendar.eventInfo,
   calendar: state.calendar,
 })
-export default connect(mapStateToProps, {getEvents})(App)
+export default connect(mapStateToProps)(App)

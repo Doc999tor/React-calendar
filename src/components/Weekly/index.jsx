@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import DemoCalendar from 'components/DemoCalendar/index.jsx'
-// import { getEvents } from 'store/events/actions'
+import { getEvents } from 'store/events/actions'
 import { setDefaultDay } from 'store/calendar/actions'
 import { default as getFormattedDate } from 'helpers/getFormattedDate.js'
 import { connect } from 'react-redux'
@@ -15,6 +15,7 @@ class Weekly extends Component {
   }
 
   componentDidMount = () => {
+    this.props.dispatch(getEvents())
     this.view = document.getElementById('calendar-weekly')
     this.baseCalendarWidth = document.querySelector('.fc.fc-ltr.fc-unthemed')?.offsetWidth
     this.view.scrollLeft = this.baseCalendarWidth * 3
@@ -57,6 +58,7 @@ class Weekly extends Component {
   }
 
   render () {
+    console.log(this.props.defaultDate)
     // console.log('this.state.visibleDays', this.state.visibleDays)
     // console.log('this.props.default', this.props.defaultDate)
     let topParam = config.workers.length === 1 ? 'calendar-without-workers' : 'calendar-with-workers'

@@ -31,7 +31,7 @@ class Monthly extends Component {
   }
 
   componentDidMount = () => {
-    // this.props.dispatch(getEvents())
+    this.props.dispatch(getEvents())
   }
   componentDidUpdate = (prevProps, prevState) => {
     // console.log(prevState.visibleDays[1])
@@ -79,15 +79,18 @@ class Monthly extends Component {
           onSlideChangeEnd={this.onSlideChangeEnd}
           initialSlide={1}
           loop>
-          {this.state.visibleDays.map(i => (
-            <div key={i}>
-              <DemoCalendar
-                events={this.props.events}
-                defaultView='monthly'
-                defaultDate={i}
-              />
-            </div>
-          ))}
+          {this.state.visibleDays.map(i => {
+            console.log(i)
+            return (
+              <div key={i}>
+                <DemoCalendar
+                  events={this.props.events}
+                  defaultView='monthly'
+                  defaultDate={i}
+                />
+              </div>
+            )
+          })}
         </Swiper>
       </div>
     )

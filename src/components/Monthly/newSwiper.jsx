@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 
 import Slider from "react-slick";
-import './daily.styl'
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -13,6 +10,9 @@ import interactionPlugin from "@fullcalendar/interaction";
 import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
+
+import './monthly.styl'
+
 import { getFormattedDate } from '../../helpers'
 import { connect } from 'react-redux'
 import listPlugin from '@fullcalendar/list'
@@ -20,7 +20,7 @@ import renderDailyEvents, { eventPositioned } from '../../helpers/dailyEvents'
 import { setDefaultDay } from '../../store/calendar/actions'
 import { getEvents } from '../../store/events/actions'
 
-class SimpleSlider extends Component {
+class Monthly extends Component {
   calendarComponentRef0 = React.createRef();
   calendarComponentRef1 = React.createRef();
   calendarComponentRef2 = React.createRef();
@@ -36,19 +36,16 @@ class SimpleSlider extends Component {
     if (this.dates[this.state.midIndex]) {
       this.props.setDefaultDay(moment(this.dates[this.state.midIndex]).format('YYYY-MM-DD'))
     }
-    let prelastDay = moment(this.props.events[this.props.events.length - 1].start).subtract(1, 'days').format('YYYY-MM-DD')
-    let preFirstDay = moment(this.props.events[0].start).add(1, 'days').format('YYYY-MM-DD')
-    if(prelastDay === moment(this.dates[this.state.midIndex]).format('YYYY-MM-DD') || preFirstDay === moment(this.dates[this.state.midIndex]).format('YYYY-MM-DD')) {
-      if(prevState.midIndex !== this.state.midIndex) {
-        this.props.getEvents()
-      }
+
+    if(this.state.midIndex !== prevState.midIndex) {
+      this.props.getEvents()
     }
   }
 
   dates = [
-    getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'days'),
+    getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'months'),
     moment().format('YYYY-MM-DD'),
-    getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'days'),
+    getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'months'),
   ]
 
   setNextDate = (index, plus) => {
@@ -67,7 +64,7 @@ class SimpleSlider extends Component {
 
     let prevApi = this['calendarComponentRef' + index].current.getApi()
     const today = prevApi.getDate()
-    const newToday = new Date(today.setDate(today.getDate() + (plus ? 1 : -1)))
+    const newToday = plus ? moment(today).add(1, 'months').format('YYYY-MM-DD') : moment(today).subtract(1, 'months').format('YYYY-MM-DD')
     this.dates[next] = newToday
   }
 
@@ -82,10 +79,10 @@ class SimpleSlider extends Component {
     this.side = side
   }
 
-  eventRender = data => {
+  eventRender = (data, api) => {
     if(this.props.events) {
       // console.log(renderDailyEvents(data), data.event.id)
-      return renderDailyEvents(data)
+      return renderDailyEvents(data, api)
     }
   }
 
@@ -110,19 +107,20 @@ class SimpleSlider extends Component {
 
   renderCalendar = item => {
     const { midIndex, refresh } = this.state
+    const documentHeight = document.documentElement.clientHeight
+    const calendarHeight = config.workers.length === 1 ? documentHeight - 60 : documentHeight - 165
     return item !== midIndex && refresh ? null : (
       <div className="demo-app-calendar">
         <FullCalendar
           {...config.calendar}
           columnHeaderFormat={{ weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true }}
           ref={this['calendarComponentRef' + item]}
-          defaultView='daily'
+          defaultView='monthly'
           plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
           defaultDate={this.dates[item]}
           eventSources={[{events: this.props.events}]}
-          contentHeight={'auto'}
-          eventRender={(data) => this.eventRender(data)}
-          eventPositioned={(data) => this.eventPositioned(data, this['calendarComponentRef' + item].current?.getApi())}
+          contentHeight={calendarHeight}
+          eventRender={data => {this.eventRender(data, this['calendarComponentRef' + item].current.getApi())}}
         />
       </div>
     )
@@ -131,7 +129,7 @@ class SimpleSlider extends Component {
   render() {
     return (
       <div>
-        <div className="containerCarusel" style={{marginTop: '160px'}}>
+        <div className="containerCarusel monthly-view" style={{marginTop: '160px'}}>
           <Slider {...this.settings}>
             {[0, 1, 2].map(item => (
               <div key={item}>
@@ -152,4 +150,4 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   setDefaultDay,
   getEvents
-})(SimpleSlider)
+})(Monthly)

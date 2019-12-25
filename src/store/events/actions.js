@@ -30,13 +30,13 @@ export const getEvents = () => async (dispatch, getState) => {
     dispatch({ type: types.GET_STANDART_EVENTS })
     const obj = {
       agenda: () => {
-        let start = moment(defaultDate).subtract(1, 'days')
-        let end = moment(defaultDate).add(1, 'days')
+        let start = moment(defaultDate).subtract(5, 'days')
+        let end = moment(defaultDate).add(5, 'days')
         return formatStartEndDay(start, end)
       },
       daily: () => {
-        let start = moment(defaultDate).subtract(1, 'days')
-        let end = moment(defaultDate).add(1, 'days')
+        let start = moment(defaultDate).subtract(5, 'days')
+        let end = moment(defaultDate).add(5, 'days')
         return formatStartEndDay(start, end)
       },
       weekly: () => {
@@ -52,7 +52,8 @@ export const getEvents = () => async (dispatch, getState) => {
     }
     const { dayStart, dayEnd } = obj[currentView]()
     const res = await fetchingEvents(dayStart, dayEnd)
-    dispatch({ type: types.GET_STANDART_EVENTS_SUCCESS, payload: { events: res.events } })
+    const events = res.events.sort((a, b) => moment(a.start) - moment(b.start))
+    dispatch({ type: types.GET_STANDART_EVENTS_SUCCESS, payload: { events: events } })
   } catch (err) {
     dispatch({ type: types.GET_STANDART_EVENTS_ERROR })
   }
