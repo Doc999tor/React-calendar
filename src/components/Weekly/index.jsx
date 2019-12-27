@@ -58,9 +58,6 @@ class Weekly extends Component {
   }
 
   render () {
-    console.log(this.props.defaultDate)
-    // console.log('this.state.visibleDays', this.state.visibleDays)
-    // console.log('this.props.default', this.props.defaultDate)
     let topParam = config.workers.length === 1 ? 'calendar-without-workers' : 'calendar-with-workers'
     return (
       <React.Fragment>

@@ -3,6 +3,8 @@ import { eventsSort } from './event'
 import { customEventHalf } from '../components/Daily/daily-events/eventHalf'
 import { customEventThird } from '../components/Daily/daily-events/eventThird'
 import { customEventExtra } from '../components/Daily/daily-events/eventExtra'
+import { customEventWeeklyOverley } from '../components/Weekly/weekly-events/eventOverlay'
+import { customEventWeeklyFull } from '../components/Weekly/weekly-events/eventFull'
 
 export const rowCount = (start, end) => {
   let duration = Math.floor((end - start) / 60000)
@@ -211,7 +213,7 @@ const bgrColor = (date, element, events) => {
 }
 
 const eventRender = (data) => {
-  if (data.view.type === 'daily' || data.view.type === 'agendaFourDay') {
+  if (data.view.type === 'daily' || data.view.type === 'weekly') {
     let {el, event, view} = data
     let color = event.extendedProps.services && event.extendedProps.services.length > 0 && event.extendedProps.services[0].color
       ? event.extendedProps.services[0].color
@@ -236,13 +238,12 @@ export const dayRender = ({date, el, view}, events) => {
 }
 
 export const eventPositioned = ({el, event, view, isMirror}, api) => {
-  const events = api.getEvents()
+  const events = api ? api.getEvents() : []
+  let start = getHoursLabel(event.start.getHours().toString(), event.start.getMinutes().toString())
+  let end = event.end
+    ? getHoursLabel(event.end.getHours().toString(), event.end.getMinutes().toString())
+    : ''
   if (view.type === 'daily') {
-    let start = getHoursLabel(event.start.getHours().toString(), event.start.getMinutes().toString())
-    let end = event.end
-      ? getHoursLabel(event.end.getHours().toString(), event.end.getMinutes().toString())
-      : ''
-
     if (!isMirror) {
       const eventType = getEventType(events, event)
       if (view.dateProfileGenerator.options.defaultDate === '2019-12-23') {
@@ -260,6 +261,19 @@ export const eventPositioned = ({el, event, view, isMirror}, api) => {
         return customEventThird(event, el, start, end, view)
       } else if (eventType === 'extra') {
         return customEventExtra(event, el, start, end, view)
+      }
+    }
+  }
+
+  if (view.type === 'weekly') {
+    if(!isMirror) {
+      const eventType = getEventType(events, event)
+      if(eventType) {
+        if (eventType === 'full') {
+          return customEventWeeklyFull(event, el, start, end, view)
+        } else {
+          return customEventWeeklyOverley(event, el, start, end, view)
+        }
       }
     }
   }

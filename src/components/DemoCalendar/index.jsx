@@ -50,8 +50,8 @@ class DemoCalendar extends Component {
           events={this.props.events}
           columnHeaderText={this.props.columnHeaderText}
           contentHeight={this.props.defaultView === 'monthly' ? calendarHeight : 'auto'}
-          // eventRender={(data) => renderDailyEvents(data)}
-          // eventPositioned={(data) => eventPositioned(data, this.props.calendarApi)}
+          eventRender={(data) => renderDailyEvents(data)}
+          eventPositioned={(data) => eventPositioned(data, this.props.calendarApi)}
         />
       </React.Fragment>
     )
