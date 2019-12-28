@@ -189,8 +189,6 @@ export const customEventWeeklyOverley = (event, element, start, end, view) => {
       </div>
     `)
   }
-  console.log(container)
   container.innerHTML = customEvent
-  console.log(container)
   return container
 }

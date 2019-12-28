@@ -122,7 +122,7 @@ export const customEventWeeklyFull = (event, element, start, end, view) => {
         ${event.extendedProps.address
     ? `<div class='address-wrap'>
         <div class='img-wrap'><img class='address_pin' src='${config.urls.staticImg}/grey-pin.svg'></div>
-    <p class='client-address'>${event.address}</p>
+    <p class='client-address'>${event.extendedProps.address}</p>
     </div>`
     : ''}
           ${event.extendedProps.note && !event.extendedProps.address
@@ -147,7 +147,7 @@ export const customEventWeeklyFull = (event, element, start, end, view) => {
         </div>
         <p class='name_full'>${event.extendedProps.off_time === 'break' ? config.translations.business_lunch : config.translations.meeting}</p>
         <div class='note-address'>
-      ${event.address
+      ${event.extendedProps.address
   ? `<div class='address-wrap'>
       <div class='img-wrap'><img class='address_pin' src='${config.urls.staticImg}/grey-pin.svg'></div>
   <p class='client-address'>${event.extendedProps.address}</p>
@@ -184,7 +184,7 @@ export const customEventWeeklyFull = (event, element, start, end, view) => {
           </div>
           <div class='name-service'>
           ${event.extendedProps.name
-  ? `<p class='client-name'>${event.name}${event.extendedProps.birthdate ? bday(event, view.dateProfileGenerator.options.defaultDate) : ''}${event.extendedProps.has_debt ? `<span class='debt'><img class='mini' src='${config.urls.staticImg}/debt1.svg'></span>` : ''}</p>`
+  ? `<p class='client-name'>${event.extendedProps.name}${event.extendedProps.birthdate ? bday(event, view.dateProfileGenerator.options.defaultDate) : ''}${event.extendedProps.has_debt ? `<span class='debt'><img class='mini' src='${config.urls.staticImg}/debt1.svg'></span>` : ''}</p>`
   : `<p class='client-name'>${config.translations.occasional}${event.extendedProps.birthdate ? bday(event, view.dateProfileGenerator.options.defaultDate) : ''}${event.extendedProps.has_debt ? `<span class='debt'><img class='mini' src='${config.urls.staticImg}/debt1.svg'></span>` : ''}</p>`}
           <p class='services-name'>${services.map(i => `<span class='service-item'>${i}</span>`)}</p>
           </div>
