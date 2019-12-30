@@ -80,7 +80,8 @@ class Monthly extends Component {
   }
 
   dayRender = (data, events) => {
-      return dayRender(data, events)
+    console.log('i')
+    return dayRender(data, events)
   }
 
   eventPositioned = (data, api) => {
@@ -103,10 +104,6 @@ class Monthly extends Component {
 
 
   renderCalendar = item => {
-    let midIndex2 = this.state.midIndex ? this.state.midIndex : 1
-    if(midIndex2 === item) {
-      console.log('render')
-    }
     const { midIndex, refresh } = this.state
     const documentHeight = document.documentElement.clientHeight
     const calendarHeight = config.workers.length === 1 ? documentHeight - 60 : documentHeight - 165

@@ -358,6 +358,80 @@
                 overflow hidden
                 text-overflow ellipsis
                 color var(--black-color)
+        &.overlayOff
+          .event-start
+            margin-top 8px
+          .name_full
+            margin-top 8px
+            white-space nowrap
+          .note-address
+            .note-wrap
+              margin-top 8px
+              .client-note
+                white-space nowrap
+        &.shortOff
+          align-items center
+          height 100%
+          padding 0 3px
+          .name_full
+            font-size 11px
+          //.event-start
+          //  margin 0
+          //  text-align end
+          //  font-size 8px
+          //  font-weight bold
+          //  color var(--black-color)
+        &.twoOff
+          flex-direction column
+          height 100%
+          padding 0 3px
+          .event-start
+            margin-top 5px
+          .name_full
+            font-size 11px
+            margin-top 5px
+        &.threeOff
+          flex-direction column
+          height 100%
+          padding 0 3px
+          .time-name
+            .event-start
+              margin-top 5px
+            .name_full
+              margin-top 8px
+              font-size 11px
+          .note-address
+            padding-top 5px
+            .address-wrap
+              box-sizing border-box
+              margin-top 5px
+              display flex
+              .client-address
+                margin 0
+                padding-inline-start 2px
+                -webkit-padding-start 2px
+                -moz-padding-start 2px
+                font-size 11px
+                text-overflow ellipsis
+                white-space nowrap
+                overflow hidden
+                color var(--main-color)
+            .note-wrap
+              box-sizing border-box
+              margin-top 5px
+              display flex
+              .feather
+                width 10px
+                height 10px
+              .client-note
+                margin 0
+                padding-inline-start 2px
+                -webkit-padding-start 2px
+                -moz-padding-start 2px
+                font-size 11px
+                text-overflow ellipsis
+                overflow hidden
+                color var(--main-color)
       .fc-resizer
         background-color var(--main-bgcolor)
         border-style none

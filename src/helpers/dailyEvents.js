@@ -126,45 +126,54 @@ export const getIndexByProperty = (arr, property, propertyValue) => {
   }
 }
 
-export const getEventType = (events, currentEvent) => {
+export const getEventType = (currentEvent) => {
+  const events = currentEvent._calendar.getEvents()
   let currentEventIndex = getIndexByProperty(events, 'id', currentEvent.id)
-  if (events.length >= 1 && currentEventIndex >= 0) {
+  if (events.length >= 1) {
     let overlapCount = 0
-
-    if (currentEventIndex === 0) {
-      for (let i = 1; i < events.length; i++) {
-        if (!(moment(events[i].start) - moment(events[currentEventIndex].end) >= 0)) {
-          overlapCount++
+    const overlapEvents = events.filter(event => {
+      if (event.id !== currentEvent.id) {
+        if ((moment(event.start) >= moment(currentEvent.start) && moment(event.start) <= moment(currentEvent.end)) || (moment(event.end) >= moment(currentEvent.start) && moment(event.end) <= moment(currentEvent.end))) {
+          return true
+        } else {
+          return false
         }
       }
-    } else if (currentEventIndex === (events.length - 1)) {
-      for(let i = currentEventIndex - 1; i >= 0; i--) {
-        if(!(moment(events[currentEventIndex].start) - moment(events[i].end) >= 0)) {
-          overlapCount++
-        }
-      }
-    } else {
-      for (let i = currentEventIndex; i < events.length; i++) {
-        if(i === currentEventIndex) {
-          continue
-        }
-        if (!(moment(events[i].start) - moment(events[currentEventIndex].end) >= 0)) {
-          overlapCount++
-        }
-      }
+    })
 
-      for(let i = currentEventIndex; i >= 0; i--) {
-        if(i === currentEventIndex) {
-          continue
-        }
-        if(!(moment(events[currentEventIndex].start) - moment(events[i].end) >= 0)) {
-          overlapCount++
-        }
-      }
+    // if (currentEventIndex === 0) {
+    //   for (let i = 1; i < events.length; i++) {
+    //     if (!(moment(events[i].start) - moment(events[currentEventIndex].end) >= 0)) {
+    //       overlapCount++
+    //     }
+    //   }
+    // } else if (currentEventIndex === (events.length - 1)) {
+    //   for(let i = currentEventIndex - 1; i >= 0; i--) {
+    //     if(!(moment(events[currentEventIndex].start) - moment(events[i].end) >= 0)) {
+    //       overlapCount++
+    //     }
+    //   }
+    // } else {
+    //   for (let i = currentEventIndex; i < events.length; i++) {
+    //     if(i === currentEventIndex) {
+    //       continue
+    //     }
+    //     if (!(moment(events[i].start) - moment(events[currentEventIndex].end) >= 0)) {
+    //       overlapCount++
+    //     }
+    //   }
+    //
+    //   for(let i = currentEventIndex; i >= 0; i--) {
+    //     if(i === currentEventIndex) {
+    //       continue
+    //     }
+    //     if(!(moment(events[currentEventIndex].start) - moment(events[i].end) >= 0)) {
+    //       overlapCount++
+    //     }
+    //   }
+    // }
 
-    }
-
-    switch (overlapCount) {
+    switch (overlapEvents.length) {
     case 0:
       return 'full'
     case 1:
@@ -232,27 +241,20 @@ const eventRender = (data) => {
 }
 
 export const dayRender = ({date, el, view}, events) => {
+  console.log(date, el, view)
   if(view.type === 'monthly') {
     bgrColor(moment(date).format('YYYY-MM-DD'), el, events)
   }
 }
 
-export const eventPositioned = ({el, event, view, isMirror}, api) => {
-  const events = api ? api.getEvents() : []
+export const eventPositioned = ({el, event, view, isMirror}) => {
   let start = getHoursLabel(event.start.getHours().toString(), event.start.getMinutes().toString())
   let end = event.end
     ? getHoursLabel(event.end.getHours().toString(), event.end.getMinutes().toString())
     : ''
   if (view.type === 'daily') {
     if (!isMirror) {
-      const eventType = getEventType(events, event)
-      if (view.dateProfileGenerator.options.defaultDate === '2019-12-23') {
-        // console.log(eventType, moment(event.start).format('hh:mm'))
-        if(eventType === 'full') {
-          // console.log(el)
-          console.log(customEventFull(event, el, start, end, view))
-        }
-      }
+      const eventType = getEventType(event)
       if (eventType === 'full') {
         return customEventFull(event, el, start, end, view)
       } else if (eventType === 'half') {
@@ -267,7 +269,7 @@ export const eventPositioned = ({el, event, view, isMirror}, api) => {
 
   if (view.type === 'weekly') {
     if(!isMirror) {
-      const eventType = getEventType(events, event)
+      const eventType = getEventType(event)
       if(eventType) {
         if (eventType === 'full') {
           return customEventWeeklyFull(event, el, start, end, view)

@@ -5,6 +5,7 @@ import { default as Swiper } from 'project-components/Swiper/Swiper.js'
 import { default as getFormattedDate } from 'helpers/getFormattedDate.js'
 import { connect } from 'react-redux'
 import { setDefaultDay } from '../../store/calendar/actions'
+import './monthly.styl'
 
 class Monthly extends Component {
   constructor (props) {
@@ -80,7 +81,6 @@ class Monthly extends Component {
           initialSlide={1}
           loop>
           {this.state.visibleDays.map(i => {
-            console.log(i)
             return (
               <div key={i}>
                 <DemoCalendar

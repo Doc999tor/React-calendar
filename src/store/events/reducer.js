@@ -4,45 +4,45 @@ import * as types from './actionTypes'
 const initialState = {
   eventsFetching: false,
   events: [
-    {
-      address: "Deutsche forschungsgemeinschaft, kennedyallee, bonn, germany",
-      birthdate: '12-23',
-      end: "2019-12-23 11:00",
-      id: 8717812,
-      durationEditable: true,
-      is_new_client: true,
-      has_debt: true,
-      name: 'vasya',
-      note: 'sdfsdf sdf sdfsdf sdfs sdddd sdf',
-      off_time: 'meeting',
-      phone: "05476253452",
-      profile_picture: null,
-      services: [
-        {id: 42, name: "פן אחרי צבע", color: "#dece00", count: 1}
-        // {id: 211, name: "ZYneazi", color: "#dece00", service_count: 1}
-      ],
-      start: "2019-12-23 08:00",
-      status: 'dsfa',
-      total_price: '0'
-    },
     // {
     //   address: "Deutsche forschungsgemeinschaft, kennedyallee, bonn, germany",
-    //   birthdate: '12-23',
-    //   end: "2019-12-23 11:00",
-    //   id: 3421,
+    //   birthdate: '12-30',
+    //   end: "2019-12-30 11:00",
+    //   id: '8717812',
     //   durationEditable: true,
     //   is_new_client: true,
     //   has_debt: true,
     //   name: 'vasya',
     //   note: 'sdfsdf sdf sdfsdf sdfs sdddd sdf',
-    //   off_time: null,
+    //   off_time: 'meeting',
     //   phone: "05476253452",
     //   profile_picture: null,
     //   services: [
     //     {id: 42, name: "פן אחרי צבע", color: "#dece00", count: 1}
     //     // {id: 211, name: "ZYneazi", color: "#dece00", service_count: 1}
     //   ],
-    //   start: "2019-12-23 08:00",
+    //   start: "2019-12-30 08:00",
+    //   status: 'dsfa',
+    //   total_price: '0'
+    // },
+    // {
+    //   address: "Deutsche forschungsgemeinschaft, kennedyallee, bonn, germany",
+    //   birthdate: '12-30',
+    //   end: "2019-12-30 11:00",
+    //   id: '3421',
+    //   durationEditable: true,
+    //   is_new_client: true,
+    //   has_debt: true,
+    //   name: 'vasya',
+    //   note: 'sdfsdf sdf sdfsdf sdfs sdddd sdf',
+    //   off_time: 'meeting',
+    //   phone: "05476253452",
+    //   profile_picture: null,
+    //   services: [
+    //     {id: 42, name: "פן אחרי צבע", color: "#dece00", count: 1}
+    //     // {id: 211, name: "ZYneazi", color: "#dece00", service_count: 1}
+    //   ],
+    //   start: "2019-12-30 08:00",
     //   status: 'dsfa',
     //   total_price: '0'
     // },
@@ -144,12 +144,12 @@ const initialState = {
 export default (state = initialState, action = {}) => {
   const obj = {
     [types.GET_STANDART_EVENTS]: () => {
-      // return { ...state, eventsFetching: true }
+      return { ...state, eventsFetching: true }
     },
     [types.GET_STANDART_EVENTS_SUCCESS]: () => {
       return {
-        // events: state.events.concat(action.payload.events),
-        // eventsFetching: false
+        events: state.events.concat(action.payload.events),
+        eventsFetching: false
       }
     }
   }
