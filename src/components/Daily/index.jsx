@@ -85,14 +85,14 @@ class SimpleSlider extends Component {
   eventRender = data => {
     if(this.props.events) {
       // console.log(renderDailyEvents(data), data.event.id)
-      return renderDailyEvents(data)
+      renderDailyEvents(data)
     }
   }
 
   eventPositioned = (data, api) => {
     if(api) {
       // console.log(eventPositioned(data, api), data.event.id)
-      return eventPositioned(data, api)
+      eventPositioned(data, api)
     }
   }
 

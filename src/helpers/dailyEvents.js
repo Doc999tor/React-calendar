@@ -241,7 +241,6 @@ const eventRender = (data) => {
 }
 
 export const dayRender = ({date, el, view}, events) => {
-  console.log(date, el, view)
   if(view.type === 'monthly') {
     bgrColor(moment(date).format('YYYY-MM-DD'), el, events)
   }
@@ -254,14 +253,14 @@ export const eventPositioned = ({el, event, view, isMirror}) => {
     : ''
   if (view.type === 'daily') {
     if (!isMirror) {
-      const eventType = getEventType(event)
-      if (eventType === 'full') {
+      const percent = Math.round(el.clientWidth / document.documentElement.clientWidth * 100)
+      if (percent > 50) {
         return customEventFull(event, el, start, end, view)
-      } else if (eventType === 'half') {
+      } else if (percent > 40) {
         return customEventHalf(event, el, start, end, view)
-      } else if (eventType === 'third') {
+      } else if (percent > 25) {
         return customEventThird(event, el, start, end, view)
-      } else if (eventType === 'extra') {
+      } else {
         return customEventExtra(event, el, start, end, view)
       }
     }
