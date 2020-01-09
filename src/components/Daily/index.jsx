@@ -131,7 +131,7 @@ class SimpleSlider extends Component {
   render() {
     return (
       <div>
-        <div className="containerCarusel" style={{marginTop: '160px'}}>
+        <div className="containerCarousel" style={{marginTop: '160px'}}>
           <Slider {...this.settings}>
             {[0, 1, 2].map(item => (
               <div key={item}>

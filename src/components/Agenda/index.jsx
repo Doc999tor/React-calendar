@@ -104,7 +104,7 @@ class Agenda extends Component {
   render() {
     return (
       <div>
-        <div className="containerCarusel agenda-view" style={{marginTop: '160px'}}>
+        <div className="containerCarousel agenda-view" style={{marginTop: '160px'}}>
           <Slider {...this.settings}>
             {[0, 1, 2].map(item => (
               <div key={item}>

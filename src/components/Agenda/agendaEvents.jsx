@@ -24,19 +24,21 @@ const AgendaEvents = (props) => {
       }
       {props.events.length !== 0 ? props.events.map((event, index) =>
         event.off_time
-          ? <OffTime event={event}
-                     events={props.events}
-                     index={index}
-                     key={event.id}
-                     eventClick={props.eventClick}
+          ? <OffTime
+            event={event}
+            events={props.events}
+            index={index}
+            key={event.id}
+            eventClick={props.eventClick}
 
           />
-          : <CustomEvent event={event}
-                         events={props.events}
-                         index={index}
-                         key={event.id}
-                         defaultDate={props.defaultDate}
-                         eventClick={props.eventClick}
+          : <CustomEvent
+            event={event}
+            events={props.events}
+            index={index}
+            key={event.id}
+            defaultDate={props.defaultDate}
+            eventClick={props.eventClick}
           />) : <EmptyPage/>}
       {
         lastTimeBox ? lastTimeBox[0] ?

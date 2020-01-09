@@ -9,24 +9,23 @@ import { getFormattedDate } from '../../helpers'
 import { setDefaultDay } from '../../store/calendar/actions'
 import { getEvents } from '../../store/events/actions'
 import { connect } from 'react-redux'
-import { dayRender } from '../../helpers/dailyEvents'
-import './monthly.styl'
+import './daily.styl'
+import renderDailyEvents, { eventPositioned } from '../../helpers/dailyEvents'
 
-class Monthly extends React.Component {
+class Daily extends React.Component {
   // calendarComponentRef0 = React.createRef();
   // calendarComponentRef1 = React.createRef();
   // calendarComponentRef2 = React.createRef();
 
   state = {
     dates: [
-      getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'months'),
+      getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'days'),
       moment().format('YYYY-MM-DD'),
-      getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'months'),
+      getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'days'),
     ],
   }
 
   componentDidMount () {
-    // console.log(this.state.dates)
     this.props.getEvents()
   }
 
@@ -40,19 +39,33 @@ class Monthly extends React.Component {
     let { dates } = this.state
     const today = dates[index]
     const newToday = plus
-      ? moment(dates[dates.length - 1]).add(1, 'months').format('YYYY-MM-DD')
-      : moment(dates[0]).subtract(1, 'months').format('YYYY-MM-DD')
-    if(plus) {
-      dates.push(newToday)
-    } else {
-      this.swiperRef.activeIndex = this.swiperRef.previousIndex
-      dates.unshift(newToday)
+      ? moment(dates[dates.length - 1]).add(1, 'days').format('YYYY-MM-DD')
+      : moment(dates[0]).subtract(1, 'days').format('YYYY-MM-DD')
+    const isSecond = dates.length === 3 ? true : (today === dates[0])
+    const isPrelast = dates.length === 3 ? true : (today === dates[dates.length - 1])
+    if (dates.length >= 5) {
+      if (plus) {
+        dates.shift()
+        this.swiperRef.activeIndex = this.swiperRef.previousIndex
+      } else {
+        dates.pop()
+        this.swiperRef.activeIndex = this.swiperRef.previousIndex
+      }
     }
-    this.setState({
-      dates: dates,
-    }, () => {
-      this.props.setDefaultDay(today)
-    })
+    if (isSecond || isPrelast) {
+      if (plus) {
+        dates.push(newToday)
+      } else {
+        this.swiperRef.activeIndex = this.swiperRef.previousIndex
+        dates.unshift(newToday)
+      }
+      // console.log(dates)
+      this.setState({ dates: dates }, () => {
+        console.log('get events')
+        this.props.getEvents()
+      })
+    }
+    this.props.setDefaultDay(today)
   }
 
   settings = {
@@ -73,21 +86,32 @@ class Monthly extends React.Component {
     }
   }
 
+  eventRender = data => {
+    if(this.props.events) {
+      renderDailyEvents(data)
+    }
+  }
+
+  eventPositioned = (data, api) => {
+    if (api) {
+      eventPositioned(data, {
+        getEvents: () => api
+      })
+    }
+  }
+
   renderCalendar = date => {
-    const documentHeight = document.documentElement.clientHeight
-    const calendarHeight = config.workers.length === 1 ? documentHeight - 60 : documentHeight - 165
     return (
       <div className="demo-app-calendar">
-        {date}
         <FullCalendar
           {...config.calendar}
           columnHeaderFormat={{ weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true }}
-          defaultView='monthly'
+          defaultView='daily'
           plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
           defaultDate={date}
           events={this.props.events}
-          contentHeight={calendarHeight}
-          // dayRender={data => {dayRender(data, this.props.events)}}
+          eventRender={(data) => {this.eventRender(data)}}
+          eventPositioned={(data) => {this.eventPositioned(data, this.props.events)}}
         />
       </div>
     )
@@ -118,4 +142,4 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   setDefaultDay,
   getEvents
-})(Monthly)
+})(Daily)
