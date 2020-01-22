@@ -56,6 +56,12 @@ export default (state = initialState, action = {}) => {
         visibleDays: [...action.payload.visibleDays]
       }
     },
+    [types.SET_SWIPE_SIDE]: () => {
+      return {
+        ...state,
+        side: action.payload.side
+      }
+    }
   }
   const res = obj[action.type]
   return res ? res() : state

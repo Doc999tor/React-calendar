@@ -115,7 +115,7 @@ const draggingResizing = (event, element, start, end, view) => {
     </div>`
   )
   container.innerHTML = customEvent
-  return element
+  element
 }
 
 export const getIndexByProperty = (arr, property, propertyValue) => {
@@ -236,7 +236,7 @@ const eventRender = (data) => {
     let end = event.end
       ? getHoursLabel(event.end.getHours().toString(), event.end.getMinutes().toString())
       : ''
-    return draggingResizing(event, el, start, end, view)
+    draggingResizing(event, el, start, end, view)
   }
 }
 

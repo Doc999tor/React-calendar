@@ -30,7 +30,6 @@ const AgendaEvents = (props) => {
             index={index}
             key={event.id}
             eventClick={props.eventClick}
-
           />
           : <CustomEvent
             event={event}

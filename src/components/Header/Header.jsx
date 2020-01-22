@@ -6,6 +6,7 @@ import { getFormattedDate, getStandardFormat, currentDay } from 'helpers'
 import HeaderMenu from './HeaderMenu/index.jsx'
 import './Header.styl'
 import { getEvents } from '../../store/events/actions'
+import { setSide } from '../../store/calendar/actions'
 
 // TODO: Handle 'defaultDay'
 class Header extends Component {
@@ -44,7 +45,7 @@ class Header extends Component {
         return {
           calendarDate: (
             <React.Fragment>
-              <span className='current_date_field' style={{ 'direction': 'ltr' }}>{moment(start).format('DD') + ' - ' + moment(end).subtract(1, 'days').format('DD') + ' ' + moment(start).format('MMM')}</span>
+              <span className='current_date_field' style={{ 'direction': 'ltr' }}>{moment(this.props.defaultDate).format('DD') + ' ' + moment(this.props.defaultDate).format('MMM')}</span>
               {isBetween && <span className='this_week'>{config.translations.thisWeek}</span>}
             </React.Fragment>
           ),
@@ -87,18 +88,23 @@ class Header extends Component {
     this.props.switchView(objView[this.props.currentView])
   }
 
-  handleToday = () => this.props.dispatch(setDefaultDay(currentDay, true))
+  handleToday = () => setDefaultDay(currentDay, true)
 
   handleNext = async () => {
-    this.props.calendarApi.next()
-    this.props.dispatch(setDefaultDay(getFormattedDate(this.props.defaultDate, 'add')), true)
+    this.props.setSide('left').then(() => {
+      setTimeout(() => this.props.swiperApi.slickNext(), 220)
+    })
+    // this.props.dispatch(setDefaultDay(getFormattedDate(this.props.defaultDate, 'add')), true)
     // await this.props.dispatch(setSwiperDirection('next'))
     // this.props.swiperApi.slideNext()
   }
 
   handlePrev = async () => {
-    this.props.calendarApi.prev()
-    this.props.dispatch(setDefaultDay(getFormattedDate(this.props.defaultDate, 'subtract')), true)
+    this.props.setSide('right').then(() => {
+      setTimeout(() => this.props.swiperApi.slickPrev(), 220)
+    })
+    // this.props.calendarApi.prev()
+    // this.props.dispatch(setDefaultDay(getFormattedDate(this.props.defaultDate, 'subtract')), true)
     // await this.props.dispatch(setSwiperDirection('prev'))
     // this.props.swiperApi.slidePrev()
   }
@@ -147,4 +153,4 @@ const mapStateToProps = state => ({
   swiperApi: state.calendar.swiperApi
 })
 
-export default connect(mapStateToProps, {getEvents, switchView})(Header)
+export default connect(mapStateToProps, {getEvents, switchView, setDefaultDay, setSide})(Header)

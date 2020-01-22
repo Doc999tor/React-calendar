@@ -82,7 +82,7 @@ class Agenda extends Component {
     slidesToShow: 1,
     infinite: true,
     arrows: false,
-    speed: 100,
+    speed: 100
   };
 
 
