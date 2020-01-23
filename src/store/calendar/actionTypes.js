@@ -15,3 +15,5 @@ export const DELETE_EVENT_INFO = 'event.DELETE_EVENT_INFO'
 export const SET_VISIBLE_DAYS = 'event.SET_VISIBLE_DAYS'
 
 export const SET_SWIPE_SIDE = 'event.SET_SWIPE_SIDE'
+
+export const SET_TODAY = 'event.SET_TODAY'

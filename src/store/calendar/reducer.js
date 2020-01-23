@@ -62,6 +62,13 @@ export default (state = initialState, action = {}) => {
         side: action.payload.side
       }
     }
+    ,
+    [types.SET_TODAY]: () => {
+      return {
+        ...state,
+        setToday: action.payload.setToday
+      }
+    }
   }
   const res = obj[action.type]
   return res ? res() : state

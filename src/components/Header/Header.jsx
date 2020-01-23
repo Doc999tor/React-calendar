@@ -6,7 +6,7 @@ import { getFormattedDate, getStandardFormat, currentDay } from 'helpers'
 import HeaderMenu from './HeaderMenu/index.jsx'
 import './Header.styl'
 import { getEvents } from '../../store/events/actions'
-import { setSide } from '../../store/calendar/actions'
+import { setSide, setToday } from '../../store/calendar/actions'
 
 // TODO: Handle 'defaultDay'
 class Header extends Component {
@@ -88,7 +88,9 @@ class Header extends Component {
     this.props.switchView(objView[this.props.currentView])
   }
 
-  handleToday = () => setDefaultDay(currentDay, true)
+  handleToday = () => {
+    this.props.setToday(true)
+  }
 
   handleNext = async () => {
     this.props.setSide('left').then(() => {
@@ -153,4 +155,4 @@ const mapStateToProps = state => ({
   swiperApi: state.calendar.swiperApi
 })
 
-export default connect(mapStateToProps, {getEvents, switchView, setDefaultDay, setSide})(Header)
+export default connect(mapStateToProps, {getEvents, switchView, setDefaultDay, setSide, setToday})(Header)

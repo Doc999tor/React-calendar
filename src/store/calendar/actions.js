@@ -3,6 +3,7 @@
 import * as types from './actionTypes'
 import getFormattedDate from '../../helpers/getFormattedDate'
 import { SET_SWIPE_SIDE } from './actionTypes'
+import { SET_TODAY } from './actionTypes'
 
 export const setDefaultDay = (defaultDate, defaultDayRefresh = false) => dispatch => {
   dispatch({ type: types.SET_DEFAULT_DAY, payload: { defaultDate, defaultDayRefresh } })
@@ -52,4 +53,8 @@ export const deleteEventInfo = () => async dispatch => {
 
 export const setSide = side => async dispatch => {
   dispatch({ type: SET_SWIPE_SIDE, payload: { side } })
+}
+
+export const setToday = bool => async (dispatch, getState) => {
+  dispatch({ type: SET_TODAY, payload: { setToday: bool } })
 }

@@ -9,7 +9,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import './daily.styl'
 import { connect } from 'react-redux'
 import { getEvents } from '../../store/events/actions'
-import { setDefaultDay, setSide, setSwiperApi } from '../../store/calendar/actions'
+import { setDefaultDay, setSide, setSwiperApi, setToday } from '../../store/calendar/actions'
 import renderDailyEvents, { eventPositioned } from '../../helpers/dailyEvents'
 
 class Daily extends React.Component {
@@ -31,6 +31,10 @@ class Daily extends React.Component {
   componentDidMount () {
     // eslint-disable-next-line react/prop-types
     this.props.getEvents()
+  }
+
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    if (this.props.isToday) {this.setToday()}
   }
 
   eventRender = data => {
@@ -95,6 +99,7 @@ class Daily extends React.Component {
       // eslint-disable-next-line react/prop-types
       this.props.setDefaultDay(moment().format('YYYY-MM-DD'))
     })
+    this.props.setToday(false)
   }
 
   renderCalendar = (date, index) => {
@@ -150,12 +155,14 @@ class Daily extends React.Component {
 
 const mapStateToProps = state => ({
   events: state.events.events,
-  side: state.calendar.side
+  side: state.calendar.side,
+  isToday: state.calendar.setToday
 })
 
 export default connect(mapStateToProps, {
   getEvents,
   setDefaultDay,
   setSide,
-  setSwiperApi
+  setSwiperApi,
+  setToday
 })(Daily)
