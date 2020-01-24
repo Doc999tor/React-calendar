@@ -61,12 +61,23 @@ export default (state = initialState, action = {}) => {
         ...state,
         side: action.payload.side
       }
-    }
-    ,
+    },
     [types.SET_TODAY]: () => {
       return {
         ...state,
         setToday: action.payload.setToday
+      }
+    },
+    [types.ON_SWIPE]: () => {
+      return {
+        ...state,
+        swipeSide: action.payload.side
+      }
+    },
+    [types.SET_BUSINESS_HOURS]: () => {
+      return {
+        ...state,
+        businessHours: action.payload.businessHours
       }
     }
   }

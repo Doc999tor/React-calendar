@@ -51,9 +51,10 @@ export const getEvents = () => async (dispatch, getState) => {
       }
     }
     const { dayStart, dayEnd } = obj[currentView]()
-    const res = await fetchingEvents(dayStart, dayEnd)
-    const events = res.events.sort((a, b) => moment(a.start) - moment(b.start))
-    dispatch({ type: types.GET_STANDART_EVENTS_SUCCESS, payload: { events: events } })
+    fetchingEvents(dayStart, dayEnd).then(res => {
+      const events = res.events.sort((a, b) => moment(a.start) - moment(b.start))
+      dispatch({ type: types.GET_STANDART_EVENTS_SUCCESS, payload: { events: events } })
+    })
   } catch (err) {
     dispatch({ type: types.GET_STANDART_EVENTS_ERROR })
   }

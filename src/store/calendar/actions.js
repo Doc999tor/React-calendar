@@ -4,6 +4,8 @@ import * as types from './actionTypes'
 import getFormattedDate from '../../helpers/getFormattedDate'
 import { SET_SWIPE_SIDE } from './actionTypes'
 import { SET_TODAY } from './actionTypes'
+import { ON_SWIPE } from './actionTypes'
+import { SET_BUSINESS_HOURS } from './actionTypes'
 
 export const setDefaultDay = (defaultDate, defaultDayRefresh = false) => dispatch => {
   dispatch({ type: types.SET_DEFAULT_DAY, payload: { defaultDate, defaultDayRefresh } })
@@ -55,6 +57,18 @@ export const setSide = side => async dispatch => {
   dispatch({ type: SET_SWIPE_SIDE, payload: { side } })
 }
 
-export const setToday = bool => async (dispatch, getState) => {
+export const setToday = bool => async dispatch => {
   dispatch({ type: SET_TODAY, payload: { setToday: bool } })
+}
+
+export const onSwipe = side => async dispatch => {
+  dispatch({ type: ON_SWIPE, payload: { side }})
+
+  // if (side && side !== 'none') {
+  //   setTimeout(() => dispatch({ type: ON_SWIPE, payload: { side: 'none' }}), 0)
+  // }
+}
+
+export const setBusinessHours = businessHours => async dispatch => {
+  dispatch({ type: SET_BUSINESS_HOURS, payload: { businessHours } })
 }

@@ -112,9 +112,6 @@ class Agenda extends Component {
               </div>
             ))}
           </Slider>
-          <div className={`preloader${config.calendar.dir === 'rtl' ? ' styleLoaderRTL' : ' styleLoaderLTR'}`} style={{display: this.props.eventsFetching ? 'flex' : 'none'}}>
-            <img className='loader' src={config.urls.staticImg + '/preloader.svg'} />
-          </div>
         </div>
       </div>
     );
@@ -123,7 +120,6 @@ class Agenda extends Component {
 
 const mapStateToProps = state => ({
   events: state.events.events,
-  eventsFetching: state.events.eventsFetching
 })
 
 export default connect(mapStateToProps, {

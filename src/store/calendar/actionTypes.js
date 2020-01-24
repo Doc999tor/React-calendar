@@ -17,3 +17,7 @@ export const SET_VISIBLE_DAYS = 'event.SET_VISIBLE_DAYS'
 export const SET_SWIPE_SIDE = 'event.SET_SWIPE_SIDE'
 
 export const SET_TODAY = 'event.SET_TODAY'
+
+export const ON_SWIPE = 'event.ON_SWIPE'
+
+export const SET_BUSINESS_HOURS = 'event.SET_BUSINESS_HOURS'

@@ -3,13 +3,15 @@ import { default as Swiper } from 'project-components/Swiper/Swiper.js'
 import SingleWorker from './SingleWorker.jsx'
 import { connect } from 'react-redux'
 import './Workers.styl'
+import { setBusinessHours } from '../../store/calendar/actions'
 
 class Workers extends Component {
   handleChangeWorker = id => {
     config.activeWorkerId = id
     let chosenWorker = config.workers.find(worker => worker.id == id)
-    let calendarApi = this.props.calendarApi
-    calendarApi.setOption('businessHours', chosenWorker.businessHours)
+    // let calendarApi = this.props.calendarApi
+    // calendarApi.setOption('businessHours', chosenWorker.businessHours)
+    this.props.setBusinessHours(chosenWorker.businessHours)
     this.forceUpdate()
   }
   render () {
@@ -43,4 +45,6 @@ class Workers extends Component {
   }
 }
 const mapStateToProps = state => ({ calendarApi: state.calendar.calendarApi })
-export default connect(mapStateToProps)(Workers)
+export default connect(mapStateToProps, {
+  setBusinessHours
+})(Workers)
