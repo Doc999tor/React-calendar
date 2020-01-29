@@ -89,25 +89,25 @@ class Header extends Component {
   }
 
   handleNext = async () => {
-    this.props.onSwipe('next')
+    this.props.slideToNext()
     this.setState({
       isButtonDisabled: true
     }, () => {
-      setTimeout(() => {this.setState({ isButtonDisabled: false })})
+      setTimeout(() => {this.setState({ isButtonDisabled: false })}, 500)
     })
   }
 
   handlePrev = async () => {
-    this.props.onSwipe('prev')
+    this.props.slideToPrev()
     this.setState({
       isButtonDisabled: true
     }, () => {
-      setTimeout(() => { this.setState({ isButtonDisabled: false }) }, 500)
+      setTimeout(() => {this.setState({ isButtonDisabled: false })}, 500)
     })
   }
 
   handleToday = () => {
-    this.props.setToday(true)
+    this.props.setToday()
   }
 
   render () {
@@ -159,8 +159,8 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getEvents,
-  onSwipe,
-  setToday,
+  // onSwipe,
+  // setToday,
   switchView,
   setBusinessHours
 })(Header)
