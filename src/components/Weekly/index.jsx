@@ -17,7 +17,8 @@ class Weekly extends Component {
   componentDidMount = () => {
     this.props.dispatch(getEvents())
     this.view = document.getElementById('calendar-weekly')
-    this.baseCalendarWidth = document.querySelector('.fc.fc-ltr.fc-unthemed')?.offsetWidth
+    this.baseCalendarWidth = document.querySelector('.fc.fc-unthemed')?.offsetWidth
+    console.log(this.baseCalendarWidth)
     this.view.scrollLeft = this.baseCalendarWidth * 3
     this.view.addEventListener('scroll', this.updateCalendars)
   }

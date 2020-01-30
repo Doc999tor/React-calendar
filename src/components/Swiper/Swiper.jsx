@@ -3,8 +3,15 @@ import Slider from 'react-slick'
 import { connect } from 'react-redux'
 import { setDefaultDay, setSwiperApi } from '../../store/calendar/actions'
 import { getFormattedDate } from '../../helpers'
-import DemoCalendar from '../DemoCalendar/newCalendar.jsx'
 import { getEvents } from '../../store/events/actions'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list'
+import interactionPlugin from '@fullcalendar/interaction'
+import { eventsSort, freeTimeArrCreator } from '../../helpers/event'
+import AgendaEvents from '../Agenda/agendaEvents.jsx'
+import '../Daily/daily.styl'
 
 const getNext = (index, plus) => {
   let next
@@ -71,7 +78,7 @@ class Swiper extends React.Component {
   afterChange = midIndex => {
     const range = this.props.currentView === 'monthly' ? 'months' : 'days'
     const plus = this.side === 'left'
-    const today = moment(this['calendarComponentRef' + midIndex].current.getApi().getDate()).format('YYYY-MM-DD')
+    const today = this.state.dates[midIndex]
     const dates = this.state.dates.slice()
     dates[getNext(midIndex, plus)] = getNextDay(today, plus, range)
     this.setState({ dates }, () => {
@@ -112,7 +119,44 @@ class Swiper extends React.Component {
     slidesToShow: 1,
     infinite: true,
     speed: 500,
-    arrows: false,
+    arrows: false
+  }
+
+  renderCalendar = (date, index) => {
+    const documentHeight = document.documentElement.clientHeight
+    const calendarHeight = config.workers.length === 1 ? documentHeight - 60 : documentHeight - 165
+    const sortedEvent = eventsSort(this.props.events, date)
+    const freeTimeArr = sortedEvent.length === 0 ? null : freeTimeArrCreator(sortedEvent, date)
+    return this.props.currentView === 'agenda'
+      ? (
+        <div className="demo-app-calendar" key={index}>
+          <AgendaEvents
+            events={sortedEvent}
+            freeTimeArr={freeTimeArr}
+            defaultDate={date}
+            key={date}
+            // eventClick={this.handleEventClick}
+          />
+        </div>
+      )
+      : (
+        <div className="demo-app-calendar" key={index}>
+          <FullCalendar
+            key={date}
+            {...config.calendar}
+            businessHours={this.props.businessHours}
+            columnHeaderFormat={{ weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true }}
+            ref={this['calendarComponentRef' + index]}
+            defaultView={this.props.currentView}
+            plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+            defaultDate={date}
+            events={this.props.events}
+            contentHeight={this.props.currentView === 'monthly' ? calendarHeight : 'auto'}
+            // eventRender={(data) => this.eventRender(data)}
+            // eventPositioned={(data) => this.eventPositioned(data, this['calendarComponentRef' + index].current?.getApi())}
+          />
+        </div>
+      )
   }
 
   render () {
@@ -123,15 +167,7 @@ class Swiper extends React.Component {
           this.slider = c
         }} {...this.settings}>{
           this.state.dates.map((date, index) => {
-            const calendarComponentRef = this['calendarComponentRef' + index]
-            return <DemoCalendar
-              key={date}
-              date={date}
-              index={index}
-              events={this.props.events}
-              calendarComponentRef={calendarComponentRef}
-              currentView={this.props.currentView}
-            />
+            return this.renderCalendar(date, index)
           })
         }</Slider>
       </div>
@@ -140,7 +176,8 @@ class Swiper extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  events: state.events.events
+  events: state.events.events,
+  businessHours: state.calendar.businessHours
 })
 
 export default connect(mapStateToProps, {
