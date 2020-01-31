@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import { deleteEventInfo } from 'store/calendar/actions'
 import Workers from './Workers/Workers.jsx'
-import Monthly from './Monthly/newOldSwiper.jsx'
+import Monthly from './Monthly/index.jsx'
 import Header from './Header/index.jsx'
 import Agenda from './Agenda/index.jsx'
 import Weekly from './Weekly/index.jsx'
-import Daily from './Swiper/Swiper.jsx'
+import Daily from './Daily/index.jsx'
 import { connect } from 'react-redux'
 import './App.styl'
 import { TimeLabel } from './TimeLabels/TimeLabel.jsx'
@@ -29,7 +29,7 @@ class App extends Component {
       <div className='app'>
         <Header calendarApi={this.props?.calendarApi} {...this.state} />
         {config.workers.length !== 1 && <Workers/>}
-        <Calendars setHeaderCallbacks={this.setHeaderCallbacks} currentView={this.props.currentView}/>
+        <Calendars setHeaderCallbacks={this.setHeaderCallbacks} />
         {this.props.eventInfo &&
         <CalendarModal info={this.props.eventInfo} close={() => this.props.dispatch(deleteEventInfo())}/>}
         {(this.props.currentView === 'daily' || this.props.currentView === 'weekly') && <TimeLabel currentView={this.props.currentView}/>}

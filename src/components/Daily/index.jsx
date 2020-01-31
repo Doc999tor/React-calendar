@@ -171,7 +171,7 @@ class Daily extends React.Component {
 
   render () {
     return (
-      <div className="containerCarousel" style={{marginTop: '160px', direction: config.calendar.dir}}>
+      <div className={`containerCarousel ${config.calendar.dir.toUpperCase()} daily-view ${config.workers.length === 1 ? 'calendar-without-workers' : 'calendar-with-workers'}`}>
         <Slider ref={c => {
           this.slider = c
           // eslint-disable-next-line react/prop-types
