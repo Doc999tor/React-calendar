@@ -47,13 +47,12 @@ class Header extends Component {
         state: { view: config.translations.weekly }
       }),
       weekly: () => {
-        // stub
         const start = getFormattedDate(this.props.defaultDate)
         const end = getFormattedDate(this.props.defaultDate, 'add', 4)
         return {
           calendarDate: (
             <React.Fragment>
-              <span className='current_date_field' style={{ 'direction': 'ltr' }}>{moment(start).format('DD') + ' - ' + moment(end).subtract(1, 'days').format('DD') + ' ' + moment(start).format('MMM')}</span>
+              <span className='current_date_field' style={{ 'direction': 'ltr' }}>{moment(start).format('DD') + ' - ' + moment(end).add(3, 'days').format('DD') + ' ' + moment(start).format('MMM')}</span>
               {isBetween && <span className='this_week'>{config.translations.thisWeek}</span>}
             </React.Fragment>
           ),

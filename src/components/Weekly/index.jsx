@@ -15,10 +15,14 @@ class Weekly extends Component {
   }
 
   componentDidMount = () => {
-    this.props.dispatch(getEvents())
+    this.props.setHeaderCallbacks({
+      setToday: this.setToday,
+      slideToNext: this.swipeNext,
+      slideToPrev: this.swipePrev
+    })
+    this.props.getEvents()
     this.view = document.getElementById('calendar-weekly')
     this.baseCalendarWidth = document.querySelector('.fc.fc-unthemed')?.offsetWidth
-    console.log(this.baseCalendarWidth)
     this.view.scrollLeft = this.baseCalendarWidth * 3
     this.view.addEventListener('scroll', this.updateCalendars)
   }
@@ -37,11 +41,13 @@ class Weekly extends Component {
     const weeklyClientRect = document.querySelector('.calendar-weekly').getBoundingClientRect()
     let visibleDays
     if (weeklyClientRect.right < (this.baseCalendarWidth * 2)) {
+      console.log('next')
       this.view.scrollLeft = this.view.scrollLeft - this.baseCalendarWidth
       const { visibleDays: vd } = this.state
       const defaultDate = vd[vd.length - 1]
       visibleDays = [ ...vd, ...this.getVisibleDays(getFormattedDate(defaultDate, 'add', 'days', 12)) ].splice(1, 11)
     } else if (weeklyClientRect.left >= -this.baseCalendarWidth * 2) {
+      console.log('prev')
       this.view.scrollLeft = this.view.scrollLeft + (this.baseCalendarWidth * 5)
       const defaultDate = getFormattedDate(this.state.visibleDays[0], 'subtract', 'days', 12)
       const leftDates = this.getVisibleDays(defaultDate)
@@ -52,10 +58,26 @@ class Weekly extends Component {
       const newIndex = Math.floor(weeklyClientRect.left / -this.baseCalendarWidth)
       if (this.currentIndex !== newIndex) {
         this.currentIndex = newIndex
-        // console.log(newIndex)
-        this.props.dispatch(setDefaultDay(visibleDays[newIndex]))
+        this.props.setDefaultDay(visibleDays[newIndex])
+        this.props.getEvents()
       }
     }
+  }
+
+  setToday = () => {
+    this.view.scrollLeft = this.baseCalendarWidth * 3
+    this.setState({ visibleDays: this.getVisibleDays(moment().format('YYYY-MM-DD')) })
+    this.props.setDefaultDay(moment().format('YYYY-MM-DD'))
+  }
+
+  swipeNext = () => {
+    this.view.scrollLeft = this.view.scrollLeft + this.baseCalendarWidth
+    this.props.setDefaultDay(getFormattedDate(this.props.defaultDate, 'add', 'days', 4))
+  }
+
+  swipePrev = () => {
+    this.view.scrollLeft = this.view.scrollLeft - this.baseCalendarWidth
+    this.props.setDefaultDay(getFormattedDate(this.props.defaultDate, 'subtract', 'days', 4))
   }
 
   render () {
@@ -64,7 +86,7 @@ class Weekly extends Component {
       <React.Fragment>
         <div id='calendar-weekly' className={topParam}>
           <div className='calendar-weekly'
-            style={{ width: this.state.visibleDays.length * 100 + '%' }}>
+            style={{ width: this.state.visibleDays.length * 100 + '%', direction: config.calendar.dir }}>
             {this.state.visibleDays.map(i => (
               <DemoCalendar eventClick={this.handleEventClick} events={this.props.events} defaultDate={i} defaultView='weekly' key={i} />
             ))}
@@ -76,8 +98,10 @@ class Weekly extends Component {
 }
 
 const mapStateToProps = state => ({
-  eventsFetching: state.events.eventsFetching,
   events: state.events.events,
   defaultDate: state.calendar.defaultDate
 })
-export default connect(mapStateToProps)(Weekly)
+export default connect(mapStateToProps, {
+  setDefaultDay,
+  getEvents
+})(Weekly)

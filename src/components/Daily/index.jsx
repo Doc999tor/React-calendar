@@ -62,6 +62,11 @@ class Daily extends React.Component {
   componentDidMount () {
     // eslint-disable-next-line react/prop-types
     this.props.getEvents()
+    this.props.setHeaderCallbacks({
+      setToday: this.setToday,
+      slideToNext: this.swipeNext,
+      slideToPrev: this.swipePrev
+    })
   }
 
   componentDidUpdate (prevProps, prevState, snapshot) {
