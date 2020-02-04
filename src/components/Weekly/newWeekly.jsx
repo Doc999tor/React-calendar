@@ -134,6 +134,7 @@ class Weekly extends Component {
         events={this.props.events}
         eventRender={(data) => renderDailyEvents(data)}
         eventPositioned={(data) => eventPositioned(data, this.props.events)}
+        businessHours={this.props.businessHours}
       />
     )
   }
@@ -153,7 +154,8 @@ class Weekly extends Component {
 }
 
 const mapStateToProps = state => ({
-  events: state.events.events
+  events: state.events.events,
+  businessHours: state.calendar.businessHours
 })
 
 export default connect(mapStateToProps, {
