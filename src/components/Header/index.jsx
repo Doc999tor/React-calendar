@@ -124,7 +124,7 @@ class Header extends Component {
           <button onClick={this.handleNext} disabled={this.state.isButtonDisabled} className={'next_button_wrap common ' + (config.calendar.dir + 'Style')}>
             <img className='next_button btn' src={config.urls.staticImg + '/next.svg'} />
           </button>
-          <div className='current_date'>
+          <div className='current_date' onClick={() => {this.props.switchView('monthly')}}>
             {calendarDate}
           </div>
           <button onClick={this.handlePrev} disabled={this.state.isButtonDisabled} className={'prev_button_wrap common ' + (config.calendar.dir + 'Style')}>
