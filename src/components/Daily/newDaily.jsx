@@ -9,13 +9,13 @@ import FullCalendar from '@fullcalendar/react'
 import { connect } from 'react-redux'
 import { getEvents } from '../../store/events/actions'
 import { setDefaultDay } from '../../store/calendar/actions'
-import { dayRender } from '../../helpers/dailyEvents'
-import './monthly.styl'
+import eventRender, { eventPositioned } from '../../helpers/dailyEvents'
+import './daily.styl'
 
 const getDates = defaultDate => [
-  getFormattedDate(moment(defaultDate).format('YYYY-MM-DD'), 'subtract', 'months'),
+  getFormattedDate(moment(defaultDate).format('YYYY-MM-DD'), 'subtract', 'days'),
   moment(defaultDate).format('YYYY-MM-DD'),
-  getFormattedDate(moment(defaultDate).format('YYYY-MM-DD'), 'add', 'months'),
+  getFormattedDate(moment(defaultDate).format('YYYY-MM-DD'), 'add', 'days'),
 ]
 
 const getDeadlinesFromEvents = events => {
@@ -42,7 +42,9 @@ class Daily extends React.Component {
     const today = this.state.dates[nextIndex]
     this.setState({ dates: getDates(today) }, () => {
       this.props.setDefaultDay(today)
-      this.props.getEvents()
+      if (this.props.events.length && getDeadlinesFromEvents(this.props.events).includes(today)) {
+        this.props.getEvents()
+      }
     })
     // this.swiper.activeIndex = 1
   }
@@ -61,27 +63,25 @@ class Daily extends React.Component {
     }
   }
   renderCalendar = date => {
-    const documentHeight = document.documentElement.clientHeight
-    const calendarHeight = config.workers.length === 1 ? documentHeight - 60 : documentHeight - 165
     return (
       <div className="demo-app-calendar" key={date}>
         <FullCalendar key={date}
-                      {...config.calendar}
-                      plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
-                      defaultDate={date}
-                      defaultView='monthly'
-                      columnHeaderFormat={{ weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true }}
-                      events={this.props.events}
-                      businessHours={this.props.businessHours}
-                      contentHeight={calendarHeight}
-                      dayRender={data => { dayRender(data, this.props.events) }}
+          {...config.calendar}
+          plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+          defaultDate={date}
+          defaultView='daily'
+          columnHeaderFormat={{ weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true }}
+          events={this.props.events}
+          businessHours={this.props.businessHours}
+          eventRender={data => { eventRender(data) }}
+          eventPositioned={data => { eventPositioned(data, this.props.events)}}
         />
       </div>
     )
   }
   render () {
     return (
-      <div className={`containerCarousel ${config.calendar.dir.toUpperCase()} monthly-view ${config.workers.length === 1 ? 'calendar-without-workers' : 'calendar-with-workers'}`} >
+      <div className={`containerCarousel ${config.calendar.dir.toUpperCase()} daily-view ${config.workers.length === 1 ? 'calendar-without-workers' : 'calendar-with-workers'}`} >
         <Swiper {...this.settings} >
           {this.state.dates.map(date => this.renderCalendar(date))}
         </Swiper>
