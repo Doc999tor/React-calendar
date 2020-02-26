@@ -9,8 +9,8 @@ import interactionPlugin from '@fullcalendar/interaction'
 import { connect } from 'react-redux'
 import { getEvents } from '../../store/events/actions'
 import { setDefaultDay } from '../../store/calendar/actions'
-import { dayRender } from '../../helpers/dailyEvents'
-import './monthly.styl'
+import eventRender, { eventPositioned } from '../../helpers/dailyEvents'
+import './daily.styl'
 
 
 const getNext = (index, plus) => {
@@ -31,7 +31,7 @@ const getNext = (index, plus) => {
 }
 
 const getNextDay = (day, plus) => {
-  return plus ? moment(day).add(1, 'months').format('YYYY-MM-DD') : moment(day).subtract(1, 'months').format('YYYY-MM-DD')
+  return plus ? moment(day).add(1, 'days').format('YYYY-MM-DD') : moment(day).subtract(1, 'days').format('YYYY-MM-DD')
 }
 
 const getDatesFromEvents = events => {
@@ -46,9 +46,9 @@ const getDatesFromEvents = events => {
 class Daily extends React.Component {
   state = {
     dates: [
-      getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'months'),
+      getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'days'),
       moment().format('YYYY-MM-DD'),
-      getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'months'),
+      getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'days'),
     ]
   }
   componentDidMount () {
@@ -62,25 +62,25 @@ class Daily extends React.Component {
     this.setState({ dates }, () => {
       this.swiper.loopCreate()
       this.props.setDefaultDay(today)
-      this.props.getEvents()
+      if (getDatesFromEvents(this.props.events).includes(today)) {
+        this.props.getEvents()
+      }
     })
   }
   renderCalendar = date => {
-    const documentHeight = document.documentElement.clientHeight
-    const calendarHeight = config.workers.length === 1 ? documentHeight - 60 : documentHeight - 165
     return (
       <div className="demo-app-calendar" key={date}>
         <FullCalendar
           key={date}
           {...config.calendar}
           columnHeaderFormat={{ weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true }}
-          defaultView='monthly'
+          defaultView='daily'
           plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
           defaultDate={date}
           events={this.props.events}
           businessHours={this.props.businessHours}
-          contentHeight={calendarHeight}
-          dayRender={date => {dayRender(date, this.props.events)}}
+          eventRender={eventRender}
+          eventPositioned={eventPositioned}
         />
       </div>
     )
@@ -99,12 +99,12 @@ class Daily extends React.Component {
   }
   render () {
     return(
-      <div className={`containerCarousel ${config.calendar.dir.toUpperCase()} monthly-view ${config.workers.length === 1 ? 'calendar-without-workers' : 'calendar-with-workers'}`}>
+      <div className={`containerCarousel ${config.calendar.dir.toUpperCase()} daily-view ${config.workers.length === 1 ? 'calendar-without-workers' : 'calendar-with-workers'}`}>
         <Swiper {...this.settings}>{
           this.state.dates.map(date => this.renderCalendar(date))
         }</Swiper>
       </div>
-    )
+      )
   }
 }
 
