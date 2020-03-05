@@ -53,6 +53,30 @@ class Daily extends React.Component {
   }
   componentDidMount () {
     this.props.getEvents()
+    this.props.setHeaderCallbacks({
+      setToday: this.setToday,
+      slideToNext: this.swipeNext,
+      slideToPrev: this.swipePrev
+    })
+  }
+  swipeNext = () => {
+    this.swiper.slideNext()
+  }
+  swipePrev = () => {
+    this.swiper.slidePrev()
+  }
+  setToday = () => {
+    this.setState({
+      dates: [
+        getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'days'),
+        moment().format('YYYY-MM-DD'),
+        getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'days')
+      ]
+    }, () => {
+      this.swiper.loopCreate()
+      this.swiper.slideToLoop(1)
+      this.props.setDefaultDay(moment().format('YYYY-MM-DD'))
+    })
   }
   onChange = isNext => {
     const nextIndex = getNext(this.swiper.realIndex, isNext)

@@ -3,8 +3,7 @@ import './Queue.styl'
 
 export default class Queue extends Component {
   render () {
-    const event = this.props.info.event
-    const extendedProps = event.extendedProps
+    const event = this.props.info
     const { fullMonths } = config.translations.dates
     const { days } = config.translations.dates
     return (
@@ -17,7 +16,7 @@ export default class Queue extends Component {
             <div className='client-page'>
               <div className='client-info'>
                 <div className='client-icons'>
-                  {extendedProps.client_id && <div className='wrap-icons'>
+                  {event.client_id && <div className='wrap-icons'>
                     {/* {event.birthdate && bday(event, view.dateProfile.date)} */}
                     <div className='icons-item'>
                       <div className='wrap-icons'>
@@ -25,7 +24,7 @@ export default class Queue extends Component {
                       </div>
                       <span>{config.translations.vip}</span>
                     </div>
-                    {extendedProps.has_debt && <div className='icons-item'>
+                    {event.has_debt && <div className='icons-item'>
                       <div className='wrap-icons'>
                         <img src={config.urls.staticImg + '/white-debt.svg'} />
                       </div>
@@ -34,11 +33,11 @@ export default class Queue extends Component {
                   </div>}
                 </div>
               </div>
-              {extendedProps.name
+              {event.name
                 ? <div className='strip-name'>
                   <p className='client-name'>
                     <img className='user-def' src={config.urls.staticImg + '/user.svg'} />
-                    {extendedProps.name}
+                    {event.name}
                   </p>
                 </div>
                 : <div className='strip-name'>
@@ -49,22 +48,22 @@ export default class Queue extends Component {
                 </div>
               }
             </div>
-            {extendedProps.phone && <div className='strip-phone'>
-              <div className={'call' + (extendedProps.status ? '' : ' no-status')}>
-                <a href={'sms:' + extendedProps.phone}>
+            {event.phone && <div className='strip-phone'>
+              <div className={'call' + (event.status ? '' : ' no-status')}>
+                <a href={'sms:' + event.phone}>
                   <button className='btn-sms'>
                     <img className='img-sms' src={config.urls.staticImg + '/sms.svg'} />
                   </button>
                 </a>
                 <div className='wrap-tel'>
-                  <a className='tel' href={'tel:' + extendedProps.phone}>
+                  <a className='tel' href={'tel:' + event.phone}>
                     <img className='img-tel' src={config.urls.staticImg + '/phone-call 2.svg'} />
-                    <span>{extendedProps.phone}</span>
+                    <span>{event.phone}</span>
                   </a>
                 </div>
               </div>
-              {extendedProps.status && <div className='status'>
-                <p className='status-text'>{extendedProps.status}</p>
+              {event.status && <div className='status'>
+                <p className='status-text'>{event.status}</p>
               </div>}
             </div>}
           </div>
@@ -92,7 +91,7 @@ export default class Queue extends Component {
               </div>
             </div>
           </div>
-          {extendedProps.services && extendedProps.services.length > 0 && <div className='service-cont wrap-item'>
+          {event.services && event.services.length > 0 && <div className='service-cont wrap-item'>
             <div className='service-wrap'>
               <div className='img-wrap'>
                 <img className='img-service' src={config.urls.staticImg + '/credit-card.svg'} />
@@ -100,27 +99,27 @@ export default class Queue extends Component {
               <div className='service-name'>
                 <h3 className='caption'>{config.translations.services}</h3>
                 <div className='item-wrap'>
-                  {extendedProps.services.map((item, key) => {
+                  {event.services.map((item, key) => {
                     if (item.count && item.count > 1) return (<p key={key}>{item.name}<span className='count-service'>{'⨯' + ' ' + item.count}</span></p>)
                     else return (<p key={key}>{item.name}</p>)
                   })}
                 </div>
               </div>
             </div>
-            {extendedProps.total_price && <div className='price'>
-              <span>{extendedProps.total_price + ' ' + config.currency}</span>
+            {event.total_price && <div className='price'>
+              <span>{event.total_price + ' ' + config.currency}</span>
             </div>}
           </div> }
-          {extendedProps.note && <div className='notes wrap-item'>
+          {event.note && <div className='notes wrap-item'>
             <div className='img'>
               <img className='img-notes' src={config.urls.staticImg + '/feather.svg'} />
             </div>
             <div className='notes-cont'>
               <h3 className='caption'>{config.translations.notes}</h3>
-              <p className='notes-txt'>{extendedProps.note}</p>
+              <p className='notes-txt'>{event.note}</p>
             </div>
           </div>}
-          {extendedProps.address && <div className='location wrap-item'>
+          {event.address && <div className='location wrap-item'>
             <div className='location-wrap'>
               <div className='img'>
                 <img className='location-circle' src={config.urls.staticImg + '/circle-location.svg'} />
@@ -128,7 +127,7 @@ export default class Queue extends Component {
               </div>
               <div className='location-cont'>
                 <h3 className='caption'>{config.translations.address}</h3>
-                <p className='address-loc'>{extendedProps.address}</p>
+                <p className='address-loc'>{event.address}</p>
               </div>
             </div>
             <div className='location-icon'>

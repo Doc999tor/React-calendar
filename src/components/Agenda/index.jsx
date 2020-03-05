@@ -1,14 +1,9 @@
 import React from 'react'
-import Slider from 'react-slick'
+import Swiper from 'react-id-swiper'
 import { connect } from 'react-redux'
-import { setDefaultDay, setSwiperApi } from '../../store/calendar/actions'
+import { getEventInfo, setDefaultDay, setSwiperApi } from '../../store/calendar/actions'
 import { getFormattedDate } from '../../helpers'
 import { getEvents } from '../../store/events/actions'
-import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import listPlugin from '@fullcalendar/list'
-import interactionPlugin from '@fullcalendar/interaction'
 import { eventsSort, freeTimeArrCreator } from '../../helpers/event'
 import AgendaEvents from '../Agenda/agendaEvents.jsx'
 import '../Agenda/Agenda.styl'
@@ -43,109 +38,87 @@ const getDatesFromEvents = events => {
   ]
 }
 
-class Swiper extends React.Component {
-  calendarComponentRef0 = React.createRef()
-  calendarComponentRef1 = React.createRef()
-  calendarComponentRef2 = React.createRef()
-
-
-  constructor (props) {
-    super(props)
-    this.state = {
-      dates: [
-        getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'days'),
-        moment().format('YYYY-MM-DD'),
-        getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'days'),
-      ],
-      midIndex: 1
-    }
+class Agenda extends React.Component {
+  state = {
+    dates: [
+      getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'days'),
+      moment().format('YYYY-MM-DD'),
+      getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'days'),
+    ]
   }
-
   componentDidMount () {
     this.props.getEvents()
     this.props.setHeaderCallbacks({
       setToday: this.setToday,
-      slideToNext: this.slideToNext,
-      slideToPrev: this.slideToPrev
+      slideToNext: this.swipeNext,
+      slideToPrev: this.swipePrev
     })
   }
-
-  onSwipe = side => {
-    this.side = side
+  swipeNext = () => {
+    this.swiper.slideNext()
   }
-
-  afterChange = midIndex => {
-    const plus = this.side === 'left'
-    const today = this.state.dates[midIndex]
+  swipePrev = () => {
+    this.swiper.slidePrev()
+  }
+  setToday = () => {
+    this.setState({
+      dates: [
+        getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'days'),
+        moment().format('YYYY-MM-DD'),
+        getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'days')
+      ]
+    }, () => {
+      this.swiper.loopCreate()
+      this.swiper.slideToLoop(1)
+      this.props.setDefaultDay(moment().format('YYYY-MM-DD'))
+    })
+  }
+  onChange = isNext => {
+    const nextIndex = getNext(this.swiper.realIndex, isNext)
     const dates = this.state.dates.slice()
-    dates[getNext(midIndex, plus)] = getNextDay(today, plus, 'days')
+    const today = dates[this.swiper.realIndex]
+    dates[nextIndex] = getNextDay(dates[this.swiper.realIndex], isNext)
     this.setState({ dates }, () => {
+      this.swiper.loopCreate()
       this.props.setDefaultDay(today)
-      if (this.props.events.length && getDatesFromEvents(this.props.events).includes(today)) {
+      if (getDatesFromEvents(this.props.events).includes(today)) {
         this.props.getEvents()
       }
     })
   }
-
-  setToday = () => {
-    this.setState({ dates: [
-        getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'days'),
-        moment().format('YYYY-MM-DD'),
-        getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'days'),
-      ] }, () => {
-      this.slider.slickGoTo(1)
-      this.props.setDefaultDay(moment().format('YYYY-MM-DD'))
-    })
-  }
-
-  slideToNext = () => {
-    this.side = 'left'
-    this.slider.slickNext()
-  }
-
-  slideToPrev = () => {
-    this.side = 'right'
-    this.slider.slickPrev()
-  }
-
-  settings = {
-    afterChange: this.afterChange,
-    onSwipe: this.onSwipe,
-    slidesToScroll: 1,
-    initialSlide: 1,
-    slidesToShow: 1,
-    infinite: true,
-    speed: 500,
-    arrows: false
-  }
-
-  renderCalendar = (date, index) => {
+  renderCalendar = date => {
     const sortedEvent = eventsSort(this.props.events, date)
     const freeTimeArr = sortedEvent.length === 0 ? null : freeTimeArrCreator(sortedEvent, date)
     return (
-        <div className="demo-app-calendar" key={index}>
-          <AgendaEvents
-            events={sortedEvent}
-            freeTimeArr={freeTimeArr}
-            defaultDate={date}
-            key={date}
-            // eventClick={this.handleEventClick}
-          />
-        </div>
-      )
+      <div className="demo-app-calendar" key={date}>
+        <AgendaEvents
+          events={sortedEvent}
+          freeTimeArr={freeTimeArr}
+          defaultDate={date}
+          key={date}
+          eventClick={e => {this.props.getEventInfo(e)}}
+        />
+      </div>
+    )
   }
-
+  settings = {
+    loop: true,
+    initialSlide: 1,
+    runCallbacksOnInit: false,
+    getSwiper: swiper => {
+      this.swiper = swiper
+    },
+    on: {
+      slideNextTransitionEnd: () => { this.onChange(true) },
+      slidePrevTransitionEnd: () => { this.onChange(false) }
+    }
+  }
   render () {
-    return (
+    return(
       <div className={`containerCarousel ${config.calendar.dir.toUpperCase()} agenda-view ${config.workers.length === 1 ? 'calendar-without-workers' : 'calendar-with-workers'}`}>
-        <Slider ref={c => {
-          this.props.setSwiperApi(c)
-          this.slider = c
-        }} {...this.settings}>{
-          this.state.dates.map((date, index) => {
-            return this.renderCalendar(date, index)
-          })
-        }</Slider>
+        <Swiper {...this.settings}>{
+          this.state.dates.map(date => this.renderCalendar(date))
+        }</Swiper>
       </div>
     )
   }
@@ -157,7 +130,7 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps, {
-  setSwiperApi,
   getEvents,
-  setDefaultDay
-})(Swiper)
+  setDefaultDay,
+  getEventInfo
+})(Agenda)

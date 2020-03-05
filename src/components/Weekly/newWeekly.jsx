@@ -50,14 +50,14 @@ class Weekly extends Component {
       if (config.calendar.dir === 'rtl') {
         const newDay = getFormattedDate(dates[0], 'subtract', 'days', 4)
         dates.unshift(newDay)
-        if (dates.length === 11) {
+        if (dates.length === 7) {
           this.view.scrollLeft = this.view.scrollLeft - this.baseCalendarWidth
           dates.pop()
         }
       } else {
         const newDay = getFormattedDate(dates[dates.length - 1], 'add', 'days', 4)
         dates.push(newDay)
-        if(dates.length === 11) {
+        if(dates.length === 7) {
           this.view.scrollLeft = this.view.scrollLeft - this.baseCalendarWidth
           dates.shift()
         }
@@ -68,14 +68,14 @@ class Weekly extends Component {
         this.view.scrollLeft = this.view.scrollLeft + this.baseCalendarWidth
         const newDay = getFormattedDate(dates[dates.length - 1], 'add', 'days', 4)
         dates.push(newDay)
-        if (dates.length === 11) {
+        if (dates.length === 7) {
           dates.shift()
         }
       } else {
         this.view.scrollLeft = this.view.scrollLeft + this.baseCalendarWidth
         const newDay = getFormattedDate(dates[0], 'subtract', 'days', 4)
         dates.unshift(newDay)
-        if (dates.length === 11) {
+        if (dates.length === 7) {
           dates.pop()
         }
       }
@@ -84,9 +84,11 @@ class Weekly extends Component {
 
     if(config.calendar.dir === 'rtl') {
       const daysToAdd = Math.floor((weeklyClientRect.right - this.baseCalendarWidth) / this.singleDayWidth)
+      console.log('set new date')
       this.props.setDefaultDay(getFormattedDate(dates[0], 'add', 'days', daysToAdd))
     } else {
       const daysToAdd = Math.floor((-weeklyClientRect.left) / this.singleDayWidth)
+      console.log('set new date')
       this.props.setDefaultDay(getFormattedDate(dates[0], 'add', 'days', daysToAdd))
     }
 

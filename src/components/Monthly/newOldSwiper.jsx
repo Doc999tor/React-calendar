@@ -53,6 +53,30 @@ class Daily extends React.Component {
   }
   componentDidMount () {
     this.props.getEvents()
+    this.props.setHeaderCallbacks({
+      setToday: this.setToday,
+      slideToNext: this.swipeNext,
+      slideToPrev: this.swipePrev
+    })
+  }
+  swipeNext = () => {
+    this.swiper.slideNext()
+  }
+  swipePrev = () => {
+    this.swiper.slidePrev()
+  }
+  setToday = () => {
+    this.setState({
+      dates: [
+        getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'months'),
+        moment().format('YYYY-MM-DD'),
+        getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'months')
+      ]
+    }, () => {
+      this.swiper.loopCreate()
+      this.swiper.slideToLoop(1)
+      this.props.setDefaultDay(moment().format('YYYY-MM-DD'))
+    })
   }
   onChange = isNext => {
     const nextIndex = getNext(this.swiper.realIndex, isNext)
@@ -61,6 +85,8 @@ class Daily extends React.Component {
     dates[nextIndex] = getNextDay(dates[this.swiper.realIndex], isNext)
     this.setState({ dates }, () => {
       this.swiper.loopCreate()
+      const currentSlideDays = document.querySelectorAll(`.containerCarousel .swiper-slide:nth-child(${this.swiper.activeIndex + 1}) .fc-day.fc-widget-content`)
+      dayRender(currentSlideDays, this.props.events)
       this.props.setDefaultDay(today)
       this.props.getEvents()
     })
@@ -80,7 +106,6 @@ class Daily extends React.Component {
           events={this.props.events}
           businessHours={this.props.businessHours}
           contentHeight={calendarHeight}
-          dayRender={date => {dayRender(date, this.props.events)}}
         />
       </div>
     )
@@ -98,7 +123,7 @@ class Daily extends React.Component {
     }
   }
   render () {
-    return(
+    return (
       <div className={`containerCarousel ${config.calendar.dir.toUpperCase()} monthly-view ${config.workers.length === 1 ? 'calendar-without-workers' : 'calendar-with-workers'}`}>
         <Swiper {...this.settings}>{
           this.state.dates.map(date => this.renderCalendar(date))

@@ -240,9 +240,9 @@ const eventRender = (data) => {
   }
 }
 
-export const dayRender = ({date, el, view}, events) => {
-  if(view.type === 'monthly') {
-    bgrColor(moment(date).format('YYYY-MM-DD'), el, events)
+export const dayRender = (days, events) => {
+  for (let i = 0; i < days.length; i++) {
+    bgrColor(days[i].attributes['data-date'].value, days[i], events)
   }
 }
 
