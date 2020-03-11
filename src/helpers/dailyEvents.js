@@ -278,6 +278,32 @@ export const eventPositioned = ({el, event, view, isMirror}) => {
       }
     }
   }
+
+  if (view.type === 'monthly') {
+    if (!isMirror) {
+      let services = event.extendedProps.services
+        ? event.extendedProps.services.reduce((phrase, item) => {
+          return item.name && !!item.name ? phrase + `${item.name}` + (item.count > 1 ? ` ⨯ ${item.count},` : '') : phrase
+        }, '')
+        : []
+      if (event.services) {
+        services = services.split(',')
+      }
+      let color = event.extendedProps.services && event.extendedProps.services[0] && event.extendedProps.services[0].color ? event.extendedProps.services[0].color : 'transparent'
+      el.classList.add('title_' + config.calendar.dir)
+      el.setAttribute('data-event', moment(event.start).format('YYYY-MM-DD'))
+      if ((el.getAttribute('data-event') !== moment(event._calendar.getDate()).format('YYYY-MM-DD'))) {
+        el.classList.add('not-current-month')
+      }
+      el.style.borderColor = color
+      if (event.extendedProps.off_time) {
+        el.classList.add('off_time_title')
+      }
+      el.innerHTML = event.extendedProps.off_time
+        ? `<p class='month_title off_time_service' > ${event.extendedProps.off_time === 'break' ? config.translations.business_lunch : config.translations.meeting}</p>`
+        : event.extendedProps.services && !!event.extendedProps.services ? `<p class='month_title' ><span class='square'>&bull;</span><span class='service-item'>${event.extendedProps.name ? event.extendedProps.name : config.translations.occasional}</span></p>` : ''
+    }
+  }
 }
 
 export default eventRender

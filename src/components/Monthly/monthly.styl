@@ -1,4 +1,30 @@
 .monthly-view
+  .fc-event
+    margin 0
+    background-color transparent
+    border: none
+    border-inline-start 3px solid
+    -webkit-border-start 3px solid
+    -moz-border-start 3px solid
+    .month_title
+      max-height 1rem
+      width 90%
+      font-size 10px
+      letter-spacing 0.2px
+      overflow hidden
+      text-overflow ellipsis
+      color var(--black-color)
+      padding-inline-start 2px
+      -webkit-padding-start 2px
+      -moz-padding-start 2px
+      margin 0
+      .square
+        font-size 0.4rem
+        padding-inline-end 2px
+        -webkit-padding-end 2px
+        -moz-padding-end 2px
+    &.title_rtl
+      direction rtl
   .dayOff
     background-color var(--home-dayOff-bgcolor)
   .normalDay

@@ -9,7 +9,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import { connect } from 'react-redux'
 import { getEvents } from '../../store/events/actions'
 import { setDefaultDay } from '../../store/calendar/actions'
-import { dayRender } from '../../helpers/dailyEvents'
+import { dayRender, eventPositioned } from '../../helpers/dailyEvents'
 import './monthly.styl'
 
 
@@ -85,8 +85,8 @@ class Daily extends React.Component {
     dates[nextIndex] = getNextDay(dates[this.swiper.realIndex], isNext)
     this.setState({ dates }, () => {
       this.swiper.loopCreate()
-      const currentSlideDays = document.querySelectorAll(`.containerCarousel .swiper-slide:nth-child(${this.swiper.activeIndex + 1}) .fc-day.fc-widget-content`)
-      dayRender(currentSlideDays, this.props.events)
+      // const currentSlideDays = document.querySelectorAll(`.containerCarousel .swiper-slide:nth-child(${this.swiper.activeIndex + 1}) .fc-day.fc-widget-content`)
+      // dayRender(currentSlideDays, this.props.events)
       this.props.setDefaultDay(today)
       this.props.getEvents()
     })
@@ -106,6 +106,7 @@ class Daily extends React.Component {
           events={this.props.events}
           businessHours={this.props.businessHours}
           contentHeight={calendarHeight}
+          eventPositioned={eventPositioned}
         />
       </div>
     )
