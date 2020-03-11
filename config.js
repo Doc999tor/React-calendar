@@ -146,7 +146,7 @@ const config = {
     ],
     eventLongPressDelay: 1000,
     selectLongPressDelay: 1000,
-    defaultView: 'monthly', // agenda, daily, weekly, monthly
+    defaultView: 'agenda', // agenda, daily, weekly, monthly
     defaultDate: moment().format('YYYY-MM-DD'),
     // defaultDate: moment(window.location.pathname.match(new RegExp('\\d{4}\\-\\d{1,2}\\-\\d{1,2}', 'g'))[0]).isValid() ? moment(window.location.pathname.match(new RegExp('\\d{4}\\-\\d{1,2}\\-\\d{1,2}', 'g'))[0]) : moment('2018-01-01'),
     eventOverlap: true,
@@ -187,7 +187,7 @@ const config = {
     allDaySlot: false,
     timeZone: 'local',
     // timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    dir: 'rtl',
+    dir: 'ltr',
     nowIndicator: true,
     firstDay: 0,
     slotDuration: '00:15:00', // The frequency for displaying time slots

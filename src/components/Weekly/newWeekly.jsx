@@ -45,8 +45,9 @@ class Weekly extends Component {
 
   updateCalendars = () => {
     const weeklyClientRect = document.querySelector('.calendar-weekly').getBoundingClientRect()
-    let dates = this.state.dates.slice()
+    let dates
     if (weeklyClientRect.right < (this.baseCalendarWidth * 2)) {
+      dates = this.state.dates.slice()
       if (config.calendar.dir === 'rtl') {
         const newDay = getFormattedDate(dates[0], 'subtract', 'days', 4)
         dates.unshift(newDay)
@@ -64,6 +65,7 @@ class Weekly extends Component {
       }
       this.props.getEvents()
     } else if (weeklyClientRect.left >= -this.baseCalendarWidth) {
+      dates = this.state.dates.slice()
       if (config.calendar.dir === 'rtl') {
         this.view.scrollLeft = this.view.scrollLeft + this.baseCalendarWidth
         const newDay = getFormattedDate(dates[dates.length - 1], 'add', 'days', 4)
@@ -82,17 +84,17 @@ class Weekly extends Component {
       this.props.getEvents()
     }
 
-    if(config.calendar.dir === 'rtl') {
-      const daysToAdd = Math.floor((weeklyClientRect.right - this.baseCalendarWidth) / this.singleDayWidth)
-      console.log('set new date')
-      this.props.setDefaultDay(getFormattedDate(dates[0], 'add', 'days', daysToAdd))
-    } else {
-      const daysToAdd = Math.floor((-weeklyClientRect.left) / this.singleDayWidth)
-      console.log('set new date')
-      this.props.setDefaultDay(getFormattedDate(dates[0], 'add', 'days', daysToAdd))
-    }
+    // if(config.calendar.dir === 'rtl') {
+    //   const daysToAdd = Math.floor((weeklyClientRect.right - this.baseCalendarWidth) / this.singleDayWidth)
+    //   this.props.setDefaultDay(getFormattedDate(this.state.dates[0], 'add', 'days', daysToAdd))
+    // } else {
+    //   const daysToAdd = Math.floor((-weeklyClientRect.left) / this.singleDayWidth)
+    //   this.props.setDefaultDay(getFormattedDate(this.state.dates[0], 'add', 'days', daysToAdd))
+    // }
 
-    this.setState({ dates })
+    if (dates) {
+      this.setState({ dates })
+    }
   }
 
   swipeNext = () => {
@@ -147,7 +149,9 @@ class Weekly extends Component {
       <React.Fragment>
         <div id='calendar-weekly' className={topParam}>
           <div className='calendar-weekly' style={{ width: this.state.dates.length * 100 + '%', direction: config.calendar.dir }}>
-            {this.state.dates.map(date => this.renderCalendar(date))}
+            {this.state.dates.map(date => <div className='calendar-wrap' key={date}>
+                {this.renderCalendar(date)}
+            </div>)}
           </div>
         </div>
       </React.Fragment>

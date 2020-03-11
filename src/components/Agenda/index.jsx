@@ -25,8 +25,8 @@ const getNext = (index, plus) => {
   return next
 }
 
-const getNextDay = (day, plus, range) => {
-  return plus ? moment(day).add(1, range).format('YYYY-MM-DD') : moment(day).subtract(1, range).format('YYYY-MM-DD')
+const getNextDay = (day, plus) => {
+  return plus ? moment(day).add(1, 'days').format('YYYY-MM-DD') : moment(day).subtract(1, 'days').format('YYYY-MM-DD')
 }
 
 const getDatesFromEvents = events => {
