@@ -84,13 +84,13 @@ class Weekly extends Component {
       this.props.getEvents()
     }
 
-    // if(config.calendar.dir === 'rtl') {
-    //   const daysToAdd = Math.floor((weeklyClientRect.right - this.baseCalendarWidth) / this.singleDayWidth)
-    //   this.props.setDefaultDay(getFormattedDate(this.state.dates[0], 'add', 'days', daysToAdd))
-    // } else {
-    //   const daysToAdd = Math.floor((-weeklyClientRect.left) / this.singleDayWidth)
-    //   this.props.setDefaultDay(getFormattedDate(this.state.dates[0], 'add', 'days', daysToAdd))
-    // }
+    if(config.calendar.dir === 'rtl') {
+      const daysToAdd = Math.floor((weeklyClientRect.right - this.baseCalendarWidth) / this.singleDayWidth)
+      this.props.setDefaultDay(getFormattedDate(this.state.dates[0], 'add', 'days', daysToAdd))
+    } else {
+      const daysToAdd = Math.floor((-weeklyClientRect.left) / this.singleDayWidth)
+      this.props.setDefaultDay(getFormattedDate(this.state.dates[0], 'add', 'days', daysToAdd))
+    }
 
     if (dates) {
       this.setState({ dates })

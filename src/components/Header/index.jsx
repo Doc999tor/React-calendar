@@ -3,6 +3,7 @@ import HeaderMenu from './HeaderMenu/index.jsx'
 import { connect } from 'react-redux'
 import { getEvents } from '../../store/events/actions'
 import { getFormattedDate, getStandardFormat } from '../../helpers'
+import queryString from 'query-string'
 import './Header.styl'
 import { onSwipe, setBusinessHours, setToday, switchView } from '../../store/calendar/actions'
 
@@ -23,7 +24,7 @@ class Header extends Component {
     }
   }
 
-  getCalendarDate = () => {
+  getCalendarDate = (view) => {
     let title = getStandardFormat(this.props.defaultDate)
     const isCurrentDay = moment().format('YYYY-MM-DD') === moment(this.props.defaultDate).format('YYYY-MM-DD')
     const isBetween = moment().isoWeek() === moment(this.props.defaultDate).isoWeek()
@@ -69,7 +70,7 @@ class Header extends Component {
         state: { view: config.translations.agenda }
       })
     }
-    const { calendarDate, state } = obj[this.props.currentView]()
+    const { calendarDate, state } = obj[view]()
     return {
       calendarDate,
       ...state,
@@ -77,14 +78,17 @@ class Header extends Component {
     }
   }
 
-  handleChangeView = () => {
+  handleChangeView = (view) => {
     const objView = {
       monthly: 'agenda',
       weekly: 'monthly',
       daily: 'weekly',
       agenda: 'daily'
     }
-    this.props.switchView(objView[this.props.currentView])
+    this.props.history.push({
+      search: `?worker_id=${config.activeWorkerId}&calendar_view_type=${objView[view]}`
+    })
+    // this.props.switchView(objView[this.props.currentView])
   }
 
   handleNext = async () => {
@@ -110,8 +114,9 @@ class Header extends Component {
   }
 
   render () {
+    let currentView = new URLSearchParams(this.props.location.search).get('calendar_view_type') || config.calendar.defaultView
     const dir = config.calendar.dir === 'rtl' ? 'ltr' : 'rtl'
-    const { calendarDate, view, todayBtn } = this.getCalendarDate()
+    const { calendarDate, view, todayBtn } = this.getCalendarDate(currentView)
     return (
       <div id='header' style={{ 'direction': dir }}>
         <div className={'menu_refresh ' + ('menu_' + dir)}>
@@ -136,7 +141,7 @@ class Header extends Component {
             <img className='img_today' src={config.urls.staticImg + '/today.svg'} />
             {config.translations.today}
           </button>}
-          <button className='daily_wrap daily_wrap_label' onClick={this.handleChangeView}>
+          <button className='daily_wrap daily_wrap_label' onClick={() => { this.handleChangeView(currentView) }}>
             <img className='img_view' src={config.urls.staticImg + '/change_view.svg'} />
             {view}
           </button>
