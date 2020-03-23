@@ -6,7 +6,7 @@ export const TimeLabel = (props) => {
   let topParam = config.workers.length === 1 ? 'timeBox-without-workers' : 'timeBox-with-workers'
   return <div className={`timeBox ${topParam}`} style={{
     height: `${getFormattedTimeLabels().length * 25}px`,
-    marginTop: `${props.currentView === 'weekly' ? '23px' : ''}`,
+    marginTop: `${props.currentView === 'weekly' ? '22px' : ''}`,
     left: config.calendar.dir === 'rtl'? '' : 0,
     right: config.calendar.dir === 'rtl'? 0 : ''
   }}>

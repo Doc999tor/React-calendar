@@ -2,6 +2,7 @@ import React from 'react'
 import OffTime from './offTime.jsx'
 import CustomEvent from './customEvent.jsx'
 import EmptyPage from './EmptyPage.jsx'
+import { Link } from 'react-router-dom'
 
 const AgendaEvents = (props) => {
   let firstTimeBox = props.freeTimeArr ? props.freeTimeArr.filter(timeBox => timeBox.position === 'first') : null
@@ -15,7 +16,10 @@ const AgendaEvents = (props) => {
               <div className='free-time_value'>{firstTimeBox[0].hours}</div>
               <div className='duration-time_container'>
                 <div className='free-time'>
-                  <img className='cross' src={`${config.urls.staticImg}/plus.svg`}/>
+                  <Link replace to={{
+                    pathname: config.urls.creatingAppointmentLink,
+                    state: null
+                  }}><img className='cross' src={`${config.urls.staticImg}/plus.svg`}/></Link>
                 </div>
               </div>
               <div className='free-time_title'><span>{config.translations.duration.description}</span></div>
@@ -46,7 +50,10 @@ const AgendaEvents = (props) => {
               <div className='free-time_value'>{lastTimeBox[0].hours}</div>
               <div className='duration-time_container'>
                 <div className='free-time'>
-                  <img className='cross' src={`${config.urls.staticImg}/plus.svg`}/>
+                  <Link to={{
+                    pathname: config.urls.creatingAppointmentLink,
+                    state: null
+                  }}><img className='cross' src={`${config.urls.staticImg}/plus.svg`}/></Link>
                 </div>
               </div>
               <div className='free-time_title'><span>{config.translations.duration.description}</span></div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { colorStr, customTimeToText, getHoursLabel, isFreeTimeBoxNeeded } from '../../helpers/event'
+import { Link } from 'react-router-dom'
 
 const OffTime = (props) => {
   return (
@@ -49,7 +50,10 @@ const OffTime = (props) => {
           <div className='free-time_value'>{isFreeTimeBoxNeeded(props.events, props.index).hours}</div>
           <div className='duration-time_container'>
             <div className='free-time'>
-              <img className='cross' src={`${config.urls.staticImg}/plus.svg`}/>
+              <Link to={{
+                pathname: config.urls.creatingAppointmentLink,
+                state: null
+              }}><img className='cross' src={`${config.urls.staticImg}/plus.svg`}/></Link>
             </div>
           </div>
           <div className='free-time_title'><span>{config.translations.duration.description}</span></div>

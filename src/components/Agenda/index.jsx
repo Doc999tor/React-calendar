@@ -96,7 +96,10 @@ class Agenda extends React.Component {
           freeTimeArr={freeTimeArr}
           defaultDate={date}
           key={date}
-          eventClick={e => {this.props.getEventInfo(e)}}
+          eventClick={e => {
+            this.props.getEventInfo(e)
+            this.props.history.push(`${this.props.match.url}/appointments${this.props.location.search}`)
+          }}
         />
       </div>
     )

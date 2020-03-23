@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import queryString from 'querystring'
 import {
   Switch,
   Route,
@@ -13,7 +14,9 @@ import Agenda from './Agenda/index.jsx'
 import Daily from './Daily/newDaily2.jsx'
 import Weekly from './Weekly/newWeekly.jsx'
 import Monthly from './Monthly/newOldSwiper.jsx'
+import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import { TimeLabel } from './TimeLabels/TimeLabel.jsx'
+import { deleteEventInfo } from 'store/calendar/actions'
 import '@fullcalendar/timegrid/main.css'
 import '@fullcalendar/daygrid/main.css'
 import '@fullcalendar/list/main.css'
@@ -26,7 +29,8 @@ class App extends Component {
   }
 
   render () {
-    let view = new URLSearchParams(this.props.location.search).get('calendar_view_type')
+    console.log('render', this.props)
+    let view = queryString.parse(this.props.location.search).calendar_view_type
     return (
       <div className='app' >
         <Route render={props => <Header {...this.state} {...props} />} />
@@ -35,6 +39,7 @@ class App extends Component {
           <Route exact path='/'>
             <Redirect to={config.urls.startUrl} />
           </Route>
+          <Route path={`${config.urls.startUrl}/:dayId/appointments`} render={props => <CalendarModal info={this.props.eventInfo} close={() => this.props.deleteEventInfo()} {...props} />} />
           <Route path={config.urls.startUrl} >
             <Calendars
               setHeaderCallbacks={this.setHeaderCallbacks}
@@ -42,17 +47,20 @@ class App extends Component {
             />
           </Route>
         </Switch>
-        {view === 'weekly' || view === 'daily' && <TimeLabel currentView={view} />}
+        {(view === 'weekly' || view === 'daily') && <TimeLabel currentView={view} />}
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  defaultDate: state.calendar.defaultDate
+  defaultDate: state.calendar.defaultDate,
+  eventInfo: state.calendar.eventInfo,
 })
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps, {
+  deleteEventInfo
+})(App)
 
 
 function Calendars (props) {
@@ -66,14 +74,14 @@ function Calendars (props) {
   let location = useLocation()
   let search = location.search ? location.search : `?worker_id=${config.activeWorkerId}&calendar_view_type=${config.calendar.defaultView}`
   return (
-    <div>
+    <React.Fragment>
       <Redirect to={`${match.url}/${props.defaultDate}` + search} />
       <Switch>
         <Route path={`${match.path}/:dayId`} render={match => {
-          const View = objView[new URLSearchParams(search).get('calendar_view_type')]
+          const View = objView[queryString.parse(search).calendar_view_type]
           return <View setHeaderCallbacks={props.setHeaderCallbacks} {...match} />
         }} />
       </Switch>
-    </div>
+    </React.Fragment>
   )
 }

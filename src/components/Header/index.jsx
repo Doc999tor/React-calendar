@@ -114,7 +114,7 @@ class Header extends Component {
   }
 
   render () {
-    let currentView = new URLSearchParams(this.props.location.search).get('calendar_view_type') || config.calendar.defaultView
+    let currentView = queryString.parse(this.props.location.search).calendar_view_type || config.calendar.defaultView
     const dir = config.calendar.dir === 'rtl' ? 'ltr' : 'rtl'
     const { calendarDate, view, todayBtn } = this.getCalendarDate(currentView)
     return (
