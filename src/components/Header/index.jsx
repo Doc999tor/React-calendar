@@ -5,29 +5,16 @@ import { getEvents } from '../../store/events/actions'
 import { getFormattedDate, getStandardFormat } from '../../helpers'
 import queryString from 'query-string'
 import './Header.styl'
-import { onSwipe, setBusinessHours, setToday, switchView } from '../../store/calendar/actions'
 
 class Header extends Component {
   state = {
     isButtonDisabled: false
   }
 
-  componentDidMount () {
-    this.updateBusinessHours()
-  }
-
-  updateBusinessHours = () => {
-    let activeWorker = config.workers.find(worker => +worker.id === +config.activeWorkerId)
-    if (activeWorker) {
-      let businessHours = activeWorker.businessHours
-      this.props.setBusinessHours(businessHours)
-    }
-  }
-
   getCalendarDate = (view) => {
-    let title = getStandardFormat(this.props.defaultDate)
-    const isCurrentDay = moment().format('YYYY-MM-DD') === moment(this.props.defaultDate).format('YYYY-MM-DD')
-    const isBetween = moment().isoWeek() === moment(this.props.defaultDate).isoWeek()
+    let title = getStandardFormat(this.props.currentDate)
+    const isCurrentDay = moment().format('YYYY-MM-DD') === moment(this.props.currentDate).format('YYYY-MM-DD')
+    const isBetween = moment().isoWeek() === moment(this.props.currentDate).isoWeek()
     const obj = {
       agenda: () => ({
         calendarDate: (
@@ -41,15 +28,15 @@ class Header extends Component {
       daily: () => ({
         calendarDate: (
           <React.Fragment>
-            <span className='current_date_field' style={{ 'direction': 'ltr' }}>{moment(this.props.defaultDate).format('DD') + ' ' + moment(this.props.defaultDate).format('MMM')}</span>
+            <span className='current_date_field' style={{ 'direction': 'ltr' }}>{moment(this.props.currentDate).format('DD') + ' ' + moment(this.props.currentDate).format('MMM')}</span>
             {isBetween && <span className='this_week'>{config.translations.thisWeek}</span>}
           </React.Fragment>
         ),
         state: { view: config.translations.weekly }
       }),
       weekly: () => {
-        const start = getFormattedDate(this.props.defaultDate)
-        const end = getFormattedDate(this.props.defaultDate, 'add', 4)
+        const start = getFormattedDate(this.props.currentDate)
+        const end = getFormattedDate(this.props.currentDate, 'add', 4)
         return {
           calendarDate: (
             <React.Fragment>
@@ -85,10 +72,11 @@ class Header extends Component {
       daily: 'weekly',
       agenda: 'daily'
     }
-    this.props.history.push({
-      search: `?worker_id=${config.activeWorkerId}&calendar_view_type=${objView[view]}`
+    const qs = new URLSearchParams(this.props.location.search)
+    qs.set('calendar_view_type', objView[view])
+    this.props.history.replace({
+      search: qs.toString()
     })
-    // this.props.switchView(objView[this.props.currentView])
   }
 
   handleNext = async () => {
@@ -114,7 +102,7 @@ class Header extends Component {
   }
 
   render () {
-    let currentView = queryString.parse(this.props.location.search).calendar_view_type || config.calendar.defaultView
+    let currentView = new URLSearchParams(this.props.location.search).get('calendar_view_type') || config.calendar.defaultView
     const dir = config.calendar.dir === 'rtl' ? 'ltr' : 'rtl'
     const { calendarDate, view, todayBtn } = this.getCalendarDate(currentView)
     return (
@@ -122,7 +110,7 @@ class Header extends Component {
         <div className={'menu_refresh ' + ('menu_' + dir)}>
           <HeaderMenu />
           <button id='refresh_button' onClick={this.props.getEvents}>
-            <img className='refresh_button_img' src={config.urls.staticImg + '/refresh.svg'} />
+            <img className={'refresh_button_img' + (this.props.eventsFetching ? ' spin' : '')} src={config.urls.staticImg + '/refresh.svg'} />
           </button>
         </div>
         <div className='middle-section'>
@@ -155,16 +143,10 @@ class Header extends Component {
 }
 
 const mapStateToProps = state => ({
-  defaultDate: state.calendar.defaultDate,
-  currentView: state.calendar.currentView,
-  eventsFetching: state.events.eventsFetching,
-  swipeSide: state.calendar.swipeSide
+  currentDate: state.calendar.currentDate,
+  eventsFetching: state.events.eventsFetching
 })
 
 export default connect(mapStateToProps, {
-  getEvents,
-  // onSwipe,
-  // setToday,
-  switchView,
-  setBusinessHours
+  getEvents
 })(Header)

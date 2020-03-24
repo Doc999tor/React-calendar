@@ -1,155 +1,104 @@
 import React from 'react'
-import Slider from 'react-slick'
-import { connect } from 'react-redux'
-import { setDefaultDay, setSwiperApi, switchView } from '../../store/calendar/actions'
+import Swiper from 'react-id-swiper'
 import { getFormattedDate } from '../../helpers'
-import { getEvents } from '../../store/events/actions'
-import { dayRender } from '../../helpers/dailyEvents'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
+import { connect } from 'react-redux'
+import { getEvents } from '../../store/events/actions'
+import { setDefaultDay } from '../../store/calendar/actions'
+import { dayRender, eventPositioned } from '../../helpers/eventsCustomization.js'
+import { getNext, getNextDay } from '../../helpers/days.js'
 import './monthly.styl'
 
-const getNext = (index, plus) => {
-  let next
-  if (plus) {
-    next = index + 1
-    if (next === 3) {
-      next = 0
-    }
-  } else {
-    next = index - 1
-    if (next === -1) {
-      next = 2
-    }
+class Daily extends React.Component {
+  state = {
+    dates: [
+      getFormattedDate(moment(this.props.currentDate).format('YYYY-MM-DD'), 'subtract', 'months'),
+      moment(this.props.currentDate).format('YYYY-MM-DD'),
+      getFormattedDate(moment(this.props.currentDate).format('YYYY-MM-DD'), 'add', 'months'),
+    ]
   }
-
-  return next
-}
-
-const getNextDay = (day, plus, range) => {
-  return plus ? moment(day).add(1, range).format('YYYY-MM-DD') : moment(day).subtract(1, range).format('YYYY-MM-DD')
-}
-
-class Swiper extends React.Component {
-  calendarComponentRef0 = React.createRef()
-  calendarComponentRef1 = React.createRef()
-  calendarComponentRef2 = React.createRef()
-
-
-  constructor (props) {
-    super(props)
-    this.state = {
-      dates: [
-        getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'months'),
-        moment().format('YYYY-MM-DD'),
-        getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'months'),
-      ],
-      midIndex: 1
-    }
-  }
-
   componentDidMount () {
     this.props.getEvents()
     this.props.setHeaderCallbacks({
       setToday: this.setToday,
-      slideToNext: this.slideToNext,
-      slideToPrev: this.slideToPrev
+      slideToNext: this.swipeNext,
+      slideToPrev: this.swipePrev
     })
   }
-
-  onSwipe = side => {
-    this.side = side
+  swipeNext = () => {
+    this.swiper.slideNext()
   }
-
-  afterChange = midIndex => {
-    const plus = this.side === 'left'
-    const today = this.state.dates[midIndex]
+  swipePrev = () => {
+    this.swiper.slidePrev()
+  }
+  setToday = () => {
+    this.setState({
+      dates: [
+        getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'months'),
+        moment().format('YYYY-MM-DD'),
+        getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'months')
+      ]
+    }, () => {
+      this.swiper.loopCreate()
+      this.swiper.slideToLoop(1)
+      this.props.setDefaultDay(moment().format('YYYY-MM-DD'))
+    })
+  }
+  onChange = isNext => {
+    const nextIndex = getNext(this.swiper.realIndex, isNext)
     const dates = this.state.dates.slice()
-    dates[getNext(midIndex, plus)] = getNextDay(today, plus, 'months')
-    this.setState({ dates, midIndex }, () => {
+    const today = dates[this.swiper.realIndex]
+    dates[nextIndex] = getNextDay(dates[this.swiper.realIndex], isNext, 'months')
+    this.setState({ dates }, () => {
+      this.swiper.loopCreate()
+      // const currentSlideDays = document.querySelectorAll(`.containerCarousel .swiper-slide:nth-child(${this.swiper.activeIndex + 1}) .fc-day.fc-widget-content`)
+      // dayRender(currentSlideDays, this.props.events)
       this.props.setDefaultDay(today)
       this.props.getEvents()
     })
   }
-
-  setToday = () => {
-    this.setState({ dates: [
-        getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'months'),
-        moment().format('YYYY-MM-DD'),
-        getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'months'),
-      ] }, () => {
-      this.slider.slickGoTo(1)
-      this.props.setDefaultDay(moment().format('YYYY-MM-DD'))
-    })
-  }
-
-  slideToNext = () => {
-    this.side = 'left'
-    this.slider.slickNext()
-  }
-
-  slideToPrev = () => {
-    this.side = 'right'
-    this.slider.slickPrev()
-  }
-
-  dayRender = data => {
-    dayRender(data, this.props.events)
-  }
-
-  eventClick = data => {
-    this.props.switchView('daily')
-  }
-
-  settings = {
-    afterChange: this.afterChange,
-    onSwipe: this.onSwipe,
-    slidesToScroll: 1,
-    initialSlide: 1,
-    slidesToShow: 1,
-    infinite: true,
-    speed: 500,
-    arrows: false
-  }
-
-  renderCalendar = (date, index, isCurrent) => {
+  renderCalendar = date => {
     const documentHeight = document.documentElement.clientHeight
     const calendarHeight = config.workers.length === 1 ? documentHeight - 60 : documentHeight - 165
     return (
-      <div className="demo-app-calendar" key={index}>
+      <div className="demo-app-calendar" key={date}>
         <FullCalendar
           key={date}
           {...config.calendar}
-          businessHours={this.props.businessHours}
           columnHeaderFormat={{ weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true }}
-          ref={this['calendarComponentRef' + index]}
-          defaultView={'monthly'}
+          defaultView='monthly'
           plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
           defaultDate={date}
           events={this.props.events}
+          businessHours={config.workers.filter(worker => worker.id === this.props.activeWorkerId)[0].businessHours}
           contentHeight={calendarHeight}
-          eventClick={this.eventClick}
-          dayRender={isCurrent && this.dayRender}
+          eventPositioned={eventPositioned}
         />
       </div>
-      )
+    )
   }
-
+  settings = {
+    loop: true,
+    initialSlide: 1,
+    runCallbacksOnInit: false,
+    getSwiper: swiper => {
+      this.swiper = swiper
+    },
+    on: {
+      slideNextTransitionEnd: () => { this.onChange(true) },
+      slidePrevTransitionEnd: () => { this.onChange(false) }
+    }
+  }
   render () {
     return (
       <div className={`containerCarousel ${config.calendar.dir.toUpperCase()} monthly-view ${config.workers.length === 1 ? 'calendar-without-workers' : 'calendar-with-workers'}`}>
-        <Slider ref={c => {
-          this.props.setSwiperApi(c)
-          this.slider = c
-        }} {...this.settings}>{
-          this.state.dates.map((date, index) => {
-            const isCurrent = index === this.state.midIndex
-            return this.renderCalendar(date, index, isCurrent)
-          })
-        }</Slider>
+        <Swiper {...this.settings}>{
+          this.state.dates.map(date => this.renderCalendar(date))
+        }</Swiper>
       </div>
     )
   }
@@ -157,12 +106,10 @@ class Swiper extends React.Component {
 
 const mapStateToProps = state => ({
   events: state.events.events,
-  businessHours: state.calendar.businessHours
+  currentDate: config.calendar.currentDate
 })
 
 export default connect(mapStateToProps, {
-  setSwiperApi,
   getEvents,
-  setDefaultDay,
-  switchView
-})(Swiper)
+  setDefaultDay
+})(Daily)

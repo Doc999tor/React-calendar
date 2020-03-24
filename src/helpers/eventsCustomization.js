@@ -222,6 +222,7 @@ const bgrColor = (date, element, events) => {
 }
 
 const eventRender = (data) => {
+  data.el.dataset.appointment_id = data.event.id
   if (data.view.type === 'daily' || data.view.type === 'weekly') {
     let {el, event, view} = data
     let color = event.extendedProps.services && event.extendedProps.services.length > 0 && event.extendedProps.services[0].color

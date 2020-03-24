@@ -1,4 +1,4 @@
-import {rowCount, bday, customTimeToText} from '../../../helpers/dailyEvents'
+import {rowCount, bday, customTimeToText} from '../../../helpers/eventsCustomization'
 
 
 export const customEventFull = (event, element, start, end, view) => {

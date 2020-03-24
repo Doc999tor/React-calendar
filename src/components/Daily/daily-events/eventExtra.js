@@ -1,4 +1,4 @@
-import {rowCount, bday} from '../../../helpers/dailyEvents'
+import {rowCount, bday} from '../../../helpers/eventsCustomization'
 
 export const customEventExtra = (event, element, start, end, view) => {
   let container = element.children[0]

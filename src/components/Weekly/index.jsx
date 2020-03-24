@@ -1,16 +1,31 @@
 import React, { Component } from 'react'
-import DemoCalendar from 'components/DemoCalendar/index.jsx'
 import { getEvents } from 'store/events/actions'
 import { setDefaultDay } from 'store/calendar/actions'
-import { default as getFormattedDate } from 'helpers/getFormattedDate.js'
 import { connect } from 'react-redux'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list'
+import interactionPlugin from '@fullcalendar/interaction'
+import { getFormattedDate } from '../../helpers'
+import renderDailyEvents, { eventPositioned } from '../../helpers/eventsCustomization'
+import '@fullcalendar/timegrid/main.css'
+import '@fullcalendar/daygrid/main.css'
+import '@fullcalendar/list/main.css'
+import '@fullcalendar/core/main.css'
 import './Weekly.styl'
 
 class Weekly extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      visibleDays: this.getVisibleDays(props.defaultDate)
+      dates: [
+        getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'days', 8),
+        getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'days', 4),
+        moment().format('YYYY-MM-DD'),
+        getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'days', 4),
+        getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'days', 8)
+      ]
     }
   }
 
@@ -21,63 +36,124 @@ class Weekly extends Component {
       slideToPrev: this.swipePrev
     })
     this.props.getEvents()
-    this.view = document.getElementById('calendar-weekly')
     this.baseCalendarWidth = document.querySelector('.fc.fc-unthemed')?.offsetWidth
-    this.view.scrollLeft = this.baseCalendarWidth * 3
+    this.singleDayWidth = document.querySelector('.fc-day-header')?.offsetWidth
+    this.view = document.getElementById('calendar-weekly')
+    this.view.scrollLeft = this.baseCalendarWidth * 2
     this.view.addEventListener('scroll', this.updateCalendars)
   }
 
-  componentWillUnmount () { this.view.removeEventListener('scroll', this.updateCalendars) }
-
-  getVisibleDays = defaultDate => [
-    getFormattedDate(defaultDate, 'subtract', 'days', 8),
-    getFormattedDate(defaultDate, 'subtract', 'days', 4),
-    defaultDate,
-    getFormattedDate(defaultDate, 'add', 'days', 4),
-    getFormattedDate(defaultDate, 'add', 'days', 8)
-  ]
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    // const qs = new URLSearchParams(this.props.location.search)
+    // const appointmentId = qs.get('appointment_id')
+    // const newEvent = document.querySelector(`[data-appointment_id="${appointmentId}"`)
+    // if (newEvent) {
+    //   newEvent.scrollIntoView({
+    //     block: 'center',
+    //     behavior: 'smooth'
+    //   })
+    // }
+  }
 
   updateCalendars = () => {
     const weeklyClientRect = document.querySelector('.calendar-weekly').getBoundingClientRect()
-    let visibleDays
+    let dates
     if (weeklyClientRect.right < (this.baseCalendarWidth * 2)) {
-      console.log('next')
-      this.view.scrollLeft = this.view.scrollLeft - this.baseCalendarWidth
-      const { visibleDays: vd } = this.state
-      const defaultDate = vd[vd.length - 1]
-      visibleDays = [ ...vd, ...this.getVisibleDays(getFormattedDate(defaultDate, 'add', 'days', 12)) ].splice(1, 11)
-    } else if (weeklyClientRect.left >= -this.baseCalendarWidth * 2) {
-      console.log('prev')
-      this.view.scrollLeft = this.view.scrollLeft + (this.baseCalendarWidth * 5)
-      const defaultDate = getFormattedDate(this.state.visibleDays[0], 'subtract', 'days', 12)
-      const leftDates = this.getVisibleDays(defaultDate)
-      visibleDays = [ ...leftDates, ...this.state.visibleDays ].splice(0, 9)
-    }
-    if (visibleDays) {
-      this.setState({ visibleDays })
-      const newIndex = Math.floor(weeklyClientRect.left / -this.baseCalendarWidth)
-      if (this.currentIndex !== newIndex) {
-        this.currentIndex = newIndex
-        this.props.setDefaultDay(visibleDays[newIndex])
-        this.props.getEvents()
+      dates = this.state.dates.slice()
+      if (config.calendar.dir === 'rtl') {
+        const newDay = getFormattedDate(dates[0], 'subtract', 'days', 4)
+        dates.unshift(newDay)
+        if (dates.length === 7) {
+          this.view.scrollLeft = this.view.scrollLeft - this.baseCalendarWidth
+          dates.pop()
+        }
+      } else {
+        const newDay = getFormattedDate(dates[dates.length - 1], 'add', 'days', 4)
+        dates.push(newDay)
+        if(dates.length === 7) {
+          this.view.scrollLeft = this.view.scrollLeft - this.baseCalendarWidth
+          dates.shift()
+        }
       }
+      this.props.getEvents()
+    } else if (weeklyClientRect.left >= -this.baseCalendarWidth) {
+      dates = this.state.dates.slice()
+      if (config.calendar.dir === 'rtl') {
+        this.view.scrollLeft = this.view.scrollLeft + this.baseCalendarWidth
+        const newDay = getFormattedDate(dates[dates.length - 1], 'add', 'days', 4)
+        dates.push(newDay)
+        if (dates.length === 7) {
+          dates.shift()
+        }
+      } else {
+        this.view.scrollLeft = this.view.scrollLeft + this.baseCalendarWidth
+        const newDay = getFormattedDate(dates[0], 'subtract', 'days', 4)
+        dates.unshift(newDay)
+        if (dates.length === 7) {
+          dates.pop()
+        }
+      }
+      this.props.getEvents()
+    }
+
+    if(config.calendar.dir === 'rtl') {
+      const daysToAdd = Math.floor((weeklyClientRect.right - this.baseCalendarWidth) / this.singleDayWidth)
+      this.props.setDefaultDay(getFormattedDate(this.state.dates[0], 'add', 'days', daysToAdd))
+    } else {
+      const daysToAdd = Math.floor((-weeklyClientRect.left) / this.singleDayWidth)
+      this.props.setDefaultDay(getFormattedDate(this.state.dates[0], 'add', 'days', daysToAdd))
+    }
+
+    if (dates) {
+      this.setState({ dates })
+    }
+  }
+
+  swipeNext = () => {
+    if (config.calendar.dir === 'rtl') {
+      this.view.scrollLeft = this.view.scrollLeft - this.baseCalendarWidth
+    } else {
+      this.view.scrollLeft = this.view.scrollLeft + this.baseCalendarWidth
+    }
+  }
+
+  swipePrev = () => {
+    if (config.calendar.dir === 'rtl') {
+      this.view.scrollLeft = this.view.scrollLeft + this.baseCalendarWidth
+    } else {
+      this.view.scrollLeft = this.view.scrollLeft - this.baseCalendarWidth
     }
   }
 
   setToday = () => {
-    this.view.scrollLeft = this.baseCalendarWidth * 3
-    this.setState({ visibleDays: this.getVisibleDays(moment().format('YYYY-MM-DD')) })
-    this.props.setDefaultDay(moment().format('YYYY-MM-DD'))
+    const dates = [
+      getFormattedDate(moment(this.props.currentDate).format('YYYY-MM-DD'), 'subtract', 'days', 8),
+      getFormattedDate(moment(this.props.currentDate).format('YYYY-MM-DD'), 'subtract', 'days', 4),
+      moment(this.props.currentDate).format('YYYY-MM-DD'),
+      getFormattedDate(moment(this.props.currentDate).format('YYYY-MM-DD'), 'add', 'days', 4),
+      getFormattedDate(moment(this.props.currentDate).format('YYYY-MM-DD'), 'add', 'days', 8)
+    ]
+    this.setState({ dates }, () => {
+      this.view.scrollLeft = this.baseCalendarWidth * 2
+      this.props.setDefaultDay(moment().format('YYYY-MM-DD'))
+    })
   }
 
-  swipeNext = () => {
-    this.view.scrollLeft = this.view.scrollLeft + this.baseCalendarWidth
-    this.props.setDefaultDay(getFormattedDate(this.props.defaultDate, 'add', 'days', 4))
-  }
-
-  swipePrev = () => {
-    this.view.scrollLeft = this.view.scrollLeft - this.baseCalendarWidth
-    this.props.setDefaultDay(getFormattedDate(this.props.defaultDate, 'subtract', 'days', 4))
+  renderCalendar = date => {
+    return (
+      <FullCalendar
+        key={date}
+        plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+        {...config.calendar}
+        defaultDate={date}
+        defaultView='weekly'
+        events={this.props.events}
+        eventRender={(data) => renderDailyEvents(data)}
+        eventPositioned={(data) => eventPositioned(data, this.props.events)}
+        businessHours={config.workers.filter(worker => worker.id === this.props.activeWorkerId)[0].businessHours}
+        dateClick={() => {window.location = config.urls.creatingAppointmentLink}}
+      />
+    )
   }
 
   render () {
@@ -85,11 +161,10 @@ class Weekly extends Component {
     return (
       <React.Fragment>
         <div id='calendar-weekly' className={topParam}>
-          <div className='calendar-weekly'
-            style={{ width: this.state.visibleDays.length * 100 + '%', direction: config.calendar.dir }}>
-            {this.state.visibleDays.map(i => (
-              <DemoCalendar eventClick={this.handleEventClick} events={this.props.events} defaultDate={i} defaultView='weekly' key={i} />
-            ))}
+          <div className='calendar-weekly' style={{ width: this.state.dates.length * 100 + '%', direction: config.calendar.dir }}>
+            {this.state.dates.map(date => <div className='calendar-wrap' key={date}>
+                {this.renderCalendar(date)}
+            </div>)}
           </div>
         </div>
       </React.Fragment>
@@ -99,8 +174,9 @@ class Weekly extends Component {
 
 const mapStateToProps = state => ({
   events: state.events.events,
-  defaultDate: state.calendar.defaultDate
+  currentDate: config.calendar.currentDate
 })
+
 export default connect(mapStateToProps, {
   setDefaultDay,
   getEvents

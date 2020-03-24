@@ -106,10 +106,7 @@ const CustomEvent = (props) => {
           <div className='free-time_value'>{isFreeTimeBoxNeeded(props.events, props.index).hours}</div>
           <div className='duration-time_container'>
             <div className='free-time'>
-              <Link to={{
-                pathname: config.urls.creatingAppointmentLink,
-                state: null
-              }}><img className='cross' src={`${config.urls.staticImg}/plus.svg`}/></Link>
+              <a href={config.urls.creatingAppointmentLink}><img className='cross' src={`${config.urls.staticImg}/plus.svg`}/></a>
             </div>
           </div>
           <div className='free-time_title'><span>{config.translations.duration.description}</span></div>

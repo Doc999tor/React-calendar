@@ -2,17 +2,17 @@ import React, { Component } from 'react'
 import { default as Swiper } from 'project-components/Swiper/Swiper.js'
 import SingleWorker from './SingleWorker.jsx'
 import { connect } from 'react-redux'
-import './Workers.styl'
 import { setBusinessHours } from '../../store/calendar/actions'
+import './Workers.styl'
 
 class Workers extends Component {
   handleChangeWorker = id => {
     config.activeWorkerId = id
-    let chosenWorker = config.workers.find(worker => worker.id == id)
-    // let calendarApi = this.props.calendarApi
-    // calendarApi.setOption('businessHours', chosenWorker.businessHours)
-    this.props.setBusinessHours(chosenWorker.businessHours)
-    this.forceUpdate()
+    const qs = new URLSearchParams(this.props.location.search)
+    qs.set('worker_id', id)
+    this.props.history.replace({
+      search: qs.toString()
+    })
   }
   render () {
     const params = {

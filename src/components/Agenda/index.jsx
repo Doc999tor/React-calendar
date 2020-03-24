@@ -4,46 +4,17 @@ import { connect } from 'react-redux'
 import { getEventInfo, setDefaultDay, setSwiperApi } from '../../store/calendar/actions'
 import { getFormattedDate } from '../../helpers'
 import { getEvents } from '../../store/events/actions'
+import { getNext, getDatesFromEvents, getNextDay } from '../../helpers/days'
 import { eventsSort, freeTimeArrCreator } from '../../helpers/event'
 import AgendaEvents from '../Agenda/agendaEvents.jsx'
 import '../Agenda/Agenda.styl'
 
-const getNext = (index, plus) => {
-  let next
-  if (plus) {
-    next = index + 1
-    if (next === 3) {
-      next = 0
-    }
-  } else {
-    next = index - 1
-    if (next === -1) {
-      next = 2
-    }
-  }
-
-  return next
-}
-
-const getNextDay = (day, plus) => {
-  return plus ? moment(day).add(1, 'days').format('YYYY-MM-DD') : moment(day).subtract(1, 'days').format('YYYY-MM-DD')
-}
-
-const getDatesFromEvents = events => {
-  const first = moment(events[0].start).format('YYYY-MM-DD')
-  const last = moment(events[events.length - 1].start).format('YYYY-MM-DD')
-  return [
-    first,
-    last
-  ]
-}
-
 class Agenda extends React.Component {
   state = {
     dates: [
-      getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'days'),
-      moment().format('YYYY-MM-DD'),
-      getFormattedDate(moment().format('YYYY-MM-DD'), 'add', 'days'),
+      getFormattedDate(moment(this.props.currentDate).format('YYYY-MM-DD'), 'subtract', 'days'),
+      moment(this.props.currentDate).format('YYYY-MM-DD'),
+      getFormattedDate(moment(this.props.currentDate).format('YYYY-MM-DD'), 'add', 'days'),
     ]
   }
   componentDidMount () {
@@ -60,7 +31,7 @@ class Agenda extends React.Component {
   swipePrev = () => {
     this.swiper.slidePrev()
   }
-  setToday = () => {
+  setToday = () => {this.props.currentDate
     this.setState({
       dates: [
         getFormattedDate(moment().format('YYYY-MM-DD'), 'subtract', 'days'),
@@ -77,7 +48,7 @@ class Agenda extends React.Component {
     const nextIndex = getNext(this.swiper.realIndex, isNext)
     const dates = this.state.dates.slice()
     const today = dates[this.swiper.realIndex]
-    dates[nextIndex] = getNextDay(dates[this.swiper.realIndex], isNext)
+    dates[nextIndex] = getNextDay(dates[this.swiper.realIndex], isNext, 'days')
     this.setState({ dates }, () => {
       this.swiper.loopCreate()
       this.props.setDefaultDay(today)
@@ -129,7 +100,8 @@ class Agenda extends React.Component {
 
 const mapStateToProps = state => ({
   events: state.events.events,
-  businessHours: state.calendar.businessHours
+  businessHours: state.calendar.businessHours,
+  currentDate: state.calendar.currentDate
 })
 
 export default connect(mapStateToProps, {
