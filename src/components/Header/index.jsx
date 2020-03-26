@@ -109,7 +109,7 @@ class Header extends Component {
       <div id='header' style={{ 'direction': dir }}>
         <div className={'menu_refresh ' + ('menu_' + dir)}>
           <HeaderMenu />
-          <button id='refresh_button' onClick={this.props.getEvents}>
+          <button id='refresh_button' onClick={() => {this.props.getEvents(true)}}>
             <img className={'refresh_button_img' + (this.props.eventsFetching ? ' spin' : '')} src={config.urls.staticImg + '/refresh.svg'} />
           </button>
         </div>

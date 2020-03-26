@@ -11,6 +11,9 @@ export default (start, end, forceFetch) => {
     mode: 'cors',
     method: 'GET'
   }
+  if (forceFetch) {
+    options.cache = 'no-cache'
+  }
   return new Promise((resolve, reject) => {
     if (forceFetch) workers[config.activeWorkerId] = null
     const worker = workers[config.activeWorkerId]
@@ -33,7 +36,6 @@ export default (start, end, forceFetch) => {
         end = worker.start
       }
     }
-    // const url = `${config.urls.appointmentsUrl}?start=2019-04-01 00:00:00&end=2019-04-30 23:59:59&worker_id=${config.activeWorkerId}`
     const url = `${config.urls.appointmentsUrl}?start=${start}&end=${end}&worker_id=${config.activeWorkerId}`
     mainRequestService(url, options).then(r => {
       if (r.status !== 200) return reject([])

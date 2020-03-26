@@ -14,6 +14,7 @@ import '@fullcalendar/daygrid/main.css'
 import '@fullcalendar/list/main.css'
 import '@fullcalendar/core/main.css'
 import './Weekly.styl'
+import { getEventInfo } from '../../store/calendar/actions'
 
 class Weekly extends Component {
   constructor (props) {
@@ -44,15 +45,18 @@ class Weekly extends Component {
   }
 
   componentDidUpdate (prevProps, prevState, snapshot) {
-    // const qs = new URLSearchParams(this.props.location.search)
-    // const appointmentId = qs.get('appointment_id')
-    // const newEvent = document.querySelector(`[data-appointment_id="${appointmentId}"`)
-    // if (newEvent) {
-    //   newEvent.scrollIntoView({
-    //     block: 'center',
-    //     behavior: 'smooth'
-    //   })
-    // }
+    const qs = new URLSearchParams(this.props.location.search)
+    const appointmentId = qs.get('appointment_id')
+    const newEvent = document.querySelector(`[data-appointment_id="${appointmentId}"`)
+    if (newEvent) {
+      setTimeout(() => {
+        newEvent.classList.add('event-shadow')
+        newEvent.scrollIntoView({
+          block: 'center',
+          behavior: 'smooth'
+        })
+      }, 1000)
+    }
   }
 
   updateCalendars = () => {
@@ -152,6 +156,15 @@ class Weekly extends Component {
         eventPositioned={(data) => eventPositioned(data, this.props.events)}
         businessHours={config.workers.filter(worker => worker.id === this.props.activeWorkerId)[0].businessHours}
         dateClick={() => {window.location = config.urls.creatingAppointmentLink}}
+        eventClick={data => {
+          this.props.getEventInfo({
+            id: data.event.id,
+            start: data.event.start,
+            end: data.event.end,
+            ...data.event.extendedProps
+          })
+          this.props.history.push(`${this.props.match.url}/appointments${this.props.location.search}`)
+        }}
       />
     )
   }
@@ -179,5 +192,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   setDefaultDay,
-  getEvents
+  getEvents,
+  getEventInfo
 })(Weekly)

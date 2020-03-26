@@ -8,10 +8,11 @@ import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import { connect } from 'react-redux'
 import { getEvents } from '../../store/events/actions'
-import { setDefaultDay } from '../../store/calendar/actions'
+import { getEventInfo, setDefaultDay } from '../../store/calendar/actions'
 import { getNext, getNextDay, getDatesFromEvents } from '../../helpers/days'
 import eventRender, { eventPositioned } from '../../helpers/eventsCustomization'
 import './daily.styl'
+import { eventDrop } from '../../helpers/event'
 
 class Daily extends React.Component {
   state = {
@@ -28,6 +29,20 @@ class Daily extends React.Component {
       slideToNext: this.swipeNext,
       slideToPrev: this.swipePrev
     })
+  }
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    const qs = new URLSearchParams(this.props.location.search)
+    const appointmentId = qs.get('appointment_id')
+    const newEvent = document.querySelector(`[data-appointment_id="${appointmentId}"`)
+    if (newEvent) {
+      setTimeout(() => {
+        newEvent.classList.add('event-shadow')
+        newEvent.scrollIntoView({
+          block: 'center',
+          behavior: 'smooth'
+        })
+      }, 1000)
+    }
   }
   swipeNext = () => {
     this.swiper.slideNext()
@@ -75,7 +90,19 @@ class Daily extends React.Component {
           businessHours={config.workers.filter(worker => worker.id === this.props.activeWorkerId)[0].businessHours}
           eventRender={eventRender}
           eventPositioned={eventPositioned}
+          eventClick={data => {
+            this.props.getEventInfo({
+              id: data.event.id,
+              start: data.event.start,
+              end: data.event.end,
+              ...data.event.extendedProps
+            })
+            this.props.history.push(`${this.props.match.url}/appointments${this.props.location.search}`)
+          }}
           dateClick={() => {window.location = config.urls.creatingAppointmentLink}}
+          eventDrop={data => {
+            eventDrop(data.el.dataset.appointment_id, data.event.start, data.revert)
+          }}
         />
       </div>
     )
@@ -110,5 +137,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getEvents,
-  setDefaultDay
+  setDefaultDay,
+  getEventInfo
 })(Daily)

@@ -25,6 +25,20 @@ class Agenda extends React.Component {
       slideToPrev: this.swipePrev
     })
   }
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    const qs = new URLSearchParams(this.props.location.search)
+    const appointmentId = qs.get('appointment_id')
+    const newEvent = document.querySelector(`[data-appointment_id="${appointmentId}"`)
+    if (newEvent) {
+      setTimeout(() => {
+        newEvent.classList.add('event-shadow')
+        newEvent.scrollIntoView({
+          block: 'center',
+          behavior: 'smooth'
+        })
+      }, 1000)
+    }
+  }
   swipeNext = () => {
     this.swiper.slideNext()
   }

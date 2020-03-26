@@ -1,3 +1,5 @@
+import { patchEventDrop } from '../services/ip.data'
+
 export const customTimeToText = (end, start) => {
   let endSeconds = (end.slice(-5, -3) * 3600) + (end.slice(-2) * 60)
   let startSeconds = (start.slice(-5, -3) * 3600) + (start.slice(-2) * 60)
@@ -161,3 +163,12 @@ export const isFreeTimeBoxNeeded = (events, index) => {
   }
 }
 
+export const eventDrop = (appointmentId, start, revert) => {
+  patchEventDrop(appointmentId, moment(start).format('YYYY-MM-DD hh:mm:ss')).then(r => {
+    if (r.status === 200) {
+      //success
+    } else {
+      revert()
+    }
+  })
+}

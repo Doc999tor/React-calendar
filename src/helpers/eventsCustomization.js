@@ -248,6 +248,10 @@ export const dayRender = (days, events) => {
 }
 
 export const eventPositioned = ({el, event, view, isMirror}) => {
+  if (el.classList.contains('fc-dragging')) {
+    let domEl = document.querySelector([`[data-appointment_id="${event.id}"`])
+    domEl.mousedown = e => {console.log(e)}
+  }
   let start = getHoursLabel(event.start.getHours().toString(), event.start.getMinutes().toString())
   let end = event.end
     ? getHoursLabel(event.end.getHours().toString(), event.end.getMinutes().toString())

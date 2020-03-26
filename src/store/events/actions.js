@@ -23,7 +23,7 @@ const formatStartEndDay = (startDay, endDay) => {
   })
 }
 
-export const getEvents = () => async (dispatch, getState) => {
+export const getEvents = (forceFetch) => async (dispatch, getState) => {
   let getCalendarState = getState()
   let currentView = queryString.parse(location.search).calendar_view_type
   let defaultDate = moment(getCalendarState.calendar.currentDate).format('YYYY-MM-DD')
@@ -52,7 +52,7 @@ export const getEvents = () => async (dispatch, getState) => {
       }
     }
     const { dayStart, dayEnd } = obj[currentView]()
-    fetchingEvents(dayStart, dayEnd).then(res => {
+    fetchingEvents(dayStart, dayEnd, forceFetch).then(res => {
       const events = res.events.sort((a, b) => moment(a.start) - moment(b.start))
       dispatch({ type: types.GET_STANDART_EVENTS_SUCCESS, payload: { events: events } })
     })
