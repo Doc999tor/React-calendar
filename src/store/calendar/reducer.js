@@ -2,7 +2,8 @@
 import * as types from './actionTypes'
 
 const initialState = {
-  currentDate: config.calendar.defaultDate
+  currentDate: config.calendar.defaultDate,
+  dataLoading: false
 }
 export default (state = initialState, action = {}) => {
   const obj = {
@@ -22,6 +23,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         eventInfo: ''
+      }
+    },
+    [types.SET_LOADING]: () => {
+      return {
+        ...state,
+        dataLoading: action.payload.dataLoading
       }
     }
   }

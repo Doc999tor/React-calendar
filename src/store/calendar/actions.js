@@ -12,3 +12,7 @@ export const getEventInfo = eventInfo => async dispatch => {
 export const deleteEventInfo = () => async dispatch => {
   dispatch({ type: types.GET_EVENT_INFO, payload: { eventInfo: '' } })
 }
+
+export const setDataLoading = bool => async dispatch => {
+  dispatch({ type: types.SET_LOADING, payload: { dataLoading: bool } })
+}

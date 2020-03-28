@@ -12,7 +12,7 @@ import Header from './Header/index.jsx'
 import Workers from './Workers/Workers.jsx'
 import Agenda from './Agenda/index.jsx'
 import Daily from './Daily/index.jsx'
-import Weekly from './Weekly/index.jsx'
+import Weekly from './Weekly/newWeekly.jsx'
 import Monthly from './Monthly/index.jsx'
 import CalendarModal from './CalendarModal/CalendarModal.jsx'
 import { TimeLabel } from './TimeLabels/TimeLabel.jsx'
@@ -47,6 +47,9 @@ class App extends Component {
           </Route>
         </Switch>
         {(view === 'weekly' || view === 'daily') && <TimeLabel currentView={view} />}
+        <div className='modal-loading' style={{ display: this.props.dataLoading ? 'flex' : 'none' }}>
+          Loading...
+        </div>
       </div>
     )
   }
@@ -55,6 +58,7 @@ class App extends Component {
 const mapStateToProps = state => ({
   currentDate: state.calendar.currentDate,
   eventInfo: state.calendar.eventInfo,
+  dataLoading: state.calendar.dataLoading
 })
 
 export default connect(mapStateToProps, {

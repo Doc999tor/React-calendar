@@ -1,6 +1,7 @@
 import { fetchingEvents } from 'project-services'
 import queryString from 'querystring'
 import * as types from './actionTypes'
+import { setDataLoading } from '../calendar/actions'
 
 const formatStartEndDay = (startDay, endDay) => {
   let dayStart = moment(startDay)
@@ -55,6 +56,7 @@ export const getEvents = (forceFetch) => async (dispatch, getState) => {
     fetchingEvents(dayStart, dayEnd, forceFetch).then(res => {
       const events = res.events.sort((a, b) => moment(a.start) - moment(b.start))
       dispatch({ type: types.GET_STANDART_EVENTS_SUCCESS, payload: { events: events } })
+      dispatch(setDataLoading(false))
     })
   } catch (err) {
     dispatch({ type: types.GET_STANDART_EVENTS_ERROR })

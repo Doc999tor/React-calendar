@@ -3,12 +3,34 @@ import HeaderMenu from './HeaderMenu/index.jsx'
 import { connect } from 'react-redux'
 import { getEvents } from '../../store/events/actions'
 import { getFormattedDate, getStandardFormat } from '../../helpers'
-import queryString from 'query-string'
 import './Header.styl'
 
 class Header extends Component {
   state = {
     isButtonDisabled: false
+  }
+
+  componentDidMount () {
+    this.weeklyView = document.getElementById('calendar-weekly')
+    if (this.weeklyView) {
+      this.weeklyView.addEventListener('scroll', this.updateDates)
+    }
+  }
+
+  updateDates = () => {
+    const weeklyClientRect = document.querySelector('.calendar-weekly')?.getBoundingClientRect()
+    this.singleDayWidth = document.querySelector('.fc-day-header')?.offsetWidth
+    this.baseCalendarWidth = document.querySelector('.fc.fc-unthemed')?.offsetWidth
+    const firstDay = getFormattedDate(this.props.currentDate, 'subtract', 'days', 16)
+    if (config.calendar.dir === 'rtl') {
+      const daysToAdd = Math.floor((weeklyClientRect.right - this.baseCalendarWidth) / this.singleDayWidth)
+      if (this.props.currentDate !== getFormattedDate(firstDay, 'add', 'days', daysToAdd)) {
+        const today = getFormattedDate(firstDay, 'add', 'days', daysToAdd)
+        this.setState({ today })
+      }
+    } else {
+      // soon
+    }
   }
 
   getCalendarDate = (view) => {
@@ -35,12 +57,12 @@ class Header extends Component {
         state: { view: config.translations.weekly }
       }),
       weekly: () => {
-        const start = getFormattedDate(this.props.currentDate)
-        const end = getFormattedDate(this.props.currentDate, 'add', 4)
+        const start = this.state.today || this.props.currentDate
+        const end = moment(this.state.today || this.props.currentDate).add(3, 'days').format('YYYY-MM-DD')
         return {
           calendarDate: (
             <React.Fragment>
-              <span className='current_date_field' style={{ 'direction': 'ltr' }}>{moment(start).format('DD') + ' - ' + moment(end).add(3, 'days').format('DD') + ' ' + moment(start).format('MMM')}</span>
+              <span className='current_date_field' style={{ 'direction': 'ltr' }}>{moment(start).format('DD') + ' - ' + moment(end).format('DD') + ' ' + moment(start).format('MMM')}</span>
               {isBetween && <span className='this_week'>{config.translations.thisWeek}</span>}
             </React.Fragment>
           ),
