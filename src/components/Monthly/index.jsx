@@ -8,10 +8,11 @@ import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import { connect } from 'react-redux'
 import { getEvents } from '../../store/events/actions'
-import { setDefaultDay } from '../../store/calendar/actions'
+import { setDefaultDay, setDayCapacity } from '../../store/calendar/actions'
 import { dayRender, eventPositioned } from '../../helpers/eventsCustomization.js'
 import { getNext, getNextDay } from '../../helpers/days.js'
 import './monthly.styl'
+import { addHolidays } from '../../helpers/eventsCustomization'
 
 class Daily extends React.Component {
   state = {
@@ -22,6 +23,7 @@ class Daily extends React.Component {
     ]
   }
   componentDidMount () {
+    console.log(this.props.holidays)
     this.props.getEvents()
     this.props.setHeaderCallbacks({
       setToday: this.setToday,
@@ -30,20 +32,18 @@ class Daily extends React.Component {
     })
   }
   componentDidUpdate (prevProps, prevState, snapshot) {
-    // const condition = (prevProps.events.length === this.props.events.length)
-    // console.log(prevProps, this.props)
-    // console.log(prevState, this.state)
-    // if (!condition || (condition && (prevState.swipeDirection !== undefined) && prevState.swipeDirection === this.state.swipeDirection)) {
-    //   const businessHours = config.workers.filter(worker => worker.id === this.props.activeWorkerId)[0].businessHours
-    //   const days = document.querySelectorAll('.demo-app-calendar .fc-day')
-    //   if (days.length && !days[0].classList.contains('dayOfRest', 'easyDay', 'normalDay', 'busyDay', 'dayOff')) {
-    //     console.log('coloring')
-    //     for (let i = 0; i < days.length; i++) {
-    //       let day = days[i]
-    //       dayRender(day.dataset.date, day, this.props.events, businessHours)
-    //     }
-    //   }
-    // }
+    addHolidays(this.props.holidays)
+
+    if (prevProps.events.length !== this.props.events.length || prevProps.activeWorkerId !== this.props.activeWorkerId) {
+      const businessHours = config.workers.filter(worker => worker.id === this.props.activeWorkerId)[0].businessHours
+      const days = document.querySelectorAll('.demo-app-calendar .fc-day')
+      const obj = {}
+      for (let i = 0; i < days.length; i++) {
+        let day = days[i]
+        obj[day.dataset.date] = dayRender(day.dataset.date, day, this.props.events, businessHours)
+      }
+      this.props.setDayCapacity(obj)
+    }
   }
 
   swipeNext = () => {
@@ -71,11 +71,9 @@ class Daily extends React.Component {
     const today = dates[this.swiper.realIndex]
     dates[nextIndex] = getNextDay(dates[this.swiper.realIndex], isNext, 'months')
     this.setState({ swipeDirection: isNext, dates }, () => {
-      this.swiper.loopCreate()
-      // const currentSlideDays = document.querySelectorAll(`.containerCarousel .swiper-slide:nth-child(${this.swiper.activeIndex + 1}) .fc-day.fc-widget-content`)
-      // dayRender(currentSlideDays, this.props.events)
       this.props.setDefaultDay(today)
       this.props.getEvents()
+      this.swiper.loopCreate()
     })
   }
   renderCalendar = date => {
@@ -95,6 +93,7 @@ class Daily extends React.Component {
           businessHours={businessHours}
           contentHeight={calendarHeight}
           eventPositioned={eventPositioned}
+          dayRender={data => { data.el.classList.add(this.props.dayCapacity[data.el.dataset.date]) }}
         />
       </div>
     )
@@ -124,10 +123,12 @@ class Daily extends React.Component {
 
 const mapStateToProps = state => ({
   events: state.events.events,
-  currentDate: config.calendar.currentDate
+  currentDate: state.calendar.currentDate,
+  dayCapacity: state.calendar.dayCapacity
 })
 
 export default connect(mapStateToProps, {
   getEvents,
-  setDefaultDay
+  setDefaultDay,
+  setDayCapacity
 })(Daily)

@@ -2,10 +2,13 @@ import React, { Component } from 'react'
 import { default as Swiper } from 'project-components/Swiper/Swiper.js'
 import SingleWorker from './SingleWorker.jsx'
 import { connect } from 'react-redux'
-import { setBusinessHours } from '../../store/calendar/actions'
 import './Workers.styl'
 
 class Workers extends Component {
+  componentDidMount () {
+    config.activeWorkerId = this.props.activeWorkerId
+  }
+
   handleChangeWorker = id => {
     config.activeWorkerId = id
     const qs = new URLSearchParams(this.props.location.search)
@@ -33,6 +36,7 @@ class Workers extends Component {
                   id={worker.id}
                   name={worker.name}
                   photo={worker.photo}
+                  activeWorkerId={this.props.activeWorkerId}
                   changeWorker={this.handleChangeWorker} />))
               }
             </Swiper>
@@ -45,6 +49,4 @@ class Workers extends Component {
   }
 }
 const mapStateToProps = state => ({ calendarApi: state.calendar.calendarApi })
-export default connect(mapStateToProps, {
-  setBusinessHours
-})(Workers)
+export default connect(mapStateToProps)(Workers)

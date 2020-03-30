@@ -104,17 +104,19 @@ class Weekly extends Component {
 
   renderCalendar = date => {
     return (
-      <FullCalendar
-        key={date}
-        plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
-        {...config.calendar}
-        defaultDate={date}
-        defaultView='weekly'
-        events={this.props.events}
-        eventRender={(data) => renderDailyEvents(data)}
-        eventPositioned={(data) => eventPositioned(data, this.props.events)}
-        businessHours={config.workers.filter(worker => worker.id === this.props.activeWorkerId)[0].businessHours}
-      />
+      <React.Fragment>
+        <FullCalendar
+          key={date}
+          plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+          {...config.calendar}
+          defaultDate={date}
+          defaultView='weekly'
+          events={this.props.events}
+          eventRender={(data) => renderDailyEvents(data)}
+          eventPositioned={(data) => eventPositioned(data, this.props.events)}
+          businessHours={config.workers.filter(worker => worker.id === this.props.activeWorkerId)[0].businessHours}
+        />
+      </React.Fragment>
     )
   }
 

@@ -77,8 +77,10 @@ class Daily extends React.Component {
     })
   }
   renderCalendar = date => {
+    const holiday = this.props.holidays.filter(holidayObj => holidayObj.date === date)
     return (
       <div className="demo-app-calendar" key={date}>
+        {holiday[0] && <div className='holiday'>{holiday[0].name}</div> }
         <FullCalendar
           key={date}
           {...config.calendar}

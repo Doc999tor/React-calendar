@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import queryString from 'querystring'
+import { holidays } from '../services/holidays.service'
 import {
   Switch,
   Route,
@@ -22,18 +22,37 @@ import '@fullcalendar/daygrid/main.css'
 import '@fullcalendar/list/main.css'
 import '@fullcalendar/core/main.css'
 import './App.styl'
+import { refreshHolidays } from '../store/calendar/actions'
 
 class App extends Component {
   setHeaderCallbacks = callbacks => {
     this.setState({ ...callbacks })
   }
 
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    // let holidayObj = JSON.parse(localStorage.getItem('holidays_data'))
+    // let lastUpdateDate = holidayObj.last_loaded_holidays
+    // let daysDiff = Math.abs(moment(this.props.currentDate).diff(lastUpdateDate, 'days'))
+    if (localStorage.getItem('holidays_data') === null) {
+      holidays(moment(this.props.currentDate).year(), moment(this.props.currentDate).format()).then(i => {
+        this.props.refreshHolidays()
+      })
+    } // else if (daysDiff >= 14) {
+    //   console.log('update')
+    //   localStorage.setItem('last_loaded_holidays', moment(this.props.currentDate).format())
+    //   holidays(moment(this.props.currentDate).year(), moment(this.props.currentDate).format(), true).then(i => {
+    //     this.props.refreshHolidays()
+    //   })
+    // }
+  }
+
   render () {
-    let view = queryString.parse(this.props.location.search).calendar_view_type
+    let view = new URLSearchParams(this.props.location.search).get('calendar_view_type')
+    const activeWorkerId = new URLSearchParams(this.props.location.search).get('worker_id')
     return (
       <div className='app' >
         <Route render={props => <Header {...this.state} {...props} />} />
-        {config.workers.length !== 1 && <Route render={props => <Workers {...props} />} />}
+        {config.workers.length !== 1 && <Route render={props => <Workers {...props} activeWorkerId={activeWorkerId} />} />}
         <Switch>
           <Route exact path='/'>
             <Redirect to={config.urls.startUrl} />
@@ -43,6 +62,7 @@ class App extends Component {
             <Calendars
               setHeaderCallbacks={this.setHeaderCallbacks}
               currentDate={this.props.currentDate}
+              holidays={this.props.holidays[moment(this.props.currentDate).year()]}
             />
           </Route>
         </Switch>
@@ -58,11 +78,13 @@ class App extends Component {
 const mapStateToProps = state => ({
   currentDate: state.calendar.currentDate,
   eventInfo: state.calendar.eventInfo,
+  holidays: state.calendar.holidays,
   dataLoading: state.calendar.dataLoading
 })
 
 export default connect(mapStateToProps, {
-  deleteEventInfo
+  deleteEventInfo,
+  refreshHolidays
 })(App)
 
 
@@ -81,9 +103,9 @@ function Calendars (props) {
       <Redirect to={`${match.url}/${props.currentDate}` + search} />
       <Switch>
         <Route path={`${match.path}/:dayId`} render={match => {
-          const View = objView[queryString.parse(search).calendar_view_type]
-          const activeWorkerId = queryString.parse(search)['?worker_id']
-          return <View setHeaderCallbacks={props.setHeaderCallbacks} {...match} activeWorkerId={activeWorkerId} />
+          const View = objView[new URLSearchParams(search).get('calendar_view_type')]
+          const activeWorkerId = new URLSearchParams(search).get('worker_id')
+          return <View setHeaderCallbacks={props.setHeaderCallbacks} {...match} activeWorkerId={activeWorkerId} holidays={props.holidays} />
         }} />
       </Switch>
     </React.Fragment>

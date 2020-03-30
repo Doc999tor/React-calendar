@@ -241,11 +241,29 @@ export const dayRender = (date, el, events, businessHours) => {
     const businessHoursSum = getBusinessHoursSum(date, businessHours)
     const dayEventsHoursSum = getTodayEventsHours(date, events)
     if (businessHoursSum === 0) {
-      el.classList.add('dayOff')
+      // el.classList.add('dayOff')
+      return 'dayOff'
     } else {
-      el.classList.add(getDayColor(dayEventsHoursSum, businessHoursSum))
+      // el.classList.add(getDayColor(dayEventsHoursSum, businessHoursSum))
+      return getDayColor(dayEventsHoursSum, businessHoursSum)
     }
   }
+}
+
+export const addHolidays = holidays => {
+  holidays.map((holidayObj, index) => {
+    const holidayElements = document.querySelectorAll(`.fc-day-top[data-date="${holidayObj.date}"]`)
+    if (holidayElements) {
+      for (let i = 0; i < holidayElements.length; i++) {
+        holidayElements[i].innerHTML = `
+          <span class="fc-day-number">${index + 1}</span>
+          <div class="month-holiday" style="direction:${config.calendar.dir}">
+              <p>${holidayObj.name}</p>
+          </div>
+        `
+      }
+    }
+  })
 }
 
 const eventRender = (data) => {

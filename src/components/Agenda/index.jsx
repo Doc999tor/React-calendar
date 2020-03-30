@@ -43,7 +43,7 @@ class Agenda extends React.Component {
     if (emptyPage) {
       emptyPage.style.height = document.documentElement.clientHeight - document.getElementById('header')?.offsetHeight - document.querySelector('.swiper-background')?.offsetHeight + 'px'
     }
-    document.querySelector('.containerCarousel .swiper-container').style.height = (document.querySelector('.swiper-slide-active .agenda-events')?.offsetHeight || document.querySelector('.swiper-slide-duplicate-active .agenda-events')?.offsetHeight) + 'px'
+    document.querySelector('.containerCarousel .swiper-container').style.height = (document.querySelector('.swiper-slide-active .agenda-events')?.offsetHeight || document.querySelector('.swiper-slide-duplicate-active .agenda-events')?.offsetHeight) + 20 + 'px'
   }
   swipeNext = () => {
     this.swiper.slideNext()
@@ -80,8 +80,10 @@ class Agenda extends React.Component {
   renderCalendar = date => {
     const sortedEvent = eventsSort(this.props.events, date)
     const freeTimeArr = sortedEvent.length === 0 ? null : freeTimeArrCreator(sortedEvent, date)
+    const holiday = this.props.holidays.filter(holidayObj => holidayObj.date === date)
     return (
       <div className="demo-app-calendar" key={date}>
+        {holiday[0] && <div className='holiday'>{holiday[0].name}</div> }
         <AgendaEvents
           events={sortedEvent}
           freeTimeArr={freeTimeArr}

@@ -16,3 +16,11 @@ export const deleteEventInfo = () => async dispatch => {
 export const setDataLoading = bool => async dispatch => {
   dispatch({ type: types.SET_LOADING, payload: { dataLoading: bool } })
 }
+
+export const setDayCapacity = obj => async (dispatch, getState) => {
+  dispatch({ type: types.SET_DAY_CAPACITY, payload: { obj } })
+}
+
+export const refreshHolidays = () => async dispatch => {
+  dispatch({ type: types.REFRESH_HOLIDAYS })
+}

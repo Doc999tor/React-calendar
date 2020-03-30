@@ -3,7 +3,9 @@ import * as types from './actionTypes'
 
 const initialState = {
   currentDate: config.calendar.defaultDate,
-  dataLoading: false
+  dataLoading: false,
+  dayCapacity: {},
+  holidays: JSON.parse(localStorage.getItem('holidays_data'))?.data
 }
 export default (state = initialState, action = {}) => {
   const obj = {
@@ -29,6 +31,18 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         dataLoading: action.payload.dataLoading
+      }
+    },
+    [types.SET_DAY_CAPACITY]: () => {
+      return {
+        ...state,
+        dayCapacity: {...state.dayCapacity, ...action.payload.obj}
+      }
+    },
+    [types.REFRESH_HOLIDAYS]: () => {
+      return {
+        ...state,
+        holidays: {...JSON.parse(localStorage.getItem('holidays_data')).data}
       }
     }
   }
