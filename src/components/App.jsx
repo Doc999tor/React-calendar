@@ -47,8 +47,8 @@ class App extends Component {
           </Route>
         </Switch>
         {(view === 'weekly' || view === 'daily') && <TimeLabel currentView={view} />}
-        <div className='modal-loading' style={{ display: this.props.dataLoading ? 'flex' : 'none' }}>
-          Loading...
+        <div className={`floating-button ${config.calendar.dir === 'rtl' ? 'standartLeft' : 'standartRight'}`}>
+          <img className='cross' src={config.urls.staticImg + '/plus.svg'} />
         </div>
       </div>
     )

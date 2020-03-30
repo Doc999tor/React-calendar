@@ -68,9 +68,9 @@ class Daily extends React.Component {
     const dates = this.state.dates.slice()
     const today = dates[this.swiper.realIndex]
     dates[nextIndex] = getNextDay(dates[this.swiper.realIndex], isNext, 'days')
+    this.props.setDefaultDay(today)
     this.setState({ dates }, () => {
       this.swiper.loopCreate()
-      this.props.setDefaultDay(today)
       if (getDatesFromEvents(this.props.events).includes(today)) {
         this.props.getEvents()
       }
@@ -99,7 +99,7 @@ class Daily extends React.Component {
             })
             this.props.history.push(`${this.props.match.url}/appointments${this.props.location.search}`)
           }}
-          dateClick={() => {window.location = config.urls.creatingAppointmentLink}}
+          // dateClick={() => {window.location = config.urls.creatingAppointmentLink}}
           eventDrop={data => {
             eventDrop(data.el.dataset.appointment_id, data.event.start, data.revert)
           }}

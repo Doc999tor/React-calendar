@@ -26,6 +26,7 @@ class Agenda extends React.Component {
     })
   }
   componentDidUpdate (prevProps, prevState, snapshot) {
+    const emptyPage = document.querySelector('.empty-page-wrapper')
     const qs = new URLSearchParams(this.props.location.search)
     const appointmentId = qs.get('appointment_id')
     const newEvent = document.querySelector(`[data-appointment_id="${appointmentId}"`)
@@ -38,6 +39,11 @@ class Agenda extends React.Component {
         })
       }, 1000)
     }
+
+    if (emptyPage) {
+      emptyPage.style.height = document.documentElement.clientHeight - document.getElementById('header')?.offsetHeight - document.querySelector('.swiper-background')?.offsetHeight + 'px'
+    }
+    document.querySelector('.containerCarousel .swiper-container').style.height = (document.querySelector('.swiper-slide-active .agenda-events')?.offsetHeight || document.querySelector('.swiper-slide-duplicate-active .agenda-events')?.offsetHeight) + 'px'
   }
   swipeNext = () => {
     this.swiper.slideNext()

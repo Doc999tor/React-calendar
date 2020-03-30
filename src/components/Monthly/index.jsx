@@ -29,6 +29,23 @@ class Daily extends React.Component {
       slideToPrev: this.swipePrev
     })
   }
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    // const condition = (prevProps.events.length === this.props.events.length)
+    // console.log(prevProps, this.props)
+    // console.log(prevState, this.state)
+    // if (!condition || (condition && (prevState.swipeDirection !== undefined) && prevState.swipeDirection === this.state.swipeDirection)) {
+    //   const businessHours = config.workers.filter(worker => worker.id === this.props.activeWorkerId)[0].businessHours
+    //   const days = document.querySelectorAll('.demo-app-calendar .fc-day')
+    //   if (days.length && !days[0].classList.contains('dayOfRest', 'easyDay', 'normalDay', 'busyDay', 'dayOff')) {
+    //     console.log('coloring')
+    //     for (let i = 0; i < days.length; i++) {
+    //       let day = days[i]
+    //       dayRender(day.dataset.date, day, this.props.events, businessHours)
+    //     }
+    //   }
+    // }
+  }
+
   swipeNext = () => {
     this.swiper.slideNext()
   }
@@ -53,7 +70,7 @@ class Daily extends React.Component {
     const dates = this.state.dates.slice()
     const today = dates[this.swiper.realIndex]
     dates[nextIndex] = getNextDay(dates[this.swiper.realIndex], isNext, 'months')
-    this.setState({ dates }, () => {
+    this.setState({ swipeDirection: isNext, dates }, () => {
       this.swiper.loopCreate()
       // const currentSlideDays = document.querySelectorAll(`.containerCarousel .swiper-slide:nth-child(${this.swiper.activeIndex + 1}) .fc-day.fc-widget-content`)
       // dayRender(currentSlideDays, this.props.events)
@@ -64,6 +81,7 @@ class Daily extends React.Component {
   renderCalendar = date => {
     const documentHeight = document.documentElement.clientHeight
     const calendarHeight = config.workers.length === 1 ? documentHeight - 60 : documentHeight - 165
+    const businessHours = config.workers.filter(worker => worker.id === this.props.activeWorkerId)[0].businessHours
     return (
       <div className="demo-app-calendar" key={date}>
         <FullCalendar
@@ -74,7 +92,7 @@ class Daily extends React.Component {
           plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
           defaultDate={date}
           events={this.props.events}
-          businessHours={config.workers.filter(worker => worker.id === this.props.activeWorkerId)[0].businessHours}
+          businessHours={businessHours}
           contentHeight={calendarHeight}
           eventPositioned={eventPositioned}
         />

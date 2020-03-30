@@ -3,19 +3,20 @@ import './OffTime.styl'
 
 export default class OffTime extends Component {
   render () {
-    const event = this.props.info.event
-    const extendedProps = event.extendedProps
+    const { event } = this.props
     const { fullMonths } = config.translations.dates
     const { days } = config.translations.dates
     return (
       <div id='offtime' style={{direction: config.calendar.dir}}>
-        <div className='client-view'>
+        <div className='client-view' style={{
+          backgroundImage: `url(${this.props.clientPhoto})${this.props.defaultPhoto ?`, url(${this.props.defaultPhoto})` : ''}`
+        }}>
           <div className='backgroundForOfftime'>
             <div onClick={this.props.close} className='close-popup' style={config.calendar.dir === 'rtl' ? { 'left': '20px' } : { 'right': '20px' }}>
               <span className='popup-cross'>&times;</span>
             </div>
             <div className='client-page'>
-              <p className='client-name'>{extendedProps.off_time === 'break' ? config.translations.business_lunch : config.translations.meeting}</p>
+              <p className='client-name'>{event.off_time === 'break' ? config.translations.business_lunch : config.translations.meeting}</p>
             </div>
           </div>
         </div>
@@ -42,16 +43,16 @@ export default class OffTime extends Component {
               </div>
             </div>
           </div>
-          {extendedProps.note && <div className='notes wrap-item'>
+          {event.note && <div className='notes wrap-item'>
             <div className='img'>
               <img className='img-notes' src={config.urls.staticImg + '/feather.svg'} />
             </div>
             <div className='notes-cont'>
               <h3 className='caption'>{config.translations.notes}</h3>
-              <p className='notes-txt'>{extendedProps.note}</p>
+              <p className='notes-txt'>{event.note}</p>
             </div>
           </div>}
-          {extendedProps.address && <div className='location wrap-item'>
+          {event.address && <div className='location wrap-item'>
             <div className='location-wrap'>
               <div className='img'>
                 <img className='location-circle' src={config.urls.staticImg + '/circle-location.svg'} />
@@ -59,12 +60,12 @@ export default class OffTime extends Component {
               </div>
               <div className='location-cont'>
                 <h3 className='caption'>{config.translations.address}</h3>
-                <p className='address-loc'>{extendedProps.address}</p>
+                <p className='address-loc'>{event.address}</p>
               </div>
             </div>
             <div className='location-icon'>
-              <a className='link-maps' href={config.urls.google_maps.replace('{address}', extendedProps.address)}><img className='img-google-maps' src={config.urls.staticImg + '/google-maps.svg'} /></a>
-              <a className='link-maps' href={config.urls.waze.replace('{address}', encodeURIComponent(extendedProps.address))}><img className='img-waze' src={config.urls.staticImg + '/waze.svg'} /></a>
+              <a className='link-maps' href={config.urls.google_maps.replace('{address}', event.address)}><img className='img-google-maps' src={config.urls.staticImg + '/google-maps.svg'} /></a>
+              <a className='link-maps' href={config.urls.waze.replace('{address}', encodeURIComponent(event.address))}><img className='img-waze' src={config.urls.staticImg + '/waze.svg'} /></a>
             </div>
           </div>}
         </div>

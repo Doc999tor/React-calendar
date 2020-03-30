@@ -3,12 +3,14 @@ import './Queue.styl'
 
 export default class Queue extends Component {
   render () {
-    const event = this.props.info
+    const { event } = this.props
     const { fullMonths } = config.translations.dates
     const { days } = config.translations.dates
     return (
       <div id='eventPopup' style={config.calendar.dir === 'rtl'? { 'direction': 'rtl' } : { 'direction': 'ltr' }} >
-        <div className='client-view'>
+        <div className='client-view' style={{
+          backgroundImage: `url(${this.props.clientPhoto})${this.props.defaultPhoto ?`, url(${this.props.defaultPhoto})` : ''}`
+        }}>
           <div className='gradient'>
             <div onClick={this.props.close} className='close-popup' style={config.calendar.dir === 'rtl'? { 'left': '20px' } : { 'right': '20px' }}>
               <span className='popup-cross'>&times;</span>

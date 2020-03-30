@@ -146,8 +146,8 @@ const config = {
     ],
     eventLongPressDelay: 1000,
     selectLongPressDelay: 1000,
-    defaultView: 'agenda', // agenda, daily, weekly, monthly
-    defaultDate: moment().format('YYYY-MM-DD'),
+    defaultView: 'daily', // agenda, daily, weekly, monthly
+    defaultDate: '2020-03-16',
     // defaultDate: moment(window.location.pathname.match(new RegExp('\\d{4}\\-\\d{1,2}\\-\\d{1,2}', 'g'))[0]).isValid() ? moment(window.location.pathname.match(new RegExp('\\d{4}\\-\\d{1,2}\\-\\d{1,2}', 'g'))[0]) : moment('2018-01-01'),
     eventOverlap: true,
     slotEventOverlap: false,

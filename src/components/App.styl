@@ -74,6 +74,28 @@ p
   -webkit-box-shadow 0px 0px 5px 0px rgba(0,0,0,0.5)
   -moz-box-shadow 0px 0px 5px 0px rgba(0,0,0,0.5)
 
+.floating-button
+  position fixed
+  display flex
+  justify-content center
+  align-items center
+  background-color var(--main-bgcolor)
+  border-radius 50%
+  width 56px
+  height 56px
+  z-index 1
+  -webkit-box-shadow 0px 6px 10px 0px rgba(50, 50, 50, 0.58)
+  -moz-box-shadow 0px 6px 10px 0px rgba(50, 50, 50, 0.58)
+  box-shadow 0px 6px 10px 0px rgba(50, 50, 50, 0.58)
+  .cross
+    color var(--white-color)
+  &.standartRight
+    bottom 30px
+    right 30px
+  &.standartLeft
+    bottom 30px
+    left 30px
+
 .containerCarousel
   &.daily-view
     padding-inline-start 34px
@@ -83,3 +105,13 @@ p
     direction: rtl
 
 
+@media only screen and (min-width: 610px) {
+  .standartLeft {
+    left: 50%;
+    transform: translate(-515%);
+  }
+  .standartRight {
+    right: 50%;
+    transform: translate(515%);
+  }
+}

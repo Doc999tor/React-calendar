@@ -221,6 +221,33 @@ const bgrColor = (date, element, events) => {
   }
 }
 
+export const getBusinessHoursSum = (today, businessHours) => {
+  const filteredBusinessHours = businessHours.filter(item => item.daysOfWeek.includes(moment(today).day()))
+  if (filteredBusinessHours.length) {
+    return  (textToTime(filteredBusinessHours[0].endTime) - textToTime(filteredBusinessHours[0].startTime)) * 1000
+  } else {
+    return 0
+  }
+}
+
+export const getTodayEventsHours = (today, events) => {
+  const todayEvents = events.filter(event => moment(today).isSame(event.start, 'day'))
+  return arraySum(todayEvents.map(event => moment(event.end) - moment(event.start)))
+}
+
+export const dayRender = (date, el, events, businessHours) => {
+  if (events.length) {
+    // el.classList.remove('dayOfRest', 'easyDay', 'normalDay', 'busyDay')
+    const businessHoursSum = getBusinessHoursSum(date, businessHours)
+    const dayEventsHoursSum = getTodayEventsHours(date, events)
+    if (businessHoursSum === 0) {
+      el.classList.add('dayOff')
+    } else {
+      el.classList.add(getDayColor(dayEventsHoursSum, businessHoursSum))
+    }
+  }
+}
+
 const eventRender = (data) => {
   data.el.dataset.appointment_id = data.event.id
   if (data.view.type === 'daily' || data.view.type === 'weekly') {
@@ -238,12 +265,6 @@ const eventRender = (data) => {
       ? getHoursLabel(event.end.getHours().toString(), event.end.getMinutes().toString())
       : ''
     draggingResizing(event, el, start, end, view)
-  }
-}
-
-export const dayRender = (days, events) => {
-  for (let i = 0; i < days.length; i++) {
-    bgrColor(days[i].attributes['data-date'].value, days[i], events)
   }
 }
 
